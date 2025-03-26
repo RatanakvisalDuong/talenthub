@@ -42,6 +42,7 @@ const handler = NextAuth({
             "sub": user.id,
           },
         });
+        console.log("res: ", res);
         laravelToken = res.data.token;
       } catch (error) {
         console.error("Error: ", error);
