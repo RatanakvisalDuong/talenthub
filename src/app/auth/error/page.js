@@ -1,7 +1,7 @@
 'use client';
 
 // import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+// import Link from 'next/link';
 
 export default function ErrorPage() {
 //   const searchParams = useSearchParams();
@@ -22,16 +22,16 @@ export default function ErrorPage() {
           <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
           </svg>
-          <h1 className="text-2xl font-bold">ad</h1>
+          <h1 className="text-2xl font-bold">a</h1>
         </div>
         <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-md text-gray-700">
           {/* {errorDescription} */}
-		  as
+		  a
         </div>
         <div className="mt-4 text-center">
-          <Link href="/" className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 inline-block">
+          <div href="/" className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 inline-block" onClick={() => window.location.href = '/'}>
             Back to Home
-          </Link>
+          </div>
         </div>
       </div>
     </div>

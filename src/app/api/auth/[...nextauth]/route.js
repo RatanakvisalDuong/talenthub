@@ -36,7 +36,7 @@ const handler = NextAuth({
       }
       try {
         console.log("user: ", user);
-        const res = await axios.post(`https://talenthub.newlinkmarketing.com/api/login_google`, {
+        const res = await axios.post(`${process.env.API_URL}login_google`, {
           profile: {
             name: user.name,
             email: user.email,
