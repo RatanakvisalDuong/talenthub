@@ -5,7 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 // List of blocked domains
 const BLOCKED_DOMAINS = ["gmail.com", "yahoo.com", "email.com"];
 
-let laravelToken = '';
+let laravelToken = "";
 
 const handler = NextAuth({
   providers: [
@@ -35,19 +35,21 @@ const handler = NextAuth({
         }
       }
       try {
-        const res = await axios.post(`${process.env.API_URL}login_google`, {
-          "profile": {
-            "name": user.name,
-            "email": user.email,
-            "sub": user.id,
+        console.log("user: ", user);
+        const res = await axios.post(`https://talenthub.newlinkmarketing.com/api/login_google`, {
+          profile: {
+            name: user.name,
+            email: user.email,
+            sub: user.id,
           },
         });
         console.log("res: ", res);
         laravelToken = res.data.token;
       } catch (error) {
-        console.error("Error: ", error);
+        console.error("KDMV Error: ", error);
         return "/auth/error?error=ApiCallFailed";
       }
+      console.log('3');
       return true;
     },
     async jwt({ token, account }) {
