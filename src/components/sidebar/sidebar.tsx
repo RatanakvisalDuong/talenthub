@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { major } from "@/dummydata/major";
+import { majors } from "@/dummydata/major";
 import { role } from "@/dummydata/role";
 import { useSession } from 'next-auth/react';
 import { workingStatus } from '@/dummydata/workingStatus';
@@ -94,7 +94,7 @@ export default function Sidebar({
                     <p className="text-md text-black ml-4">Majors:</p>
                 </div>
 
-                {major.map((major) => (
+                {majors.map((major) => (
                     <label key={major.id} className="flex items-center text-black text-sm mt-1">
                         <input
                             type="checkbox"

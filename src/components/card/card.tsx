@@ -17,8 +17,8 @@ interface Portfolio {
 export default function Card({ portfolio }: { portfolio: Portfolio }) {
     const router = useRouter();
 
-    const handleCardClick = (id: number) => {
-        router.push(`/portfolio/${id}`);
+    const handleCardClick = (google_id: number) => {
+        router.push(`/portfolio/${google_id}`);
     }
 
     return (

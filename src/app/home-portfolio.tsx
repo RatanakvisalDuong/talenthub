@@ -20,7 +20,7 @@ export interface PortfolioProfile {
     role: number;
   }
 
-export default function DisplayPortfolio(
+export default function HomeComponent(
     {portfolios}: {portfolios: PortfolioProfile[]}
 ){
 
@@ -28,7 +28,6 @@ export default function DisplayPortfolio(
 	const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
 	const [selectedWorkingStatuses, setSelectedWorkingStatuses] = useState<number[]>([]);
 	const [searchItem, setSearchItem] = useState<string>('');
-	// const [portfolios, setPortfolios] = useState<[]>([]);
 
 	const handleMajorSelect = (selectedMajors: number[]) => {
 		setSelectedMajors(selectedMajors);
@@ -49,7 +48,7 @@ export default function DisplayPortfolio(
 	const filteredPortfolio = portfolios.filter((port) => {
 		const majorMatch = selectedMajors.length > 0 ? selectedMajors.includes(port.major ?? 4) : true;
 		const roleMatch = selectedRoles.length > 0 ? selectedRoles.includes(port.role) : true;
-		const workingStatusMatch = selectedWorkingStatuses.length > 0 ? selectedWorkingStatuses.includes(port.workingStatus ?? 3) : true;
+		const workingStatusMatch = selectedWorkingStatuses.length > 0 ? selectedWorkingStatuses.includes(port.working_status ?? 3) : true;
 		const nameMatch = port.name.toLowerCase().includes(searchItem.toLowerCase());
 		return majorMatch && roleMatch && workingStatusMatch && nameMatch;
 	});

@@ -1,6 +1,8 @@
+import axios from 'axios';
+
 // "use client"
 
-import PortfolioDetailPage from "./portfolio-page";
+// import PortfolioDetailPage from "./portfolio-page";
 
 // import Appbar from "@/components/appbar/appbar";
 // import CertificateCard from "@/components/certificateCard/certificateCard";
@@ -14,7 +16,25 @@ import PortfolioDetailPage from "./portfolio-page";
 // import Image from "next/image";
 // import { useState } from 'react';
 
-export default function PortfolioPage() {
+export default function PortfolioPage({googleID}: {googleID : string}) {
+
+    // ** Call function with google_id
+    console.log(googleID);
+    const fetchPortfolioData = async (google_id: string) => {
+        try {
+            const response = await axios.get('/api/portfolio', {
+                params: { google_id }
+            });
+            console.log(response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error: ', error);
+            throw error;
+        }
+    };
+
+    // Example usage
+    fetchPortfolioData(googleID);
     // const [expandedExperience, setExpandedExperience] = useState(false);
     // const [expandedProject, setExpandedProject] = useState(false);
     // const [dropdownOpen, setDropdownOpen] = useState<{ [key: number]: boolean }>({});
@@ -148,5 +168,5 @@ export default function PortfolioPage() {
     //         </div>
     //     </div>
     // );
-    <PortfolioDetailPage />
+    // <PortfolioDetailPage major={po}/>
 }

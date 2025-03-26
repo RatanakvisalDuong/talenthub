@@ -7,17 +7,16 @@ import ProjectCard from "@/components/projectCard/projectCard";
 import WorkingStatusBar from "@/components/workingStatus/workingStatusBar";
 import { certificates } from "@/dummydata/certificate";
 import { experiences } from "@/dummydata/experience";
+import { majors } from "@/dummydata/major";
 import { projects } from "@/dummydata/project";
 import { ShareIcon } from '@heroicons/react/24/outline';
 import Image from "next/image";
 import { useState } from 'react';
 
-export default function PortfolioDetailPage(){
+export default function PortfolioPageComponent({major}: {major: number}) {
     const [expandedExperience, setExpandedExperience] = useState(false);
     const [expandedProject, setExpandedProject] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState<{ [key: number]: boolean }>({});
-
-    
 
     const toggleDropdown = (experienceId: number) => {
         setDropdownOpen(prev => ({
@@ -33,6 +32,11 @@ export default function PortfolioDetailPage(){
     const toggleDropdownProject = () => {
         setExpandedProject(!expandedProject);
     }
+
+    const getMajorName = () => {
+        const majorObj = majors.find((item) => item.id === major);
+        return majorObj ? majorObj.name : 'Unknown Major'; 
+      };
 
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
@@ -98,7 +102,7 @@ export default function PortfolioDetailPage(){
                                             <span className="font-bold mr-2">Contact:</span> 017 614 694
                                         </p>
                                         <p className="text-black mt-2 text-sm">
-                                            <span className="font-bold mr-2">Major:</span> Computer Science
+                                            <span className="font-bold mr-2">Major:</span> {getMajorName()}
                                         </p>
                                         <button className="mt-4 rounded-sm text-black px-4 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:transform hover:scale-105"><ShareIcon className="w-5 h-5 mr-2" /> Share Portfolio</button>
                                     </div>
