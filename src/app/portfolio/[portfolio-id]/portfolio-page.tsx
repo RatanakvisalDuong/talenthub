@@ -34,6 +34,7 @@ export default function PortfolioPageComponent({major}: {major: number}) {
     }
 
     const getMajorName = () => {
+        
         const majorObj = majors.find((item) => item.id === major);
         return majorObj ? majorObj.name : 'Unknown Major'; 
       };
