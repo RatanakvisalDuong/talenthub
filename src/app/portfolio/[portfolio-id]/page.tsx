@@ -169,5 +169,7 @@ export default function PortfolioPage() {
     //     </div>
     // );
     // <PortfolioDetailPage major={po}/>
-    <div></div>
+    return(
+        <div></div>
+    );
 }
