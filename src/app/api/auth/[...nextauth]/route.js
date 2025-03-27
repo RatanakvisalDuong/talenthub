@@ -1,4 +1,4 @@
-// import axios from "axios";
+import axios from "axios";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -34,23 +34,33 @@ const handler = NextAuth({
           return "/auth/error?error=BlockedDomain";
         }
       }
-      // try {
-      //   console.log("user: ", user);
-      //   console.log(`${process.env.API_URL}login_google`);
-      //   const res = await axios.post(`${process.env.API_URL}login_google`, {
-      //     profile: {
-      //       name: user.name,
-      //       email: user.email,
-      //       sub: user.id,
-      //     },
-          
-      //   });
-      //   console.log("res: ", res);
-      //   laravelToken = res.data.token;
-      // } catch (error) {
-      //   console.error("KDMV Error: ", error);
-      //   return "/auth/error?error=ApiCallFailed";
-      // }
+      try {
+        console.log("user: ", user);
+        console.log(`${process.env.API_URL}login_google`);
+
+        // Construct the query string
+        const params = new URLSearchParams();
+        params.append("sub", user.id);
+        params.append("email", user.email);
+        params.append("name", user.name);
+
+        // Send the data as query parameters in the GET request
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}login_google_test?${params.toString()}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("res: ", res);
+        laravelToken = res.data.token;
+      } catch (error) {
+        console.error("Error: ", error);
+        return "/auth/error?error=ApiCallFailed";
+      }
+
       return true;
     },
     async jwt({ token, account }) {
