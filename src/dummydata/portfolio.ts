@@ -92,5 +92,18 @@ export const portfolio = [
         //     'working_status': null,
         //     'role': 2
         // },
+        {
+                'id': 1,
+                'user_id': 1,
+                'major': 1,
+                'phone_number': 'string',
+                'about': 'string',
+                'working_status': 1,
+                'status': 1,
+                'created_at': 'string',
+                'updated_at': 'string',
+                'name': 'string',
+                'role': 1,
+        }
 
 ]

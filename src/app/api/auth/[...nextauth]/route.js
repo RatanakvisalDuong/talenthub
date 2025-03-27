@@ -35,22 +35,38 @@ const handler = NextAuth({
         }
       }
       try {
+        // Logging the user data
         console.log("user: ", user);
-        const res = await axios.post(`${process.env.API_URL}login_google`, {
-          profile: {
-            name: user.name,
-            email: user.email,
-            sub: user.id,
-          },
-        });
+    
+        // Constructing the API URL
+        const apiUrl = `${process.env.API_URL}login_google`;
+    
+        // Sending the POST request to the Laravel API with the profile data
+        const res = await axios.post(
+            apiUrl, 
+            {
+                profile: {
+                    name: user.name,     // Name from the user object
+                    email: user.email,   // Email from the user object
+                    sub: user.id,        // Google ID (sub) from the user object
+                },
+            },
+            {
+              headers: {
+                "Authorization": "Bearer YOUR_API_TOKEN",
+                "Content-Type": "application/json"
+              }
+            }
+            
+        );
         console.log("res: ", res);
         laravelToken = res.data.token;
-      } catch (error) {
+    
+    } catch (error) {
         console.error("KDMV Error: ", error);
         return "/auth/error?error=ApiCallFailed";
-      }
-      console.log('3');
-      return true;
+    }
+    return true;    
     },
     async jwt({ token, account }) {
       if (account) {
