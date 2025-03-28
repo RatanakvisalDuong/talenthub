@@ -1,3 +1,5 @@
+// src/app/yourportfolio/yourportfolio-page.tsx
+
 "use client"
 
 import Appbar from "@/components/appbar/appbar";
@@ -17,17 +19,23 @@ import { Portfolio } from "../type/portfolio";
 import SkillCard from "@/components/skillCard/skillCard";
 import AddSkillDialog from "./addskill-dialog";
 import AddExperienceDialog from "./addexperience-dialog";
+import EducationCard from "@/components/educationCard/educationCard";
+import { education } from "@/dummydata/education";
 
 export default function YourPortfolioPageComponent({ portfolio }: { portfolio: Portfolio }) {
 
     const [expandedExperience, setExpandedExperience] = useState(false);
+    const [expandedSkill, setExpandedSkill] = useState(false);
+    const [expandedEducation, setExpandedEducation] = useState(false);
     const [expandedProject, setExpandedProject] = useState(false);
-    const [dropdownOpen, setDropdownOpen] = useState<{ [key: number]: boolean }>({});
+    
     const [openAddProjectDialog, setOpenAddProjectDialog] = useState(false);
     const [openAddSkillDialog, setOpenAddSkillDialog] = useState(false);
     const [openAddExpereinceDialog, setOpenAddExperienceDialog] = useState(false);
+    const [openAddEducationDialog, setOpenAddEducationDialog] = useState(false);
+
+    const [dropdownOpen, setDropdownOpen] = useState<{ [key: number]: boolean }>({});
     const [dropdownSkillOpen, setDropdownSkillOpen] = useState<{ [key: number]: boolean }>({});
-    const [expandedSkill, setExpandedSkill] = useState(false);
 
     const toggleDropdownSkill = (skillId: number) => {
         setDropdownSkillOpen(prev => ({
@@ -48,6 +56,10 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
         setOpenAddExperienceDialog(!openAddExpereinceDialog);
     };
 
+    const toggleAddEducationDialog = () => {
+        setOpenAddEducationDialog(!openAddEducationDialog);
+    }
+
     const toggleDropdown = (experienceId: number) => {
         setDropdownOpen(prev => ({
             ...prev,
@@ -65,6 +77,10 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
 
     const toggleExpandedSkill = () => {
         setExpandedSkill(!expandedSkill);
+    }
+
+    const toggleExpandedEducation = () => {
+        setExpandedEducation(!expandedEducation);
     }
 
     const getMajorName = () => {
@@ -218,8 +234,33 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                 </button>
                             </div>
                         </div>
-                        <div className="w-full h-[40%] bg-white rounded-lg shadow-md p-4 mt-8 mr-3 overflow-y-auto">
+                        <div className={`w-full ${expandedEducation ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
+                        <div className="flex justify-between items-center">
+                                <p className="text-black font-bold text-lg">Educations</p>
+                                <button
+                                    className="flex items-center bg-[#5086ed] text-black font-semibold py-2 px-4 rounded-md hover:bg-[#A9CBEF] cursor-pointer"
+                                    onClick={() => toggleAddEducationDialog()}
+                                >
+                                    <i className="fas fa-plus text-white"></i>
+                                </button>
+                            </div>
+                            <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
+                            {education.slice(0, expandedEducation ? education.length : 2).map((education, index) => (
+                                <EducationCard key={education.id}
+                                    education={education}
+                                    index={index}
+                                    owner={true}
+                                />
+                            ))}
+                            <div className={`h-40px ${portfolio.education.length > 2 ? 'block' : 'hidden'}`}>
+                                <button
+                                    onClick={toggleExpandedEducation}
+                                    className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
+                                >
+                                    {expandedEducation ? 'See Less' : 'See More'}
+                                </button>
+                            </div>
                         </div>
                         <div className="h-[20px]">
 

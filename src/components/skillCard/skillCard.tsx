@@ -22,6 +22,7 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
             <div className='w-full'>
                 <div className="flex justify-between items-start font-semibold text-lg text-gray-800">
                     <div className="flex w-[70%] items-center gap-4 flex-wrap">
+
                         <p className="text-md">
                             <span>{skill.title}</span>
                         </p>

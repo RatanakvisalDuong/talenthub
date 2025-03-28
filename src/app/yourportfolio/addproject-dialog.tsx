@@ -70,6 +70,11 @@ const AddProjectDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
         setImageFiles(combined);
     };
 
+    const handleRemoveImage = (index: number) => {
+        setImageFiles(imageFiles.filter((_, i) => i !== index));
+    };
+
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] overflow-y-auto">
@@ -191,15 +196,22 @@ const AddProjectDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
                         {imagePreviews.length > 0 && (
                             <div className="flex flex-wrap gap-2 mt-2">
                                 {imagePreviews.map((src, index) => (
-                                    <Image
-                                        key={index}
-                                        src={src}
-                                        alt={`Selected ${index + 1}`}
-                                        width={96}
-                                        height={96}
-                                        className="object-cover rounded shadow"
-                                        unoptimized
-                                    />
+                                    <div key={index} className="relative">
+                                        <Image
+                                            src={src}
+                                            alt={`Selected ${index + 1}`}
+                                            width={96}
+                                            height={96}
+                                            className="object-cover rounded shadow"
+                                            unoptimized
+                                        />
+                                        <div
+                                            onClick={() => handleRemoveImage(index)}
+                                            className="absolute top-0 right-0 text-red-500 p-1 rounded-full"
+                                        >
+                                            <i className="fas fa-times"></i> 
+                                        </div>
+                                    </div>
                                 ))}
                             </div>
                         )}

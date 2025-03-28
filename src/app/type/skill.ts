@@ -8,7 +8,7 @@ export interface Skill {
     endorsers: [
         {
             id: number,
-            name: string,
+            name: string
         }
     ]
 }

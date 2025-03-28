@@ -3,11 +3,13 @@
 import { Portfolio } from "@/app/type/portfolio";
 import Appbar from "@/components/appbar/appbar";
 import CertificateCard from "@/components/certificateCard/certificateCard";
+import EducationCard from "@/components/educationCard/educationCard";
 import ExperienceCard from "@/components/experienceCard/experienceCard";
 import ProjectCard from "@/components/projectCard/projectCard";
 import SkillCard from "@/components/skillCard/skillCard";
 import WorkingStatusBar from "@/components/workingStatus/workingStatusBar";
 import { certificates } from "@/dummydata/certificate";
+import { education } from "@/dummydata/education";
 import { experiences } from "@/dummydata/experience";
 import { majors } from "@/dummydata/major";
 import { ShareIcon } from '@heroicons/react/24/outline';
@@ -21,6 +23,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
     const [expandedExperience, setExpandedExperience] = useState(false);
     const [expandedSkill, setExpandedSkill] = useState(false);
     const [expandedProject, setExpandedProject] = useState(false);
+    const [expandedEducation, setExpandedEducation] = useState(false);
     const [dropdownExperienceOpen, setDropdownExperienceOpen] = useState<{ [key: number]: boolean }>({});
     const [dropdownSkillOpen, setDropdownSkillOpen] = useState<{ [key: number]: boolean }>({});
 
@@ -48,6 +51,10 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
 
     const toggleExpandedSkill = () => {
         setExpandedSkill(!expandedSkill);
+    }
+
+    const toggleExpandedEducation = () => {
+        setExpandedEducation(!expandedEducation);
     }
 
     const getMajorName = () => {
@@ -181,8 +188,25 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                 </button>
                             </div>
                         </div>
-                        <div className="w-full h-[40%] bg-white rounded-lg shadow-md p-4 mt-8 mr-3 overflow-y-auto">
+                        <div className={`w-full ${expandedEducation ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
+                            <p className="text-black font-bold text-xl mb-2">Education</p>
+                            <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
+                            {education.slice(0, expandedEducation ? education.length : 2).map((education, index) => (
+                                <EducationCard key={education.id}
+                                    education={education}
+                                    index={index}
+                                    owner={false}
+                                />
+                            ))}
+                            <div className={`h-40px ${portfolio.education.length > 2 ? 'block' : 'hidden'}`}>
+                                <button
+                                    onClick={toggleExpandedEducation}
+                                    className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
+                                >
+                                    {expandedEducation ? 'See Less' : 'See More'}
+                                </button>
+                            </div>
                         </div>
                         <div className="h-[20px]">
 
