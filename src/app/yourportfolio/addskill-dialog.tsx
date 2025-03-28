@@ -1,11 +1,16 @@
 "use client";
 
 import BigTextInput from "@/components/bigtextinput/bigtextinput";
+import EndorserInput from "@/components/endorsementInput/endorsementInput";
 import TextInput from "@/components/textinput/textInput";
 import { useState } from "react";
 
 const AddSkillDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
     const [skillTitle, setSkillTitle] = useState<string>('');
+    
+    const handleEndorserChange = (endorsers: string[]) => {
+        console.log("Updated endorsers:", endorsers);
+    };
 
     if (!isOpen) return null;
 
@@ -39,17 +44,8 @@ const AddSkillDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                             placeholder="Enter skill description"
                             required
                         />
-                        <div className="mb-2">
-                            <label htmlFor="link" className="block text-sm font-medium text-black">
-                                Endorser
-                            </label>
-                            <input
-                                type="text"
-                                id="link"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                placeholder="Enter Endorser Email"
-                            />
-                        </div>
+
+                        <EndorserInput onEndorserChange={handleEndorserChange} />
                     </form>
                 </div>
                 <div className="flex justify-end mt-2">

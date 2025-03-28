@@ -1,0 +1,43 @@
+import React from "react";
+
+interface SelectMonthInputProps {
+  label: string;
+  id: string;
+  required?: boolean;
+  onChange: (value: string) => void;
+}
+
+const SelectMonthInput: React.FC<SelectMonthInputProps> = ({
+  label,
+  id,
+  required = false,
+  onChange,
+}) => {
+  return (
+    <div className="mb-2">
+      <label htmlFor={id} className="block text-sm font-medium text-black">
+        {label}
+        {required && <span className="text-red-400 ml-2">*</span>}
+      </label>
+      <select
+        id={id}
+        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
+        onChange={(e) => onChange(e.target.value)}
+      >
+        <option value="" disabled>
+          Select Month
+        </option>
+        {[
+          "January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+        ].map((month, index) => (
+          <option key={index} value={month}>
+            {month}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+export default SelectMonthInput;

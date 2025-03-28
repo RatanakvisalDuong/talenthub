@@ -1,33 +1,29 @@
 "use client";
 
+import BigTextInput from "@/components/bigtextinput/bigtextinput";
+import EndorserInput from "@/components/endorsementInput/endorsementInput";
+import SelectMonthInput from "@/components/selectMonthInput/selectMonthInput";
 import TextInput from "@/components/textinput/textInput";
-
-// import Image from "next/image";
-// import { useRef, useState, useMemo } from "react";
+import { useState } from "react";
 
 const AddExperienceDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-    // const [imageFiles, setImageFiles] = useState<File[]>([]);
-    // const fileInputRef = useRef<HTMLInputElement>(null);
-  
-    // const imagePreviews = useMemo(() => {
-    //   return imageFiles.map((file) => URL.createObjectURL(file));
-    // }, [imageFiles]);
-  
+    const [isPresent, setIsPresent] = useState(false);
+    const [selectedStartMonth, setSelectedStartMonth] = useState<string>("");
+    const [selectedEndMonth, setSelectedEndMonth] = useState<string>("");
+
+    const handleEndorserChange = (endorsers: string[]) => {
+        console.log("Updated endorsers:", endorsers);
+    };
+
+    const handleSelectStartMonthChange = (value: string) => {
+        setSelectedStartMonth(value);
+    };
+
+    const handleSelectEndMonthChange = (value: string) => {
+        setSelectedEndMonth(value);
+    }
+
     if (!isOpen) return null;
-  
-    // const handleImageClick = () => {
-    //   fileInputRef.current?.click();
-    // };
-  
-    // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //   const files = event.target.files;
-    //   if (!files) return;
-  
-    //   const newFiles = Array.from(files);
-  
-    //   const combined = [...imageFiles, ...newFiles].slice(0, 6);
-    //   setImageFiles(combined);
-    // };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -56,7 +52,7 @@ const AddExperienceDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
                         <div className="mb-2">
                             <label htmlFor="jobTitle" className="block text-sm font-medium text-black">
-                            Employment Type<span className="text-red-400 ml-2">*</span>
+                                Employment Type<span className="text-red-400 ml-2">*</span>
                             </label>
                             <select
                                 id="jobTitle"
@@ -72,139 +68,83 @@ const AddExperienceDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                             </select>
                         </div>
 
-                        {/* <div className="mb-1">
-                            <label htmlFor="description" className="block text-sm font-medium text-black">
-                                Project Description<span className="text-red-400 ml-2">*</span>
-                            </label>
-                            <textarea
-                                id="description"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black h-20 text-sm resize-none"
-                                placeholder="Project Description"
-                            />
-                        </div> */}
+                        <BigTextInput
+                            id="description"
+                            label="Description"
+                            required
+                            placeholder="Enter job description"
+                        />
 
                         <div className="flex justify-between gap-2">
                             <div className="mb-2 w-1/2">
-                                <label htmlFor="language" className="block text-sm font-medium text-black">
-                                    Start Month<span className="text-red-400 ml-2">*</span>
-                                </label>
-                                <select
-                                id="jobTitle"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                            >
-                                <option value="" disabled>
-                                    Select Month
-                                </option>
-                                <option value="January">January</option>
-                                <option value="February">February</option>
-                                <option value="March">March</option>
-                                <option value="April">April</option>
-                                <option value="May">May</option>
-                                <option value="June">June</option>
-                                <option value="July">July</option>
-                                <option value="August">August</option>
-                                <option value="September">September</option>
-                                <option value="October">October</option>
-                                <option value="November">November</option>
-                                <option value="December">December</option>
-                            </select>
-                            </div>
-                            <div className="mb-2 w-1/2">
-                                <label htmlFor="language" className="block text-sm font-medium text-black">
-                                    Start Year<span className="text-red-400 ml-2">*</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    id="language"
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                    placeholder="Java, Python, C++"
+                                <SelectMonthInput
+                                    label="Start Month"
+                                    id="startMonth"
+                                    required={true}
+                                    onChange={handleSelectStartMonthChange}
                                 />
                             </div>
+                            <div className="mb-2 w-1/2">
+                                <label htmlFor="startYear" className="block text-sm font-medium text-black">
+                                    Start Year<span className="text-red-400 ml-2">*</span>
+                                </label>
+                                <select
+                                    id="startYear"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
+                                >
+                                    <option value="" disabled>Select Year</option>
+                                    {Array.from({ length: 2025 - 2000 + 1 }, (_, i) => 2000 + i).map((year) => (
+                                        <option key={year} value={year}>{year}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                        {/* Present Checkbox */}
+                        <div className="mb-2 w-full flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="present"
+                                checked={isPresent}
+                                onChange={(e) => setIsPresent(e.target.checked)}
+                                className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                            />
+                            <label htmlFor="present" className="text-sm font-medium text-black">
+                                Present
+                            </label>
                         </div>
 
-                        
-
-                        {/* <div className="mb-2">
-                            <label htmlFor="link" className="block text-sm font-medium text-black">
-                                Project Link<span className="text-red-400 ml-2">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                id="link"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                placeholder="https://github.com/yourname/project"
-                            />
-                        </div> */}
-
-                        <TextInput
-                            id="link"
-                            label="Project Link"
-                            required
-                            placeholder="Enter project link"
-                        />
-
-                        <div className="mb-2">
-                            <label htmlFor="link" className="block text-sm font-medium text-black">
-                                Project File
-                            </label>
-                            <input
-                                type="file"
-                                id="file"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                placeholder="Choose File"
-                            />
+                        {/* End Month */}
+                        {!isPresent && (
+                            <div className="flex justify-between gap-2">
+                            <div className="mb-2 w-1/2">
+                                <SelectMonthInput
+                                    label="End Month"
+                                    id="endMonth"
+                                    required={true}
+                                    onChange={handleSelectEndMonthChange}
+                                />
+                            </div>
+                            <div className="mb-2 w-1/2">
+                                <label htmlFor="endYear" className="block text-sm font-medium text-black">
+                                    End Year<span className="text-red-400 ml-2">*</span>
+                                </label>
+                                <select
+                                    id="endYear"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
+                                >
+                                    <option value="" disabled>Select Year</option>
+                                    {Array.from({ length: 2025 - 2000 + 1 }, (_, i) => 2000 + i).map((year) => (
+                                        <option key={year} value={year}>{year}</option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
 
-                        <div className="mb-2">
-                            <label htmlFor="link" className="block text-sm font-medium text-black">
-                                Endorser
-                            </label>
-                            <input
-                                type="text"
-                                id="link"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                placeholder="Enter Endorser Email"
-                            />
-                        </div>
+                        )}
+
+                        <EndorserInput onEndorserChange={handleEndorserChange} />
 
                     </form>
-
-                    {/* Right side: Multiple Image Upload */}
-                    {/* <div className="w-1/2">
-                        <label className="block text-sm font-medium text-black mb-1">Upload Images</label>
-                        <button
-                            type="button"
-                            onClick={handleImageClick}
-                            className="px-4 py-2 bg-[#EFEFEF] rounded hover:bg-black mb-2 text-black w-full hover:text-white"
-                        >
-                            Upload Images
-                        </button>
-
-                        <input
-                            type="file"
-                            accept="image/*"
-                            multiple 
-                            ref={fileInputRef}
-                            onChange={handleImageChange}
-                            style={{ display: "none" }}
-                        />
-
-                        {imagePreviews.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mt-2">
-                                {imagePreviews.map((src, index) => (
-                                    <Image
-                                        key={index}
-                                        src={src}
-                                        alt={`Selected ${index + 1}`}
-                                        width={96}
-                                        height={96}
-                                        className="object-cover rounded shadow"
-                                        unoptimized
-                                    />
-                                ))}
-                            </div>
-                        )}
-                    </div> */}
                 </div>
                 <div className="flex justify-end mt-2">
                     <button

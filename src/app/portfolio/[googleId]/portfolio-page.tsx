@@ -95,7 +95,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             ))}
                         </div>
                     </div>
-                    <div className="h-[87vh] w-[68%] overflow-y-auto pr-6">
+                    <div className="h-[87vh] w-[68%] overflow-y-auto pr-6 overflow-x-hidden">
                         <div className="flex justify-between h-[35%]">
                             <div className="w-[68%] bg-white rounded-lg shadow-md p-4 overflow-y-auto">
                                 <div className="flex items-center justify-start h-full">
