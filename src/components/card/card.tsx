@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import WorkingStatusBar from '../workingStatus/workingStatusBar';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { useRouter } from "next/navigation";
 import React from 'react';
+import Link from 'next/link';
 
 
 interface Portfolio {
@@ -12,17 +12,12 @@ interface Portfolio {
     major: number | null;
     working_status: number | null;
     role: number | null;
+    photo: string;
 }
 
 export default function Card({ portfolio }: { portfolio: Portfolio }) {
-    const router = useRouter();
-
-    const handleCardClick = (google_id: number) => {
-        router.push(`/portfolio/${google_id}`);
-    }
-
     return (
-        <div className="w-53 h-64 rounded-sm shadow-md p-4 bg-white shadow-sm p-4 text-black transform transition-transform duration-200 hover:scale-105 hover:cursor-pointer" onClick={() => handleCardClick(portfolio.user_id)}>
+        <Link className="w-53 h-64 rounded-sm shadow-md p-4 bg-white shadow-sm p-4 text-black transform transition-transform duration-200 hover:scale-105 hover:cursor-pointer" href={`/portfolio/${portfolio.user_id}`}>
             <div className="flex justify-between items-center">
                 <div></div>
                 {portfolio.role === 1 ? (
@@ -47,7 +42,7 @@ export default function Card({ portfolio }: { portfolio: Portfolio }) {
 
             </div>
             <Image
-                src="https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*"
+                src={portfolio.photo || "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*"}
                 alt="Profile Picture"
                 width={100}
                 height={100}
@@ -76,7 +71,7 @@ export default function Card({ portfolio }: { portfolio: Portfolio }) {
 
 
             </div>
-        </div>
+        </Link>
     );
 
 }

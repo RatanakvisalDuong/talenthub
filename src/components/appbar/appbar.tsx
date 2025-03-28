@@ -9,7 +9,6 @@ import { useState, useRef, useEffect } from 'react';
 import LoginDialog from "@/dialogs/login_dialog/login_dialog";
 import { projectEndorsement } from "@/dummydata/projectEndorsement";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 
 const ubuntuFont = Ubuntu({
@@ -18,7 +17,6 @@ const ubuntuFont = Ubuntu({
 });
 
 export default function Appbar() {
-    const router = useRouter();
     const { data: session, status } = useSession();
 
     const isAuthenticated = status === "authenticated" && session;
@@ -81,21 +79,33 @@ export default function Appbar() {
         console.log(`Declined endorsement with ID: ${id}`);
     };
 
-    const goBackHome = () => {
-        router.push("/");
-    }
+    const goBackHome = async () => {
+        signOut()
+    };
 
     return (
         <nav className={`${ubuntuFont.className} bg-white shadow-md w-full fixed top-0 left-0 right-0 z-50`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex" onClick={() => goBackHome()}>
-                    <h1 className="text-2xl font-bold text-black cursor-pointer" >
-                        Talent
-                    </h1>
-                    <h1 className="text-[#5086ed] text-2xl font-bold cursor-pointer">Hub</h1>
+                        <h1 className="text-2xl font-bold text-black cursor-pointer" >
+                            Talent
+                        </h1>
+                        <h1 className="text-[#5086ed] text-2xl font-bold cursor-pointer">Hub</h1>
+                        <div className="ml-16">
+                            {isAuthenticated ? (
+                                <div className="bg-[#5086ed] text-white px-2 py-1 rounded-md cursor-pointer">
+                                    <p className="text-white">
+                                        {session.roleId === 1 ? "Student" : "Endorser"}
+                                    </p>
+                                </div>
+                            ) : (
+                                <div></div>
+                            )}
+
+                        </div>
                     </div>
-                    
+
                     <div className="flex items-center space-x-6">
                         {isAuthenticated ? (
                             <div className="relative mr-4" ref={notificationRef}>
@@ -177,14 +187,17 @@ export default function Appbar() {
                                 {dropdownOpen && (
                                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
                                         <Link
-                                            href="/portfolio"
+                                            href="/yourportfolio"
                                             className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         >
                                             <UserCircleIcon className="h-5 w-5 mr-2 text-gray-500" />
                                             Your Portfolio
                                         </Link>
                                         <button
-                                            onClick={() => signOut()}
+                                            onClick={() => {
+                                                // signOut();
+                                                goBackHome();
+                                            }}
                                             className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         >
                                             <ArrowRightOnRectangleIcon className="h-5 w-5 mr-2 text-gray-500" />

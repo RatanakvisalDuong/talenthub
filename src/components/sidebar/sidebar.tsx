@@ -4,6 +4,7 @@ import { majors } from "@/dummydata/major";
 import { role } from "@/dummydata/role";
 import { useSession } from 'next-auth/react';
 import { workingStatus } from '@/dummydata/workingStatus';
+import Link from 'next/link';
 
 export default function Sidebar({ 
     studentMajor,
@@ -62,6 +63,7 @@ export default function Sidebar({
         <div className="w-max h-[100vh] overflow-y-auto px-2">
             {session?.user?.name && (
                 <div className="bg-white w-64 h-max rounded-sm shadow-md p-4 items-center justify-center text-black mb-4 transform transition-transform duration-200 hover:scale-105 hover:mt-2 hover:cursor-pointer">
+                    <Link href={`/yourportfolio`}>
                     <p className="w-max m-auto font-bold">{session.user.name}</p>
                     <div className="rounded-full m-auto mt-4 items-center justify-center flex">
                         <Image
@@ -86,6 +88,8 @@ export default function Sidebar({
                         <span className='font-bold'>Major: </span>
                         <span className='ml-1'>{studentMajor == null ? "" : studentMajor === 1 ? 'Computer Science' : "Management of Information System"}</span>
                     </p>
+                    </Link>
+                    
                 </div>
             )}
 

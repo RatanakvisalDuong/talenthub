@@ -18,6 +18,7 @@ export interface PortfolioProfile {
     updated_at: string;
     name: string;
     role: number;
+	photo: string;
   }
 
 export default function HomeComponent(
