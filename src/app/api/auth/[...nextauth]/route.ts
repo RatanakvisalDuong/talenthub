@@ -19,7 +19,7 @@ declare module "next-auth/jwt" {
 	}
 }
 
-const BLOCKED_DOMAINS = ["gmail.com", "yahoo.com", "email.com"];
+const BLOCKED_DOMAINS = ["gmail.com", "yahoo.com", "email.com", "aupp.edu.kh", "hotmail.com", "outlook.com", "live.com", "icloud.com", "protonmail.com", "tutanota.com", "yandex.com", "zoho.com", "gmx.com", "mailinator.com", "rupp.edu.kh"];
 
 let laravelToken = "";
 let roleId = 0;

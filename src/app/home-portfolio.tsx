@@ -7,25 +7,25 @@ import Sidebar from "@/components/sidebar/sidebar";
 import SearchBar from "@/components/search/search_bar";
 
 export interface PortfolioProfile {
-    id: number;
-    user_id: number;
-    major: number | null;
-    phone_number: string | null;
-    about: string;
-    working_status: number;
-    status: number;
-    created_at: string;
-    updated_at: string;
-    name: string;
-    role: number;
+	id: number;
+	user_id: number;
+	major: number | null;
+	phone_number: string | null;
+	about: string;
+	working_status: number;
+	status: number;
+	created_at: string;
+	updated_at: string;
+	name: string;
+	role: number;
 	photo: string;
-  }
+}
 
 export default function HomeComponent(
-    {portfolios}: {portfolios: PortfolioProfile[]}
-){
+	{ portfolios }: { portfolios: PortfolioProfile[] }
+) {
 
-    const [selectedMajors, setSelectedMajors] = useState<number[]>([]);
+	const [selectedMajors, setSelectedMajors] = useState<number[]>([]);
 	const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
 	const [selectedWorkingStatuses, setSelectedWorkingStatuses] = useState<number[]>([]);
 	const [searchItem, setSearchItem] = useState<string>('');
@@ -54,8 +54,8 @@ export default function HomeComponent(
 		return majorMatch && roleMatch && workingStatusMatch && nameMatch;
 	});
 
-    return (
-        <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
+	return (
+		<div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
 			<Appbar />
 			<div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
 				<div className="w-[23%]">
@@ -81,5 +81,5 @@ export default function HomeComponent(
 				</div>
 			</div>
 		</div>
-    );
+	);
 }

@@ -5,24 +5,24 @@ import { Skill } from '@/app/type/skill';
 type Props = {
     skill: Skill;
     index: number;
-    dropdownOpen: { [key: string]: boolean };
+    dropdownOpen: { [key: number]: boolean };
     toggleDropdown: (id: number) => void;
-    owner: boolean
+    openEditSkillDialog: (skill: Skill) => void;
+    owner: boolean;
 };
 
-const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown, owner }) => {
+const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown, owner, openEditSkillDialog }) => {
     return (
-        <div
-            key={index}
-            className={`mt-4 text-black ml-4 flex items-start transition-all duration-300 ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
-                } p-4 rounded-lg shadow-md hover:shadow-lg hover:transform hover:scale-105 cursor-pointer`}
+        <div 
+            className={`mt-4 text-black ml-4 flex items-start transition-all duration-300 ${
+                index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
+            } p-4 rounded-lg shadow-md hover:shadow-lg hover:transform hover:scale-105`}
         >
             <div className="bg-[#5086ed] w-5 h-5 rounded-full mr-6 mt-1 animate-pulse"></div>
 
             <div className='w-full'>
                 <div className="flex justify-between items-start font-semibold text-lg text-gray-800">
                     <div className="flex w-[70%] items-center gap-4 flex-wrap">
-
                         <p className="text-md">
                             <span>{skill.title}</span>
                         </p>
@@ -43,8 +43,11 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                                         <ul>
                                             {skill.endorsers.map((endorser, idx) => (
                                                 <li
-                                                    key={idx}
+                                                    key={`endorser-${skill.id}-${idx}`}
                                                     className="py-1 px-2 text-sm text-gray-800 hover:bg-gray-100 rounded cursor-pointer"
+                                                    onClick={() => {
+                                                        window.location.href = `/portfolio/${endorser.id}`;
+                                                    }}
                                                 >
                                                     {endorser.name}
                                                 </li>
@@ -59,6 +62,7 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                     {owner && (
                         <button
                             className="text-sm text-white hover:underline cursor-pointer p-2 bg-[#ffc107] rounded-md"
+                            onClick={() => openEditSkillDialog(skill)}
                         >
                             Edit
                         </button>

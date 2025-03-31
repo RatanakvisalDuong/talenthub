@@ -22,5 +22,5 @@ export interface Portfolio {
     education: Education[];
     achievements: string[];
     skills: Skill[];
-    experiences: string[];
+    experiences: Education[];
 }

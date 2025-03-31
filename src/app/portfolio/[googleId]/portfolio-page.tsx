@@ -1,6 +1,8 @@
 "use client"
 
+import { Education } from "@/app/type/education";
 import { Portfolio } from "@/app/type/portfolio";
+import { Skill } from "@/app/type/skill";
 import Appbar from "@/components/appbar/appbar";
 import CertificateCard from "@/components/certificateCard/certificateCard";
 import EducationCard from "@/components/educationCard/educationCard";
@@ -9,7 +11,6 @@ import ProjectCard from "@/components/projectCard/projectCard";
 import SkillCard from "@/components/skillCard/skillCard";
 import WorkingStatusBar from "@/components/workingStatus/workingStatusBar";
 import { certificates } from "@/dummydata/certificate";
-import { education } from "@/dummydata/education";
 import { experiences } from "@/dummydata/experience";
 import { majors } from "@/dummydata/major";
 import { ShareIcon } from '@heroicons/react/24/outline';
@@ -20,12 +21,18 @@ import { useState } from 'react';
 
 
 export default function PortfolioPageComponent({ portfolio }: { portfolio: Portfolio }) {
+
+    const [skillData, setSkillData] = useState<Skill[]>(portfolio.skills);
+    const [educationData, setEducationData] = useState<Education[]>(portfolio.education);
+
     const [expandedExperience, setExpandedExperience] = useState(false);
     const [expandedSkill, setExpandedSkill] = useState(false);
     const [expandedProject, setExpandedProject] = useState(false);
     const [expandedEducation, setExpandedEducation] = useState(false);
     const [dropdownExperienceOpen, setDropdownExperienceOpen] = useState<{ [key: number]: boolean }>({});
     const [dropdownSkillOpen, setDropdownSkillOpen] = useState<{ [key: number]: boolean }>({});
+
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
     const toggleExperienceDropdown = (experienceId: number) => {
         setDropdownExperienceOpen(prev => ({
@@ -62,13 +69,28 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
         return majorObj ? majorObj.name : 'Unknown Major';
     };
 
+    const toggleSharePortfolio = () => {
+        displaySuccessMessage("Portfolio link copied to clipboard!");
+        navigator.clipboard.writeText(`http://localhost:3000/portfolio/${portfolio.portfolio.user_id}`);
+    }
+
+    const displaySuccessMessage = (message: string) => {
+        setSuccessMessage(message);
+        setTimeout(() => setSuccessMessage(""), 4000);
+    };
+
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
             <Appbar />
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
+            {successMessage && (
+                    <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
+                        {successMessage}
+                    </div>
+                )}
                 <div className="flex justify-between w-full">
                     <div className="h-[87vh] w-[30%] flex flex-col justify-between overflow-y-auto">
-                        <div className={`${expandedProject ? 'h-auto' : 'h-[30%]'} bg-white rounded-lg shadow-md p-4 relative`}>
+                        <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'} bg-white rounded-lg shadow-md p-4 relative`}>
                             <p className="text-black font-bold text-lg">Projects</p>
                             <div className="w-25 bg-[#dfdfdf] h-[2px] mt-1"></div>
                             {portfolio.projects.length === 0 ? (
@@ -82,14 +104,12 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                         ))}
 
                                     {portfolio.projects.length > 2 && (
-                                        <div className="h-40px">
-                                            <button
-                                                onClick={toggleDropdownProject}
-                                                className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
-                                            >
-                                                {expandedProject ? 'See Less' : 'See More'}
-                                            </button>
-                                        </div>
+                                        <button
+                                        onClick={toggleDropdownProject}
+                                        className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
+                                    >
+                                        {expandedProject ? 'See Less' : 'See More'}
+                                    </button>
                                     )}
                                 </>
                             )}
@@ -98,7 +118,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             <p className="text-black font-bold text-lg">Achievements & Certifications</p>
                             <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
                             {certificates.map((certificate) => (
-                                <CertificateCard key={certificate.id} certificate={certificate} />
+                                <CertificateCard key={certificate.id} certificate={certificate} onClick={()=>{}} />
                             ))}
                         </div>
                     </div>
@@ -112,7 +132,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                         </div>
                                         <div className="h-[90%] w-[90%] rounded-md overflow-hidden mx-auto flex items-center justify-center">
                                             <Image
-                                                src={portfolio.portfolio.photo}
+                                                src={portfolio.portfolio.photo || "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*"}
                                                 alt="placeholder"
                                                 width={200}
                                                 height={200}
@@ -133,12 +153,12 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                         <p className="text-black mt-2 text-sm">
                                             <span className="font-bold mr-2">Major:</span> {getMajorName()}
                                         </p>
-                                        <button className="mt-4 rounded-sm text-black px-4 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:transform hover:scale-105"><ShareIcon className="w-5 h-5 mr-2" /> Share Portfolio</button>
+                                        <button className="mt-4 rounded-sm text-black px-4 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:transform hover:scale-105" onClick={toggleSharePortfolio}><ShareIcon className="w-5 h-5 mr-2" /> Share Portfolio</button>
                                     </div>
                                 </div>
                             </div>
                             <div className="w-[30%] bg-white rounded-lg shadow-md p-4 overflow-y-auto">
-                                <p className="text-black font-bold text-lg">About</p>
+                                <p className="text-black font-bold text-lg">About Me</p>
                                 <p className="text-black mt-2 text-sm text-justify">
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium veniam qui quae reiciendis itaque alias unde cum labore! Odio quas atque, reprehenderit laudantium voluptatum exercitationem delectus deleniti alias rerum corporis?
                                 </p>
@@ -170,16 +190,18 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             <p className="text-black font-bold text-xl mb-2">Skill</p>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
-                            {portfolio.skills.slice(0, expandedSkill ? portfolio.skills.length : 2).map((skill, index) => (
-                                <SkillCard key={skill.id}
+                            {skillData.slice(0, expandedSkill ? skillData.length : 2).map((skill, index) => (
+                                <SkillCard 
+                                    key={`skill-${skill.id || index}`}
                                     skill={skill}
                                     index={index}
                                     dropdownOpen={dropdownSkillOpen}
                                     toggleDropdown={toggleDropdownSkill} 
                                     owner={false}
+                                    openEditSkillDialog={() => {}}
                                 />
                             ))}
-                            <div className={`h-40px ${portfolio.skills.length > 2 ? 'block' : 'hidden'}`}>
+                            <div className={`h-40px ${skillData.length > 2 ? 'block' : 'hidden'}`}>
                                 <button
                                     onClick={toggleExpandedSkill}
                                     className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
@@ -192,11 +214,12 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             <p className="text-black font-bold text-xl mb-2">Education</p>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
-                            {education.slice(0, expandedEducation ? education.length : 2).map((education, index) => (
+                            {educationData.slice(0, expandedEducation ? educationData.length : 2).map((education, index) => (
                                 <EducationCard key={education.id}
                                     education={education}
                                     index={index}
                                     owner={false}
+                                    openEditSkillDialog={() => {}}
                                 />
                             ))}
                             <div className={`h-40px ${portfolio.education.length > 2 ? 'block' : 'hidden'}`}>

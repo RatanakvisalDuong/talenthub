@@ -7,13 +7,14 @@ import { useRef, useState, useMemo } from "react";
 import TextEditor from "./text-editor";
 import { allLanguages } from "@/dummydata/programmingLanguages";
 import EndorserInput from "@/components/endorsementInput/endorsementInput";
-import axios from "axios";
+import SelectMonthInput from "@/components/selectMonthInput/selectMonthInput";
 
-const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClose: () => void; onClick: () => void }) => {
+const AddCertificateDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClose: () => void; onClick: () => void }) => {
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [languageInput, setLanguageInput] = useState("");
     const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+    const [selectIssuedMonth, setSelectIssuedMonth] = useState<string>("");
 
     const handleEndorserChange = (endorsers: string[]) => {
         console.log("Updated endorsers:", endorsers);
@@ -67,7 +68,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
 
         const newFiles = Array.from(files);
 
-        const combined = [...imageFiles, ...newFiles].slice(0, 6);
+        const combined = [...imageFiles, ...newFiles].slice(0, 1);
         setImageFiles(combined);
     };
 
@@ -75,18 +76,16 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
         setImageFiles(imageFiles.filter((_, i) => i !== index));
     };
 
-    const handleAddProject = async () => {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}create_project`, {
-        })
+    const handleSelectMonthMonthChange = (value: string | null) => {
+        setSelectIssuedMonth(value ? value : "");
+    };
 
-        
-    }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] overflow-y-auto">
+            <div className="bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-max overflow-y-auto">
                 <div className="flex justify-between items-start mb-2">
-                    <h2 className="text-xl font-bold text-black">Add New Project</h2>
+                    <h2 className="text-xl font-bold text-black">Add New Achievement or Certificate</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -97,84 +96,61 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
                 <div className="h-[2px] w-24 bg-gray-200 mb-2" />
 
                 <div className="flex gap-x-6">
-                    {/* Left side: Form */}
                     <form className="w-3/5">
                         <TextInput
                             id="link"
-                            label="Project Title"
+                            label="Title of Achievement or Certificate"
                             required
-                            placeholder="Eg.TalentHub"
+                            placeholder="Eg.Certificate of Completion in Web Development"
                         />
 
-                        <BigTextInput
+                        <TextInput
+                            id="link"
+                            label="Issued by Organization"
+                            required
+                            placeholder="Eg.Coursera, Udemy, etc."
+                        />
+
+                        {/* <BigTextInput
                             id="description"
                             label="Project Description"
                             required
                             placeholder="Eg.A portfolio platform for ParagonIU students"
-                        />
+                        /> */}
 
-                        <TextEditor id="instruction" required={true} label="Project Instruction" />
-
-                        <div className="mb-2 relative">
-                            <label htmlFor="language" className="block text-sm font-medium text-black">
-                                Programming Language
-                            </label>
-                            <input
-                                type="text"
-                                id="language"
-                                value={languageInput}
-                                onChange={(e) => setLanguageInput(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                placeholder="Eg.Python, Javascript, C++, Press Enter to add new language"
-                                autoComplete="off"
-                            />
-
-
-                            {/* Suggestion list */}
-                            {languageInput && filteredSuggestions.length > 0 && (
-                                <ul className="absolute z-10 bg-white border border-gray-300 rounded-md mt-1 w-full max-h-40 overflow-y-auto">
-                                    {filteredSuggestions.map((lang, index) => (
-                                        <li
-                                            key={index}
-                                            onClick={() => handleSelectLanguage(lang.name)}
-                                            className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-black"
-                                        >
-                                            {lang.name}
-                                        </li>
+                        <div className="flex justify-between gap-2">
+                            <div className="mb-2 w-1/2">
+                                <SelectMonthInput
+                                    label="Issued Month"
+                                    id="issuedMonth"
+                                    required={true}
+                                    onChange={handleSelectMonthMonthChange}
+                                    value={selectIssuedMonth}
+                                />
+                            </div>
+                            <div className="mb-2 w-1/2">
+                                <label htmlFor="issuedYear" className="block text-sm font-medium text-black">
+                                    Issued Year<span className="text-red-400 ml-2">*</span>
+                                </label>
+                                <select
+                                    id="issuedYear"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
+                                >
+                                    <option value="" disabled>Select Year</option>
+                                    {Array.from({ length: new Date().getFullYear() - 2000 + 1 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+                                        <option key={year} value={year}>{year}</option>
                                     ))}
-                                </ul>
-                            )}
-
-
-                            {/* Display selected languages */}
-                            {selectedLanguages.length > 0 && (
-                                <div className="mt-2 flex flex-wrap gap-2">
-                                    {selectedLanguages.map((lang, index) => (
-                                        <span
-                                            key={index}
-                                            className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs flex items-center gap-1"
-                                        >
-                                            {lang}
-                                            <button
-                                                type="button"
-                                                onClick={() => handleRemoveLanguage(lang)}
-                                                className="text-green-600 hover:text-red-500"
-                                            >
-                                                &times;
-                                            </button>
-                                        </span>
-                                    ))}
-                                </div>
-                            )}
+                                </select>
+                            </div>
                         </div>
 
+                        {/* <TextEditor id="instruction" required={true} label="Project Instruction" /> */}
 
-                        <TextInput
-                            id="link"
-                            label="Project Link"
+                        <BigTextInput
+                            id="description"
+                            label="Certificate Description"
                             required
-                            placeholder="Eg.https://github.com/RVisalD/TalentHub"
+                            placeholder="Eg.I completed a course on Web Development, covering HTML, CSS, and JavaScript."
                         />
 
                         <EndorserInput onEndorserChange={handleEndorserChange} />
@@ -207,16 +183,16 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
                                         <Image
                                             src={src}
                                             alt={`Selected ${index + 1}`}
-                                            width={96}
-                                            height={96}
-                                            className="object-cover rounded shadow"
+                                            width={300}
+                                            height={300}
+                                            className="object-cover rounded shadow mx-auto"
                                             unoptimized
                                         />
                                         <div
                                             onClick={() => handleRemoveImage(index)}
                                             className="absolute top-0 right-0 text-red-500 p-1 rounded-full"
                                         >
-                                            <i className="fas fa-times"></i> 
+                                            <i className="fas fa-times"></i>
                                         </div>
                                     </div>
                                 ))}
@@ -228,9 +204,9 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
                     <button
                         type="submit"
                         className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600"
-                        onClick={handleAddProject}
+                        onClick={onClick}
                     >
-                        Add Project
+                        Add Certificate
                     </button>
                 </div>
             </div>
@@ -238,4 +214,4 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
     );
 };
 
-export default AddProjectDialog;
+export default AddCertificateDialog;

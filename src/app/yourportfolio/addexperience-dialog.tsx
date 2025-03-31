@@ -4,9 +4,14 @@ import BigTextInput from "@/components/bigtextinput/bigtextinput";
 import EndorserInput from "@/components/endorsementInput/endorsementInput";
 import SelectMonthInput from "@/components/selectMonthInput/selectMonthInput";
 import TextInput from "@/components/textinput/textInput";
+import axios from "axios";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
-const AddExperienceDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+const AddExperienceDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClose: () => void; onClick: () => void }) => {
+    
+    const session = useSession();
+
     const [isPresent, setIsPresent] = useState(false);
     const [selectedStartMonth, setSelectedStartMonth] = useState<string>("");
     const [selectedEndMonth, setSelectedEndMonth] = useState<string>("");
@@ -15,12 +20,31 @@ const AddExperienceDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
         console.log("Updated endorsers:", endorsers);
     };
 
-    const handleSelectStartMonthChange = (value: string) => {
-        setSelectedStartMonth(value);
+    const handleSelectStartMonthChange = (value: string | null) => {
+        setSelectedStartMonth(value ? value : "");
     };
 
-    const handleSelectEndMonthChange = (value: string) => {
-        setSelectedEndMonth(value);
+    const handleSelectEndMonthChange = (value: string | null) => {
+        setSelectedEndMonth(value ? value : "");
+    }
+
+    const handleAddExperience = async ()=>{
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}create_experience`, {
+            title: "Software Engineer",
+            description: "Developed and maintained web applications.",
+            start_month: selectedStartMonth,
+            start_year: 2023,
+            end_month: isPresent ? null : selectedEndMonth,
+            end_year: isPresent ? null : 2024,
+            is_present: isPresent,
+            portfolio_id: 1,
+            endorser: ["John Doe", "Jane Smith"]
+        }, {
+            headers: {
+                Authorization: `Bearer ${session?.data?.accessToken}`,
+                "Content-Type": "application/json",
+            },
+        });
     }
 
     if (!isOpen) return null;
@@ -30,7 +54,7 @@ const AddExperienceDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             <div className="bg-white rounded-md p-6 w-[700px] max-w-full shadow-lg h-[600px] overflow-y-auto">
                 <div className="flex justify-between items-start mb-2">
                     <h2 className="text-xl font-bold text-black">Add New Experience</h2>
-                    <button onClick={onClose} className="text-black">
+                    <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -47,7 +71,7 @@ const AddExperienceDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                             id="title"
                             label="Job Title"
                             required
-                            placeholder="Enter your job title"
+                            placeholder="Eg. Penetration Tester"
                         />
 
                         <div className="mb-2">
@@ -72,7 +96,7 @@ const AddExperienceDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                             id="description"
                             label="Description"
                             required
-                            placeholder="Enter job description"
+                            placeholder="Eg. Perform penetration testing on various systems and networks to identify vulnerabilities and recommend security improvements."
                         />
 
                         <div className="flex justify-between gap-2">
@@ -91,9 +115,10 @@ const AddExperienceDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                                 <select
                                     id="startYear"
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
+                                    defaultValue={""}
                                 >
                                     <option value="" disabled>Select Year</option>
-                                    {Array.from({ length: 2025 - 2000 + 1 }, (_, i) => 2000 + i).map((year) => (
+                                    {Array.from({ length: new Date().getFullYear() - 2000 + 1 }, (_, i) => new Date().getFullYear() - i).map((year) => (
                                         <option key={year} value={year}>{year}</option>
                                     ))}
                                 </select>
@@ -131,9 +156,10 @@ const AddExperienceDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                                 <select
                                     id="endYear"
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
+                                    defaultValue={""}
                                 >
                                     <option value="" disabled>Select Year</option>
-                                    {Array.from({ length: 2025 - 2000 + 1 }, (_, i) => 2000 + i).map((year) => (
+                                    {Array.from({ length: new Date().getFullYear() - 2000 + 1 }, (_, i) => new Date().getFullYear() - i).map((year) => (
                                         <option key={year} value={year}>{year}</option>
                                     ))}
                                 </select>
@@ -150,8 +176,9 @@ const AddExperienceDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                     <button
                         type="submit"
                         className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600"
+                        onClick={onClick}
                     >
-                        Add Project
+                        Add Experience
                     </button>
                 </div>
             </div>

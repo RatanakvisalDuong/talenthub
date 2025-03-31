@@ -1,5 +1,6 @@
 import { Project } from "@/app/type/project";
 import Image from "next/image";
+import { ArrowDownCircleIcon } from "@heroicons/react/24/solid"; // Import the ArrowDownLeftIcon
 
 // The ProjectCard component that receives a project and displays its details
 export default function ProjectCard({ project }: { project: Project }) {
@@ -18,7 +19,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             </div>
 
             {/* Right Section: Download icon */}
-            <Image src='/download.png' alt="Download" width={30} height={30} className="align-end" />
+            <ArrowDownCircleIcon className="text-back cursor-pointer w-[23px] h-[23px]"/>
         </div>
     );
 }

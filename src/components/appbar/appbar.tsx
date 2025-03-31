@@ -9,6 +9,8 @@ import { useState, useRef, useEffect } from 'react';
 import LoginDialog from "@/dialogs/login_dialog/login_dialog";
 import { projectEndorsement } from "@/dummydata/projectEndorsement";
 import Link from "next/link";
+import axios from "axios";
+// import { useSession } from "next-auth/react";
 
 
 const ubuntuFont = Ubuntu({
@@ -80,7 +82,14 @@ export default function Appbar() {
     };
 
     const goBackHome = async () => {
-        signOut()
+        axios.post(
+            `${process.env.NEXT_PUBLIC_API_URL}logout`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${session?.accessToken}`,
+                }
+            },),
+            signOut()
     };
 
     return (

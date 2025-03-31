@@ -10,7 +10,7 @@ import WorkingStatusBar from "@/components/workingStatus/workingStatusBar";
 import { certificates } from "@/dummydata/certificate";
 import { experiences } from "@/dummydata/experience";
 import { majors } from "@/dummydata/major";
-import { ShareIcon } from '@heroicons/react/24/outline';
+import { ShareIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import Image from "next/image";
 import { useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -20,22 +20,57 @@ import SkillCard from "@/components/skillCard/skillCard";
 import AddSkillDialog from "./addskill-dialog";
 import AddExperienceDialog from "./addexperience-dialog";
 import EducationCard from "@/components/educationCard/educationCard";
-import { education } from "@/dummydata/education";
+import AddEducationDialog from "./addeducation-dialog";
+import { Skill } from "../type/skill";
+import EditSkillDialog from "./editskill-dialog";
+import { Endorser } from "../type/endorser";
+import AddCertificateDialog from "./addcertificate-dialog";
+import CertificateDialog from "@/components/certificateDialog/certificateDialog";
+import EditPortfolioDialog from "./editportfolio-dialog";
+import { Education } from "../type/education";
+import EditEducationDialog from "./editeducation-dialog";
 
 export default function YourPortfolioPageComponent({ portfolio }: { portfolio: Portfolio }) {
+
+    // const [portfolioData, setPortfolioData] = useState<Portfolio>(portfolio);
+    const [skillData, setSkillData] = useState<Skill[]>(portfolio.skills);
+    const [educationData, setEducationData] = useState<Education[]>(portfolio.education);
 
     const [expandedExperience, setExpandedExperience] = useState(false);
     const [expandedSkill, setExpandedSkill] = useState(false);
     const [expandedEducation, setExpandedEducation] = useState(false);
     const [expandedProject, setExpandedProject] = useState(false);
-    
+
     const [openAddProjectDialog, setOpenAddProjectDialog] = useState(false);
     const [openAddSkillDialog, setOpenAddSkillDialog] = useState(false);
     const [openAddExpereinceDialog, setOpenAddExperienceDialog] = useState(false);
     const [openAddEducationDialog, setOpenAddEducationDialog] = useState(false);
+    const [openAddCertificateDialog, setOpenAddCertificateDialog] = useState(false);
+    const [openEditPortfolioDialog, setOpenEditPortfolioDialog] = useState(false);
+
+    const [openEditSkillDialog, setOpenEditSkillDialog] = useState(false);
+    const [openEditEducationDialog, setOpenEditEducationDialog] = useState(false);
 
     const [dropdownOpen, setDropdownOpen] = useState<{ [key: number]: boolean }>({});
     const [dropdownSkillOpen, setDropdownSkillOpen] = useState<{ [key: number]: boolean }>({});
+
+    const [editSkillId, setEditSkillId] = useState<number | null>(null);
+    const [editSkillTitle, setEditSkillTitle] = useState<string>('');
+    const [editSkillDescription, setEditSkillDescription] = useState<string>('');
+    const [editSkillEndorsers, setEditSkillEndorsers] = useState<Endorser[]>([]);
+
+    const [editEducationId, setEditEducationId] = useState<number | null>(null);
+    const [editEducationCenter, setEditEducationCenter] = useState<string>('');
+    const [editFieldOfStudy, setEditFieldOfStudy] = useState<string>('');
+    const [editEducationDescription, setEditEducationDescription] = useState<string>('');
+    const [editSelectedStartMonth, setEditSelectedStartMonth] = useState<string>('');
+    const [editSelectedStartYear, setEditSelectedStartYear] = useState<string>('');
+    const [editSelectedEndMonth, setEditSelectedEndMonth] = useState<string>('');
+    const [editSelectedEndYear, setEditSelectedEndYear] = useState<string>('');
+
+    const [successMessage, setSuccessMessage] = useState<string>("");
+
+    const [viewCertificateDialog, setViewCertificateDialog] = useState(false);
 
     const toggleDropdownSkill = (skillId: number) => {
         setDropdownSkillOpen(prev => ({
@@ -59,6 +94,38 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
     const toggleAddEducationDialog = () => {
         setOpenAddEducationDialog(!openAddEducationDialog);
     }
+
+    const toggleAddCertificateDialog = () => {
+        setOpenAddCertificateDialog(!openAddCertificateDialog);
+    }
+
+    const toggleEditPortfolioDialog = () => {
+        setOpenEditPortfolioDialog(!openEditPortfolioDialog);
+    };
+
+    const toggleEditSkillDialog = (skillId: number | null) => {
+        setEditSkillId(skillId);
+        setEditSkillTitle(skillData.find((skill) => skill.id === skillId)?.title || '');
+        setEditSkillDescription(skillData.find((skill) => skill.id === skillId)?.description || '');
+        setEditSkillEndorsers(skillData.find((skill) => skill.id === skillId)?.endorsers || []);
+        setOpenEditSkillDialog(!openEditSkillDialog);
+    };
+
+    const toggleEditEducationDialog = (educationId: number | null) => {
+        setEditEducationId(educationId);
+        setEditEducationCenter(educationData.find((education) => education.id === educationId)?.education_center || '');
+        setEditFieldOfStudy(educationData.find((education) => education.id === educationId)?.field_of_study || '');
+        setEditEducationDescription(educationData.find((education) => education.id === educationId)?.description || '');
+        setEditSelectedStartMonth(educationData.find((education) => education.id === educationId)?.start_month || '');
+        setEditSelectedStartYear(educationData.find((education) => education.id === educationId)?.start_year || '');
+        setEditSelectedEndMonth(educationData.find((education) => education.id === educationId)?.end_month || '');
+        setEditSelectedEndYear(educationData.find((education) => education.id === educationId)?.end_year || '');
+        setOpenEditEducationDialog(!openEditEducationDialog);
+    }
+
+    const toggleCertificateDialog = () => {
+        setViewCertificateDialog(!viewCertificateDialog);
+    };
 
     const toggleDropdown = (experienceId: number) => {
         setDropdownOpen(prev => ({
@@ -84,17 +151,49 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
     }
 
     const getMajorName = () => {
-
         const majorObj = majors.find((item) => item.id === portfolio.portfolio.major);
         return majorObj ? majorObj.name : 'Unknown Major';
     };
+
+    const addEducation = () => {
+
+    }
+
+    const addExperience = () => {
+
+    }
+
+    const addProject = () => {
+
+    }
+
+    const addCertificate = () => {
+
+    }
+
+    const toggleSharePortfolio = () => {
+        displaySuccessMessage("Portfolio link copied to clipboard!");
+        navigator.clipboard.writeText(`http://localhost:3000/portfolio/${portfolio.portfolio.user_id}`);
+    }
+
+    const displaySuccessMessage = (message: string) => {
+        setSuccessMessage(message);
+        setTimeout(() => setSuccessMessage(""), 4000);
+    };
+
     return (
         <div className={`bg-[#E8E8E8] w-screen h-screen overflow-hidden`}>
+
             <Appbar />
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
+                {successMessage && (
+                    <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
+                        {successMessage}
+                    </div>
+                )}
                 <div className="flex justify-between w-full">
                     <div className="h-[87vh] w-[30%] flex flex-col justify-between overflow-y-auto">
-                        <div className={`${expandedProject ? 'h-auto' : 'h-[30%]'} bg-white rounded-lg shadow-md p-4 relative`}>
+                        <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'} bg-white rounded-lg shadow-md p-4 relative`}>
                             <div className="flex justify-between items-center">
                                 <p className="text-black font-bold text-lg">Projects</p>
                                 <button
@@ -104,15 +203,12 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                     <i className="fas fa-plus text-white"></i>
                                 </button>
                             </div>
-
-
                             <div className="w-25 bg-[#dfdfdf] h-[2px] mt-1"></div>
                             {portfolio.projects
                                 .slice(0, expandedProject ? portfolio.projects.length : 2)
                                 .map((project) => (
                                     <ProjectCard key={project.id} project={project} />
                                 ))}
-
 
                             {portfolio.projects.length > 2 && (
                                 <div className={`h-40px ${experiences.length > 2 ? 'block' : 'hidden'}`}>
@@ -128,13 +224,13 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                         <div className={`h-[65%] bg-white rounded-lg shadow-md p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto`}>
                             <div className="flex justify-between items-center">
                                 <p className="text-black font-bold text-lg">Achievements & Certificate</p>
-                                <button className="flex items-center bg-[#5086ed] text-black font-semibold py-2 px-4 rounded-md hover:bg-[#A9CBEF] transition-colors cursor-pointer">
+                                <button className="flex items-center bg-[#5086ed] text-black font-semibold py-2 px-4 rounded-md hover:bg-[#A9CBEF] transition-colors cursor-pointer" onClick={toggleAddCertificateDialog}>
                                     <i className="fas fa-plus text-white"></i>
                                 </button>
                             </div>
                             <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
                             {certificates.map((certificate) => (
-                                <CertificateCard key={certificate.id} certificate={certificate} />
+                                <CertificateCard key={certificate.id} certificate={certificate} onClick={toggleCertificateDialog} />
                             ))}
                         </div>
                     </div>
@@ -156,7 +252,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                             />
                                         </div>
                                     </div>
-                                    <div className="justify-start w-[60%] h-full items-start ml-4 mt-4">
+                                    <div className="justify-start w-[50%] h-full items-start ml-4 mt-4">
                                         <p className="text-black font-bold text-lg">{portfolio.portfolio.user_name}</p>
                                         <div className="w-20 bg-[#dfdfdf] h-[2px] mt-1">
                                         </div>
@@ -169,12 +265,15 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                         <p className="text-black mt-2 text-sm">
                                             <span className="font-bold mr-2">Major:</span> {getMajorName()}
                                         </p>
-                                        <button className="mt-4 rounded-sm text-black px-4 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:transform hover:scale-105"><ShareIcon className="w-5 h-5 mr-2" /> Share Portfolio</button>
+                                        <div className="flex justify-between">
+                                            <button className="mt-4 rounded-sm text-black px-2 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:transform hover:scale-105" onClick={toggleSharePortfolio}><ShareIcon className="w-5 h-5 mr-2" /> Share Portfolio</button>
+                                            <button className="mt-4 rounded-sm text-white px-2 py-2 bg-[#ffc107]  flex items-center font-bold cursor-pointer hover:transform hover:scale-105" onClick={toggleEditPortfolioDialog}><PencilSquareIcon className="w-5 h-5 mr-2" />Edit</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="w-[30%] bg-white rounded-lg shadow-md p-4 overflow-y-auto">
-                                <p className="text-black font-bold text-lg">About</p>
+                                <p className="text-black font-bold text-lg">About Me</p>
                                 <p className="text-black mt-2 text-sm text-justify">
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium veniam qui quae reiciendis itaque alias unde cum labore! Odio quas atque, reprehenderit laudantium voluptatum exercitationem delectus deleniti alias rerum corporis?
                                 </p>
@@ -216,16 +315,28 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             </div>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
-                            {portfolio.skills.slice(0, expandedSkill ? portfolio.skills.length : 2).map((skill, index) => (
-                                <SkillCard key={skill.id}
-                                    skill={skill}
-                                    index={index}
-                                    dropdownOpen={dropdownSkillOpen}
-                                    toggleDropdown={toggleDropdownSkill}
-                                    owner={true}
-                                />
-                            ))}
-                            <div className={`h-40px ${portfolio.skills.length > 2 ? 'block' : 'hidden'}`}>
+                            {Array.isArray(skillData)
+                                ? (
+                                    skillData.length > 0
+                                        ? skillData.slice(0, expandedSkill ? skillData.length : 2).map((skill, index) => (
+                                            <SkillCard
+                                                key={`${skill.id}-${index}`}
+                                                skill={skill}
+                                                index={index}
+                                                dropdownOpen={dropdownSkillOpen}
+                                                toggleDropdown={toggleDropdownSkill}
+                                                owner={true}
+                                                openEditSkillDialog={() => {
+                                                    toggleEditSkillDialog(skill.id);
+                                                }}
+                                            />
+                                        ))
+                                        : <p className="justify-center items-center flex text-[#808080]">No skills available</p>
+                                )
+                                : <p className="justify-center items-center flex text-[#808080]">No skills available</p>
+                            }
+
+                            <div className={`h-40px ${skillData.length > 2 ? 'block' : 'hidden'}`} key="seeMoreButton">
                                 <button
                                     onClick={toggleExpandedSkill}
                                     className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
@@ -235,8 +346,8 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             </div>
                         </div>
                         <div className={`w-full ${expandedEducation ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
-                        <div className="flex justify-between items-center">
-                                <p className="text-black font-bold text-lg">Educations</p>
+                            <div className="flex justify-between items-center">
+                                <p className="text-black font-bold text-lg">Education</p>
                                 <button
                                     className="flex items-center bg-[#5086ed] text-black font-semibold py-2 px-4 rounded-md hover:bg-[#A9CBEF] cursor-pointer"
                                     onClick={() => toggleAddEducationDialog()}
@@ -246,14 +357,18 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             </div>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
-                            {education.slice(0, expandedEducation ? education.length : 2).map((education, index) => (
-                                <EducationCard key={education.id}
+                            {educationData.slice(0, expandedEducation ? educationData.length : 2).map((education, index) => (
+                                <EducationCard
+                                    key={`${education.id} - ${index}`}
                                     education={education}
                                     index={index}
                                     owner={true}
+                                    openEditSkillDialog={() => {
+                                        toggleEditEducationDialog(education.id);
+                                    }}
                                 />
                             ))}
-                            <div className={`h-40px ${portfolio.education.length > 2 ? 'block' : 'hidden'}`}>
+                            <div className={`h-40px ${educationData.length > 2 ? 'block' : 'hidden'}`} key="seeMoreButton">
                                 <button
                                     onClick={toggleExpandedEducation}
                                     className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
@@ -268,20 +383,81 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                     </div>
                 </div>
             </div>
-            {(openAddProjectDialog || openAddSkillDialog || openAddExpereinceDialog) && (
+            {(openAddProjectDialog || openAddSkillDialog || openAddExpereinceDialog || openAddEducationDialog || openAddCertificateDialog || openEditSkillDialog || viewCertificateDialog || openEditPortfolioDialog || openEditEducationDialog) && (
                 <div className="fixed inset-0 blur-sm backdrop-blur-md z-40" />
             )}
 
             {openAddProjectDialog && (
-                <AddProjectDialog isOpen={true} onClose={toggleAddProjectDialog} />
+                <AddProjectDialog isOpen={true} onClose={toggleAddProjectDialog} onClick={() => addProject()} />
+            )}
+
+            {openAddCertificateDialog && (
+                <AddCertificateDialog isOpen={true} onClose={toggleAddCertificateDialog} onClick={() => addCertificate()} />
             )}
 
             {openAddSkillDialog && (
-                <AddSkillDialog isOpen={true} onClose={toggleAddSkillDialog} />
+                <AddSkillDialog
+                    isOpen={true}
+                    onClose={toggleAddSkillDialog}
+                    onClick={toggleAddSkillDialog}
+                    portfolioId={portfolio.portfolio.id}
+                    setSkilldata={setSkillData}
+                    setSuccessMessage={displaySuccessMessage}
+                />
             )}
 
             {openAddExpereinceDialog && (
-                <AddExperienceDialog isOpen={true} onClose={toggleAddExperienceDialog} />
+                <AddExperienceDialog isOpen={true} onClose={toggleAddExperienceDialog} onClick={() => addExperience()} />
+            )}
+
+            {openAddEducationDialog && (
+                <AddEducationDialog isOpen={true} onClose={toggleAddEducationDialog} onClick={() => addEducation()} portfolioId={portfolio.portfolio.id} setSuccessMessage={displaySuccessMessage} setEducationData={setEducationData} />
+            )}
+
+            {openEditSkillDialog && (
+                <EditSkillDialog
+                    isOpen={true}
+                    onClose={() => toggleEditSkillDialog(null)}
+                    portfolioId={portfolio.portfolio.id}
+                    skillId={editSkillId!}
+                    changeSkillData={setSkillData}
+                    existingSkillDescription={editSkillDescription}
+                    existingSkillTitle={editSkillTitle}
+                    existingSkillEndorsers={editSkillEndorsers}
+                    setSuccessMessage={displaySuccessMessage}
+                />
+            )}
+
+            {viewCertificateDialog && (
+                <CertificateDialog owner={true} onClose={toggleCertificateDialog} />
+            )}
+
+            {openEditPortfolioDialog && (
+                <EditPortfolioDialog
+                    isOpen={true}
+                    onClose={() => toggleEditPortfolioDialog()}
+                    onClick={toggleEditPortfolioDialog}
+                    portfolioId={portfolio.portfolio.user_id}
+                />
+            )}
+
+            {openEditEducationDialog && (
+                <EditEducationDialog
+                    isOpen={true}
+                    onClose={() => { toggleEditEducationDialog(null) }}
+                    onClick={() => { toggleEditEducationDialog(null) }}
+                    portfolioId={portfolio.portfolio.id}
+                    setSuccessMessage={displaySuccessMessage}
+                    changeEducationData={setEducationData}
+                    existingEducationCenter={editEducationCenter}
+                    existingFieldOfStudy={editFieldOfStudy}
+                    existingEducationDescription={editEducationDescription}
+                    exisitingSelectedStartMonth={editSelectedStartMonth}
+                    exisitingSelectedStartYear={editSelectedStartYear}
+                    exisitingSelectedEndMonth={editSelectedEndMonth}
+                    exisitingSelectedEndYear={editSelectedEndYear}
+                    educationId={editEducationId!}
+                />
             )}
 
         </div>

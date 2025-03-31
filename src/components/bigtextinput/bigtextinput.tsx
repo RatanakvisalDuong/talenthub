@@ -6,6 +6,7 @@ interface BigTextInputProps {
     required?: boolean;
     placeholder?: string;
     value?: string;
+    onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 const BigTextInput: React.FC<BigTextInputProps> = ({
@@ -14,6 +15,7 @@ const BigTextInput: React.FC<BigTextInputProps> = ({
     required = false,
     placeholder = '',
     value,
+    onChange,
 }) => {
     return (
         <div className="mb-2">
@@ -27,6 +29,9 @@ const BigTextInput: React.FC<BigTextInputProps> = ({
                 value={value}
                 placeholder={placeholder}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md text-black h-20 text-sm resize-none"
+                onChange={onChange}
+                autoComplete="off"
+                required={required}
             />
         </div>
     );

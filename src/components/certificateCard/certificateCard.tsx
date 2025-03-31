@@ -6,13 +6,15 @@ interface Certificate{
   name: string;
   issuedDate: string;
   image: string;
+
 };
 
-export default function CertificateCard({ certificate }: { certificate: Certificate }) {
+export default function CertificateCard({ certificate, onClick}: { certificate: Certificate; onClick: () => void }) {
   return (
     <div
       key={certificate.id}
       className="bg-white w-full h-50 shadow-md mt-4 px-4 py-2 rounded-md cursor-pointer hover:transform hover:scale-105"
+      onClick={onClick}
     >
       <div className="flex w-full justify-between">
         <div className="w-[70%] overflow-hidden">

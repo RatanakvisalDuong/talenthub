@@ -50,7 +50,7 @@ const EndorserInput: React.FC<EndorserInputProps> = ({ onEndorserChange }) => {
         onChange={(e) => setEndorserInput(e.target.value)}
         onKeyDown={handleEndorserKeyDown}
         className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-        placeholder="rduong1@paragoniu.edu.kh"
+        placeholder="Eg.rduong1@paragoniu.edu.kh"
         autoComplete="off"
       />
 

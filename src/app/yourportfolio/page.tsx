@@ -1,10 +1,10 @@
 // src/app/yourportfolio/page.tsx
-"use client"
+"use client";
 
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import PortfolioPageWrapper from "./PortfolioPageWrapper";
 import { Portfolio } from "../type/portfolio";
 import LoadingSpinner from "@/components/loading/loading";
@@ -28,7 +28,6 @@ export default function YourPortfolioPage() {
           console.error("Error fetching portfolio data:", error);
         }
       };
-
       fetchPortfolio();
     }
   }, [session]);

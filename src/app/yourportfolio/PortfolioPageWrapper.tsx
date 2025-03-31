@@ -1,5 +1,6 @@
 // src/app/yourportfolio/PortfolioPageWrapper.tsx
 import dynamic from "next/dynamic";
+import { Portfolio } from "../type/portfolio";
 
 // Dynamically import PortfolioPage with ssr: false to disable server-side rendering
 const YourPortfolioPageComponent = dynamic(
@@ -8,7 +9,7 @@ const YourPortfolioPageComponent = dynamic(
 );
 
 interface PortfolioPageWrapperProps {
-  portfolio: any;  // Type according to your data structure
+  portfolio: Portfolio;
 }
 
 export default function PortfolioPageWrapper({ portfolio }: PortfolioPageWrapperProps) {

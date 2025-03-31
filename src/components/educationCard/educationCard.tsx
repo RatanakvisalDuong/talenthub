@@ -6,9 +6,10 @@ type Props = {
     education: Education;
     index: number;
     owner: boolean
+    openEditSkillDialog: (education: Education) => void;
 };
 
-const EducationCard: React.FC<Props> = ({ education, index, owner }) => {
+const EducationCard: React.FC<Props> = ({ education, index, owner, openEditSkillDialog }) => {
     return (
         <div
             key={index}
@@ -21,21 +22,25 @@ const EducationCard: React.FC<Props> = ({ education, index, owner }) => {
                 <div className="flex justify-between items-start font-semibold text-lg text-gray-800">
                     <div className="flex w-[70%] items-center gap-4 flex-wrap">
 
-                    <p className="text-md">
-							<span>{education.education_center}</span>
-							<span className="mx-[2px]">-</span>
-							<span>{education.field_of_study}</span>
-						</p>
+                        <p className="text-md">
+                            <span>{education.education_center}</span>
+                            <span className="mx-[2px]">-</span>
+                            <span>{education.field_of_study}</span>
+                        </p>
                     </div>
 
                     {owner && (
                         <button
                             className="text-sm text-white hover:underline cursor-pointer p-2 bg-[#ffc107] rounded-md"
+                            onClick={() => openEditSkillDialog(education)}
                         >
                             Edit
                         </button>
                     )}
                 </div>
+                <p className='text-sm text-gray-500'>
+                    {education.start_month} {education.start_year} - {education.end_month == null ? 'Present' : `${education.end_month} ${education.end_year}`}
+                </p>
 
                 <p className='text-black text-sm mt-2'>
                     {education.description}
