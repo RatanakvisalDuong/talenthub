@@ -1,20 +1,24 @@
-// EndorserInput.tsx
-
-import { useState } from "react";
+import { Endorser } from "@/app/type/endorser";
+import { useState, useEffect } from "react";
 
 interface EndorserInputProps {
   onEndorserChange: (endorsers: string[]) => void;
+  existingEndorsers: string[];
 }
 
-const EndorserInput: React.FC<EndorserInputProps> = ({ onEndorserChange }) => {
+const EndorserInput: React.FC<EndorserInputProps> = ({ onEndorserChange, existingEndorsers }) => {
   const [endorserInput, setEndorserInput] = useState("");
-  const [endorsers, setEndorsers] = useState<string[]>([]);
+  const [endorsers, setEndorsers] = useState<string[]>(existingEndorsers);
+
+  useEffect(() => {
+    setEndorsers(existingEndorsers);
+  }, [existingEndorsers]);
 
   const handleAddEndorser = (email: string) => {
     if (!endorsers.includes(email)) {
       const newEndorsers = [...endorsers, email];
       setEndorsers(newEndorsers);
-      onEndorserChange(newEndorsers); // Send the new endorsers list to the parent
+      onEndorserChange(newEndorsers); 
     }
     setEndorserInput("");
   };
@@ -22,7 +26,7 @@ const EndorserInput: React.FC<EndorserInputProps> = ({ onEndorserChange }) => {
   const handleRemoveEndorser = (email: string) => {
     const newEndorsers = endorsers.filter((e) => e !== email);
     setEndorsers(newEndorsers);
-    onEndorserChange(newEndorsers); // Send the updated endorsers list to the parent
+    onEndorserChange(newEndorsers); 
   };
 
   const handleEndorserKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -50,7 +54,7 @@ const EndorserInput: React.FC<EndorserInputProps> = ({ onEndorserChange }) => {
         onChange={(e) => setEndorserInput(e.target.value)}
         onKeyDown={handleEndorserKeyDown}
         className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-        placeholder="Eg.rduong1@paragoniu.edu.kh"
+        placeholder="Eg. rduong1@paragoniu.edu.kh"
         autoComplete="off"
       />
 

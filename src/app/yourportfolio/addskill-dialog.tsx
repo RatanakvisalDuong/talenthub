@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { Portfolio } from "../type/portfolio";
 import { Skill } from "../type/skill";
+import { Endorser } from "../type/endorser";
 
 const AddSkillDialog = ({
     isOpen,
@@ -44,6 +45,10 @@ const AddSkillDialog = ({
                 setError("Please fill in all required fields.");
                 return;
             }
+            if (endorsers.some(endorser => endorser === session?.user?.email)) {
+                setError("You cannot endorse your own skill.");
+                return;
+            }
             else {
                 setLoading(true);
                 const response = await axios.post(
@@ -52,6 +57,7 @@ const AddSkillDialog = ({
                         portfolio_id: portfolioId,
                         title: skillTitle,
                         description: skillDescription,
+                        endorsers: endorsers,
                     },
                     {
                         headers: {
@@ -61,7 +67,7 @@ const AddSkillDialog = ({
                     }
                 );
 
-                if (response.status === 201) {
+                if (response.status === 200) {
                     const skill: Skill = {
                         'id': response.data.skill_id,
                         'portfolio_id': portfolioId,
@@ -69,25 +75,16 @@ const AddSkillDialog = ({
                         'description': skillDescription,
                         'created_at': new Date().toISOString(),
                         'updated_at': new Date().toISOString(),
-                        'endorsers': endorsers.map((name, index) => ({
-                            id: index + 1,
-                            name: name,
-                            email: '',
-                            status_id: 1,
-                            status: "Pending",
-                        })),
+                        'endorsers': response.data.endorsers
                     };
-                    setSuccessMessage("Skill added successfully!");
+                    setSuccessMessage("Skill created successfully!");
                     setSkilldata(prevSkills => [...prevSkills, skill]);
                 }
-
                 setLoading(false);
                 onClick();
                 onClose();
             }
-
         } catch (error) {
-            console.error("Error adding skill:", error);
             setLoading(false);
         }
     };
@@ -105,7 +102,7 @@ const AddSkillDialog = ({
                 )}
 
                 <div className="flex justify-between items-start mb-2">
-                    <h2 className="text-xl font-bold text-black">Add New Skill</h2>
+                    <h2 className="text-xl font-bold text-black">Create New Skill</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +141,7 @@ const AddSkillDialog = ({
                             onChange={(e) => setSkillDescription(e.target.value)}
                             required
                         />
-                        <EndorserInput onEndorserChange={handleEndorserChange} />
+                        <EndorserInput onEndorserChange={handleEndorserChange} existingEndorsers={endorsers}/>
                     </form>
                 </div>
 
@@ -161,7 +158,7 @@ const AddSkillDialog = ({
                         onClick={handleAddSkill}
                         disabled={loading}
                     >
-                        {loading ? "Adding..." : "Add Skill"}
+                        {loading ? "Creating..." : "Create Skill"}
                     </button>
                 </div>
             </div>

@@ -27,31 +27,41 @@ const EditSkillDialog = ({
     changeSkillData: React.Dispatch<React.SetStateAction<Skill[]>>;
     existingSkillTitle: string;
     existingSkillDescription: string;
-    existingSkillEndorsers: Endorser[];
+    existingSkillEndorsers: Endorser[] | [];
     setSuccessMessage: (message: string) => void;
 }) => {
     const { data: session } = useSession();
 
     const [skillTitle, setSkillTitle] = useState(existingSkillTitle);
     const [skillDescription, setSkillDescription] = useState(existingSkillDescription);
-    const [endorsers, setEndorsers] = useState<string[]>(existingSkillEndorsers.map(e => e.name));
+    const [endorsers, setEndorsers] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         setSkillTitle(existingSkillTitle);
         setSkillDescription(existingSkillDescription);
-        setEndorsers(existingSkillEndorsers.map((e) => e.name));
+        setEndorsers(existingSkillEndorsers.map(e => e.email));
     }, [existingSkillTitle, existingSkillDescription, existingSkillEndorsers]);
 
     const handleEndorserChange = (updated: string[]) => setEndorsers(updated);
 
     const handleEditSkill = async () => {
+        if (endorsers.includes(session?.user?.email || '')) {
+            setError("You cannot endorse your own skill.");
+            return;
+        }
+        if(skillDescription == "" || skillTitle == "") {
+            setError("Please fill in all fields.");
+            return;
+        }
         setLoading(true);
         try {
+            
             const response = await axios.put(
                 `${process.env.NEXT_PUBLIC_API_URL}update_skill/${skillId}`,
-                { title: skillTitle, description: skillDescription },
+                { title: skillTitle, description: skillDescription, endorsers: endorsers },
                 {
                     headers: {
                         Authorization: `Bearer ${session?.accessToken}`,
@@ -60,21 +70,17 @@ const EditSkillDialog = ({
                 }
             );
 
-            if (response.data.message === 'Skill updated successfully.') {
-                const updatedSkill: Skill = {
+            if (response.data.message === 'Skill updated successfully!') {
+                existingSkillEndorsers
+
+                const updatedSkill = {
                     id: skillId,
                     portfolio_id: portfolioId,
                     title: skillTitle,
                     description: skillDescription,
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString(),
-                    endorsers: endorsers.map((name, index) => ({
-                        id: index + 1,
-                        name,
-                        email: "",
-                        status_id: 1,
-                        status: "Pending",
-                    })),
+                    endorsers: response.data.endorsers,
                 };
 
                 setSuccessMessage("Skill updated successfully!");
@@ -84,14 +90,12 @@ const EditSkillDialog = ({
                 onClose();
             }
         } catch (error) {
-            console.error("Error updating skill:", error);
         } finally {
             setLoading(false);
         }
     };
 
     const handleDeleteSkill = async () => {
-        console.log('kdmv')
         setLoading(true);
         try {
             const response = await axios.delete(
@@ -104,16 +108,13 @@ const EditSkillDialog = ({
                 }
             );
 
-            console.log(response.data);
-
-            if (response.data.message == 'Skill deleted successfully.') {
+            if (response.data.message == 'Skill and its endorsers deleted successfully.') {
                 changeSkillData((prev) => prev.filter((s) => s.id !== skillId));
             }
             setShowDeleteConfirmation(false)
             setSuccessMessage("Skill deleted successfully!");
             onClose();
         } catch (error) {
-            console.error("Error deleting skill:", error);
         } finally {
             setLoading(false);
         }
@@ -124,7 +125,7 @@ const EditSkillDialog = ({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             {/* Main Dialog */}
-            <div className={`bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg overflow-y-auto z-50 relative ${showDeleteConfirmation ? "opacity-50" : ""}`}>
+            <div className={`bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg overflow-y-auto z-50 relative ${showDeleteConfirmation ? "blur-sm" : ""}`}>
                 {loading && (
                     <div className="absolute inset-0 bg-white bg-opacity-60 backdrop-blur-sm z-10 flex items-center justify-center">
                         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -132,7 +133,7 @@ const EditSkillDialog = ({
                 )}
 
                 <div className="flex justify-between items-start mb-2">
-                    <h2 className="text-xl font-bold text-black">Edit Skill</h2>
+                    <h2 className="text-xl font-bold text-black">Update Skill</h2>
                     <button onClick={onClose} className="text-black hover:text-red-500 cursor-pointer">
                         <svg className="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -159,8 +160,10 @@ const EditSkillDialog = ({
                         value={skillDescription}
                         onChange={(e) => setSkillDescription(e.target.value)}
                     />
-                    <EndorserInput onEndorserChange={handleEndorserChange} />
+                    <EndorserInput onEndorserChange={handleEndorserChange} existingEndorsers={endorsers} />
                 </form>
+
+                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
                 <div className="flex justify-between items-center mt-6">
                     <button
@@ -177,7 +180,7 @@ const EditSkillDialog = ({
                         onClick={handleEditSkill}
                         disabled={loading}
                     >
-                        {loading ? "Editing..." : "Save Changes"}
+                        {loading ? "Updating..." : "Save Changes"}
                     </button>
                 </div>
             </div>

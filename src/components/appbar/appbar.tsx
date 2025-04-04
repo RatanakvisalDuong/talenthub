@@ -173,9 +173,9 @@ export default function Appbar() {
                                     onClick={() => setDropdownOpen(!dropdownOpen)}
                                 >
                                     <div className="h-8 w-8 rounded-full overflow-hidden relative">
-                                        {session.user?.image ? (
+                                        {session.photo ? (
                                             <Image
-                                                src={session.user.image}
+                                                src={session.photo || "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*"}
                                                 alt="Profile"
                                                 fill
                                                 className="object-cover"

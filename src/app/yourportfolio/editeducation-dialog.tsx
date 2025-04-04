@@ -16,7 +16,7 @@ const EditEducationDialog = ({
     existingEducationCenter,
     existingFieldOfStudy,
     existingEducationDescription,
-    educationId,
+    existingEducationId,
     exisitingSelectedStartMonth,
     exisitingSelectedStartYear,
     exisitingSelectedEndMonth,
@@ -31,7 +31,7 @@ const EditEducationDialog = ({
     existingEducationCenter: string;
     existingFieldOfStudy: string;
     existingEducationDescription: string;
-    educationId: number;
+    existingEducationId: number;
     exisitingSelectedStartMonth: string;
     exisitingSelectedStartYear: string;
     exisitingSelectedEndMonth: string;
@@ -40,6 +40,7 @@ const EditEducationDialog = ({
 
     const { data: session, status } = useSession();
 
+    const [educationId, setEducationId] = useState<number>(existingEducationId);
     const [isPresent, setIsPresent] = useState(false);
     const [selectedStartMonth, setSelectedStartMonth] = useState<string>(exisitingSelectedStartMonth);
     const [selectedEndMonth, setSelectedEndMonth] = useState<string>(exisitingSelectedEndMonth);
@@ -69,7 +70,9 @@ const EditEducationDialog = ({
         setStartYear(exisitingSelectedStartYear);
         setSelectedEndMonth(exisitingSelectedEndMonth);
         setEndYear(exisitingSelectedEndYear);
-    }, [existingEducationCenter, existingFieldOfStudy, existingEducationDescription, exisitingSelectedStartMonth, exisitingSelectedStartYear, exisitingSelectedEndMonth, exisitingSelectedEndYear]);
+        setEducationId(educationId);
+
+    }, [existingEducationCenter, existingFieldOfStudy, existingEducationDescription, exisitingSelectedStartMonth, exisitingSelectedStartYear, exisitingSelectedEndMonth, exisitingSelectedEndYear, educationId]);
 
     const handleEditEducation = async () => {
         try {
@@ -109,6 +112,8 @@ const EditEducationDialog = ({
                 }
             );
 
+            console.log(response.data);
+
             if (response.status === 200) {
                 const education: Education = {
                     id: response.data.education_id,
@@ -122,15 +127,14 @@ const EditEducationDialog = ({
                     end_month: isPresent ? null : selectedEndMonth,
                 };
 
+                setSuccessMessage("Education updated successfully!");
                 changeEducationData((prev) =>
                     prev.map((edu) => (edu.id === educationId ? education : edu))
                 );
-                setSuccessMessage("Education updated successfully!");
                 setLoading(false);
                 onClose();
             }
         } catch (error) {
-            console.error("Error editing education:", error);
             setLoading(false);
         }
     };
@@ -154,7 +158,6 @@ const EditEducationDialog = ({
                 onClose();
             }
         } catch (error) {
-            console.error("Error deleting education:", error);
         } finally {
             setLoading(false);
         }
@@ -163,15 +166,15 @@ const EditEducationDialog = ({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="bg-white rounded-md p-6 w-[700px] max-w-full shadow-lg overflow-y-auto z-50 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center ">
+            <div className={`bg-white rounded-md p-6 w-[700px] max-w-full shadow-lg overflow-y-auto z-50 relative ${showDeleteConfirmation ? "blur-sm" : ""}`}>
                 {loading && (
                     <div className="absolute inset-0 bg-white backdrop-blur-sm z-10 flex items-center justify-center">
                         <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
                     </div>
                 )}
                 <div className="flex justify-between items-start mb-2">
-                    <h2 className="text-xl font-bold text-black">Edit Education</h2>
+                    <h2 className="text-xl font-bold text-black">Update Education</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -301,35 +304,36 @@ const EditEducationDialog = ({
                         onClick={handleEditEducation}
                         disabled={loading}
                     >
-                        {loading ? "Editing..." : "Save Changes"}
+                        {loading ? "Updating..." : "Save Changes"}
                     </button>
                 </div>
 
-                {showDeleteConfirmation && (
-                    <div className="fixed inset-0 z-60 flex items-center justify-center">
-                        <div className="bg-white rounded-md shadow-lg p-6 w-[400px] text-center">
-                            <p className="text-lg font-semibold mb-4 text-red-600">Confirm Delete</p>
-                            <p className="text-gray-700 mb-6">Are you sure you want to delete this education entry? This action cannot be undone.</p>
-                            <div className="flex justify-center gap-4">
-                                <button
-                                    className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                                    onClick={handleDeleteEducation}
-                                    disabled={loading}
-                                >
-                                    {loading ? "Deleting..." : "Yes, Delete"}
-                                </button>
-                                <button
-                                    className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300"
-                                    onClick={() => setShowDeleteConfirmation(false)}
-                                    disabled={loading}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
+
+            </div>
+            {showDeleteConfirmation && (
+                <div className="fixed inset-0 z-60 flex items-center justify-center">
+                    <div className="bg-white rounded-md shadow-lg p-6 w-[400px] text-center">
+                        <p className="text-lg font-semibold mb-4 text-red-600">Confirm Delete</p>
+                        <p className="text-gray-700 mb-6">Are you sure you want to delete this education entry? This action cannot be undone.</p>
+                        <div className="flex justify-center gap-4">
+                            <button
+                                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                                onClick={handleDeleteEducation}
+                                disabled={loading}
+                            >
+                                {loading ? "Deleting..." : "Yes, Delete"}
+                            </button>
+                            <button
+                                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300"
+                                onClick={() => setShowDeleteConfirmation(false)}
+                                disabled={loading}
+                            >
+                                Cancel
+                            </button>
                         </div>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     )
 }

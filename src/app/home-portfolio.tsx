@@ -5,6 +5,7 @@ import { useState } from "react";
 import Appbar from "@/components/appbar/appbar";
 import Sidebar from "@/components/sidebar/sidebar";
 import SearchBar from "@/components/search/search_bar";
+import { Skill } from "./type/skill";
 
 export interface PortfolioProfile {
 	id: number;
@@ -22,7 +23,7 @@ export interface PortfolioProfile {
 }
 
 export default function HomeComponent(
-	{ portfolios }: { portfolios: PortfolioProfile[] }
+	{ portfolios, photo, major, phoneNumber }: { portfolios: PortfolioProfile[]; photo: string | null, major: number | null, phoneNumber: string | null; }
 ) {
 
 	const [selectedMajors, setSelectedMajors] = useState<number[]>([]);
@@ -60,10 +61,12 @@ export default function HomeComponent(
 			<div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
 				<div className="w-[23%]">
 					<Sidebar
+						photo={photo || 'https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*'}
+						major={major ? major : 4}
+						phoneNumber={phoneNumber ? phoneNumber : ''}
 						onMajorSelect={handleMajorSelect}
 						onRoleSelect={handleRoleSelect}
 						onWorkingStatusSelect={handleWorkingStatusSelect}
-						studentMajor={1}
 					/>
 				</div>
 				<div className="w-[78%] px-4">

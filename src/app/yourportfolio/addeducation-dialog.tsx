@@ -84,12 +84,12 @@ const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessM
                     end_month: isPresent ? null : selectedEndMonth,
                 };
                 setEducationData((prev) => [...prev, education]);
-                setSuccessMessage("Education added successfully!");
+                setSuccessMessage("Education created successfully!");
                 setLoading(false);
                 onClose();
             }
         } catch (error) {
-            console.error("Error adding education:", error);
+            console.error("Error creating education:", error);
             setLoading(false);
         }
     };
@@ -105,7 +105,7 @@ const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessM
                     </div>
                 )}
                 <div className="flex justify-between items-start mb-2">
-                    <h2 className="text-xl font-bold text-black">Add New Education</h2>
+                    <h2 className="text-xl font-bold text-black">Create New Education</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -183,6 +183,7 @@ const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessM
                                         id="endMonth"
                                         required={true}
                                         onChange={handleSelectEndMonthChange}
+                                        value={selectedEndMonth}
                                     />
                                 </div>
                                 <div className="mb-2 w-1/2">
@@ -226,7 +227,7 @@ const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessM
                         onClick={handleAddEducation}
                         disabled={loading}
                     >
-                        {loading ? "Adding..." : "Add Education"}
+                        {loading ? "Creating..." : "Create Education"}
                     </button>
                 </div>
             </div>

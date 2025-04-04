@@ -1,13 +1,29 @@
 
 import axios from "axios";
 import HomeComponent, { PortfolioProfile } from "./home-portfolio";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/option";
 
 export default async function Home() {
+	const session = await getServerSession(authOptions);
+	
 	const response = await axios.get(`${process.env.API_URL}view_all_portfolio`);
-	const portfolioData:PortfolioProfile[] = response.data;
+	const portfolioData: PortfolioProfile[] = response.data;
+	let response2: any = { data: { portfolio: { photo: null } } };
+
+	// Check if the session is available
+	if(session?.user?.email){
+		response2 = await axios.get(
+			`${process.env.NEXT_PUBLIC_API_URL}view_portfolio_details/${session?.googleId}`
+		);
+	}
+	
+	const photo = response2.data.portfolio.photo;
+	const phoneNumber = response2.data.portfolio.phone_number;
+	const major = response2.data.portfolio.major;
 	return (
 		<div>
-			<HomeComponent portfolios={portfolioData}/>
+			<HomeComponent portfolios={portfolioData} photo={photo} major={major} phoneNumber={phoneNumber}/>
 		</div>
 	);
 }

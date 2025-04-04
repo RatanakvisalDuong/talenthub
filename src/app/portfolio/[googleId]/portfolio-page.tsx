@@ -11,7 +11,6 @@ import ProjectCard from "@/components/projectCard/projectCard";
 import SkillCard from "@/components/skillCard/skillCard";
 import WorkingStatusBar from "@/components/workingStatus/workingStatusBar";
 import { certificates } from "@/dummydata/certificate";
-import { experiences } from "@/dummydata/experience";
 import { majors } from "@/dummydata/major";
 import { ShareIcon } from '@heroicons/react/24/outline';
 import Image from "next/image";
@@ -66,7 +65,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
 
     const getMajorName = () => {
         const majorObj = majors.find((item) => item.id === portfolio.portfolio.major);
-        return majorObj ? majorObj.name : 'Unknown Major';
+        return majorObj ? majorObj.name : 'N/A';
     };
 
     const toggleSharePortfolio = () => {
@@ -83,7 +82,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
             <Appbar />
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
-            {successMessage && (
+                {successMessage && (
                     <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
                         {successMessage}
                     </div>
@@ -94,7 +93,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             <p className="text-black font-bold text-lg">Projects</p>
                             <div className="w-25 bg-[#dfdfdf] h-[2px] mt-1"></div>
                             {portfolio.projects.length === 0 ? (
-                                <p className="text-black text-smdmt-4 justify-center items-center flex">No Project</p>
+                                <p className="text-black text-smdmt-4 justify-center items-center flex">No project available</p>
                             ) : (
                                 <>
                                     {portfolio.projects
@@ -105,11 +104,11 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
 
                                     {portfolio.projects.length > 2 && (
                                         <button
-                                        onClick={toggleDropdownProject}
-                                        className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
-                                    >
-                                        {expandedProject ? 'See Less' : 'See More'}
-                                    </button>
+                                            onClick={toggleDropdownProject}
+                                            className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
+                                        >
+                                            {expandedProject ? 'See Less' : 'See More'}
+                                        </button>
                                     )}
                                 </>
                             )}
@@ -118,7 +117,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             <p className="text-black font-bold text-lg">Achievements & Certifications</p>
                             <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
                             {certificates.map((certificate) => (
-                                <CertificateCard key={certificate.id} certificate={certificate} onClick={()=>{}} />
+                                <CertificateCard key={certificate.id} certificate={certificate} onClick={() => { }} />
                             ))}
                         </div>
                     </div>
@@ -128,7 +127,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                 <div className="flex items-center justify-start h-full">
                                     <div className="w-[40%] relative flex items-center justify-center">
                                         <div className="absolute top-0 right-0 z-10 -translate-y-1/2">
-                                            <WorkingStatusBar status={2} />
+                                            <WorkingStatusBar status={portfolio.portfolio.working_status} />
                                         </div>
                                         <div className="h-[90%] w-[90%] rounded-md overflow-hidden mx-auto flex items-center justify-center">
                                             <Image
@@ -160,7 +159,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             <div className="w-[30%] bg-white rounded-lg shadow-md p-4 overflow-y-auto">
                                 <p className="text-black font-bold text-lg">About Me</p>
                                 <p className="text-black mt-2 text-sm text-justify">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium veniam qui quae reiciendis itaque alias unde cum labore! Odio quas atque, reprehenderit laudantium voluptatum exercitationem delectus deleniti alias rerum corporis?
+                                    {portfolio.portfolio.about ? portfolio.portfolio.about : 'No description available'}
                                 </p>
                             </div>
                         </div>
@@ -168,15 +167,22 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             <p className="text-black font-bold text-xl mb-2">Experience</p>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
-                            {experiences.slice(0, expandedExperience ? experiences.length : 2).map((experience, index) => (
-                                <ExperienceCard key={experience.id}
-                                    experience={experience}
-                                    index={index}
-                                    dropdownOpen={dropdownExperienceOpen}
-                                    toggleDropdown={toggleExperienceDropdown} 
-                                    owner={false}/>
-                            ))}
-                            <div className={`h-40px ${experiences.length > 2 ? 'block' : 'hidden'}`}>
+                            {portfolio.experiences.length === 0 ? (
+                                <p className="justify-center items-center flex text-[#808080]">No experience available</p>
+                            ) : (
+                                portfolio.experiences.slice(0, expandedExperience ? portfolio.experiences.length : 2).map((experience, index) => (
+                                    <ExperienceCard key={experience.id}
+                                        experience={experience}
+                                        index={index}
+                                        dropdownOpen={dropdownExperienceOpen}
+                                        toggleDropdown={toggleExperienceDropdown}
+                                        owner={false}
+                                        openEditExperienceDialog={() => { }}
+                                    />
+                                ))
+                            )}
+
+                            <div className={`h-40px ${portfolio.experiences.length > 2 ? 'block' : 'hidden'}`}>
                                 <button
                                     onClick={toggleExpandedExperience}
                                     className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
@@ -184,23 +190,28 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                     {expandedExperience ? 'See Less' : 'See More'}
                                 </button>
                             </div>
+
                         </div>
 
                         <div className={`w-full ${expandedSkill ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
                             <p className="text-black font-bold text-xl mb-2">Skill</p>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
-                            {skillData.slice(0, expandedSkill ? skillData.length : 2).map((skill, index) => (
-                                <SkillCard 
-                                    key={`skill-${skill.id || index}`}
-                                    skill={skill}
-                                    index={index}
-                                    dropdownOpen={dropdownSkillOpen}
-                                    toggleDropdown={toggleDropdownSkill} 
-                                    owner={false}
-                                    openEditSkillDialog={() => {}}
-                                />
-                            ))}
+                            {skillData.length === 0 ? (
+                                <p className="justify-center items-center flex text-[#808080]">No skill available</p>
+                            ) : (
+                                skillData.slice(0, expandedSkill ? skillData.length : 2).map((skill, index) => (
+                                    <SkillCard
+                                        key={`skill-${skill.id || index}`}
+                                        skill={skill}
+                                        index={index}
+                                        dropdownOpen={dropdownSkillOpen}
+                                        toggleDropdown={toggleDropdownSkill}
+                                        owner={false}
+                                        openEditSkillDialog={() => { }}
+                                    />
+                                ))
+                            )}
                             <div className={`h-40px ${skillData.length > 2 ? 'block' : 'hidden'}`}>
                                 <button
                                     onClick={toggleExpandedSkill}
@@ -214,14 +225,19 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             <p className="text-black font-bold text-xl mb-2">Education</p>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
-                            {educationData.slice(0, expandedEducation ? educationData.length : 2).map((education, index) => (
-                                <EducationCard key={education.id}
-                                    education={education}
-                                    index={index}
-                                    owner={false}
-                                    openEditSkillDialog={() => {}}
-                                />
-                            ))}
+                            {educationData.length === 0 ? (
+                                <p className="justify-center items-center flex text-[#808080]">No skill available</p>
+                            ) : (
+                                educationData.slice(0, expandedEducation ? educationData.length : 2).map((education, index) => (
+                                    <EducationCard
+                                        key={education.id}
+                                        education={education}
+                                        index={index}
+                                        owner={false}
+                                        openEditSkillDialog={() => { }}
+                                    />
+                                ))
+                            )}
                             <div className={`h-40px ${portfolio.education.length > 2 ? 'block' : 'hidden'}`}>
                                 <button
                                     onClick={toggleExpandedEducation}

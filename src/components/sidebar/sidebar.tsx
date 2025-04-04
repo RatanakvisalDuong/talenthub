@@ -1,29 +1,36 @@
+"use client"
+
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { majors } from "@/dummydata/major";
+import { getMajorName, majors } from "@/dummydata/major";
 import { role } from "@/dummydata/role";
 import { useSession } from 'next-auth/react';
 import { workingStatus } from '@/dummydata/workingStatus';
 import Link from 'next/link';
 
-export default function Sidebar({ 
-    studentMajor,
+export default function Sidebar({
+    photo,
+    phoneNumber,
+    major,
     onMajorSelect,
     onRoleSelect,
     onWorkingStatusSelect }: {
-        studentMajor: number | null;
+        photo: string | null;
+        phoneNumber: string | null;
+        major: number | null;
         onMajorSelect: (selectedMajors: number[]) => void;
         onRoleSelect: (selectedRoles: number[]) => void;
         onWorkingStatusSelect: (selectedWorkingStatus: number[]) => void;
     }) {
 
-    const { data: session} = useSession();
+    const { data: session } = useSession();
+    const [googleId, setGoogleId] = useState<string | null>(null);
     const [selectedMajors, setSelectedMajors] = useState<number[]>([]);
     const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
     const [selectedWorkingStatuses, setSelectedWorkingStatuses] = useState<number[]>([]);
+    const [profileImage, setProfileImage] = useState<string | null>(null);
 
     const handleMajorSelect = (majorId: number) => {
-        console.log('Major selected: ', majorId);
         setSelectedMajors((prevSelectedMajors) => {
             if (prevSelectedMajors.includes(majorId)) {
                 return prevSelectedMajors.filter((id) => id !== majorId);
@@ -64,32 +71,36 @@ export default function Sidebar({
             {session?.user?.name && (
                 <div className="bg-white w-64 h-max rounded-sm shadow-md p-4 items-center justify-center text-black mb-4 transform transition-transform duration-200 hover:scale-105 hover:mt-2 hover:cursor-pointer">
                     <Link href={`/yourportfolio`}>
-                    <p className="w-max m-auto font-bold">{session.user.name}</p>
-                    <div className="rounded-full m-auto mt-4 items-center justify-center flex">
-                        <Image
-                            src={session.user.image || "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*"}
-                            alt="Profile Picture"
-                            width={100}
-                            height={100}
-                            className="rounded-sm"
-                        />
-                    </div>
-                    <p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
-                        <span className='font-bold'>Contact: </span>
-                        <span className='ml-1'>017 614 694</span>
-                    </p>
-                    <p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
-                        <span className='font-bold'>Email: </span>
-                        <span className='ml-1'>
-                            {session.user.email}
-                        </span>
-                    </p>
-                    <p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
-                        <span className='font-bold'>Major: </span>
-                        <span className='ml-1'>{studentMajor == null ? "" : studentMajor === 1 ? 'Computer Science' : "Management of Information System"}</span>
-                    </p>
+                        <p className="w-max m-auto font-bold">{session.user.name}</p>
+                        <div className="rounded-full m-auto mt-4 items-center justify-center flex">
+                            <Image
+                                src={photo || session.user.image || "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*"}
+                                alt="Profile Picture"
+                                width={100}
+                                height={100}
+                                className="rounded-sm"
+                            />
+                        </div>
+                        <p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
+                            <span className='font-bold'>Contact: </span>
+                            <span className='ml-1'>{phoneNumber}</span>
+                        </p>
+                        <p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
+                            <span className='font-bold'>Email: </span>
+                            <span className='ml-1'>
+                                {session.user.email}
+                            </span>
+                        </p>
+                        <p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
+                            <span className='font-bold'>Major: </span>
+                            <span className="ml-1">
+                                {
+                                    getMajorName(major ?? 0)
+                                }
+                            </span>
+                        </p>
                     </Link>
-                    
+
                 </div>
             )}
 
