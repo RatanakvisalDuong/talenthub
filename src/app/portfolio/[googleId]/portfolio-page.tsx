@@ -1,16 +1,17 @@
 "use client"
 
+import { Achievement } from "@/app/type/achievement";
 import { Education } from "@/app/type/education";
 import { Portfolio } from "@/app/type/portfolio";
 import { Skill } from "@/app/type/skill";
 import Appbar from "@/components/appbar/appbar";
+import AchievementCard from "@/components/certificateCard/certificateCard";
 import CertificateCard from "@/components/certificateCard/certificateCard";
 import EducationCard from "@/components/educationCard/educationCard";
 import ExperienceCard from "@/components/experienceCard/experienceCard";
 import ProjectCard from "@/components/projectCard/projectCard";
 import SkillCard from "@/components/skillCard/skillCard";
 import WorkingStatusBar from "@/components/workingStatus/workingStatusBar";
-import { certificates } from "@/dummydata/certificate";
 import { majors } from "@/dummydata/major";
 import { ShareIcon } from '@heroicons/react/24/outline';
 import Image from "next/image";
@@ -23,6 +24,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
 
     const [skillData, setSkillData] = useState<Skill[]>(portfolio.skills);
     const [educationData, setEducationData] = useState<Education[]>(portfolio.education);
+    const [achievementData, setAchievementData] = useState<Achievement[]>(portfolio.achievements);
 
     const [expandedExperience, setExpandedExperience] = useState(false);
     const [expandedSkill, setExpandedSkill] = useState(false);
@@ -80,7 +82,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
 
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
-            <Appbar />
+            <Appbar/>
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
                 {successMessage && (
                     <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
@@ -116,8 +118,8 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                         <div className={`h-[65%] bg-white rounded-lg shadow-md p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto`}>
                             <p className="text-black font-bold text-lg">Achievements & Certifications</p>
                             <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
-                            {certificates.map((certificate) => (
-                                <CertificateCard key={certificate.id} certificate={certificate} onClick={() => { }} />
+                            {achievementData.map((achievement) => (
+                                <AchievementCard key={achievement.id} achievement={achievement} onClick={() => { }} />
                             ))}
                         </div>
                     </div>
@@ -135,7 +137,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                                 alt="placeholder"
                                                 width={200}
                                                 height={200}
-                                                className="object-cover"
+                                                className=" aspect-square object-cover"
                                             />
                                         </div>
                                     </div>

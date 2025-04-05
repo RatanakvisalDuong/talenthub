@@ -2,10 +2,8 @@
 
 import Card from "@/components/card/card";
 import { useState } from "react";
-import Appbar from "@/components/appbar/appbar";
 import Sidebar from "@/components/sidebar/sidebar";
 import SearchBar from "@/components/search/search_bar";
-import { Skill } from "./type/skill";
 
 export interface PortfolioProfile {
 	id: number;
@@ -56,8 +54,7 @@ export default function HomeComponent(
 	});
 
 	return (
-		<div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
-			<Appbar />
+		<div className="bg-[#E8E8E8] w-[100%] h-[100%] overflow-hidden fixed">
 			<div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
 				<div className="w-[23%]">
 					<Sidebar

@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from 'react';
 
 import BigTextInput from "../../components/bigtextinput/bigtextinput";
@@ -9,7 +11,7 @@ import { Education } from '../type/education';
 
 const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMessage, setEducationData }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number;setSuccessMessage: (message: string) => void; setEducationData: React.Dispatch<React.SetStateAction<Education[]>>;}) => {
 
-    const { data: session, status } = useSession();
+    const { data: session} = useSession();
 
     const [isPresent, setIsPresent] = useState(false);
     const [selectedStartMonth, setSelectedStartMonth] = useState<string>("");
@@ -73,7 +75,7 @@ const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessM
 
             if (response.status === 200) {
                 const education: Education = {
-                    id: response.data.education_id,
+                    id: response.data.education.id,
                     portfolio_id: portfolioId,
                     education_center: educationCenter,
                     field_of_study: fieldOfStudy,

@@ -5,7 +5,7 @@ import TextInput from "@/components/textinput/textInput";
 import Image from "next/image";
 import { useRef, useState, useMemo, useEffect } from "react";
 import axios from "axios";
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 import { Portfolio } from "../type/portfolio";
 import { error } from "console";
 
@@ -32,9 +32,8 @@ const EditPortfolioDialog = ({
     setSuccessMessage: (message: string) => void;
     handlePortfolioUpdate: (updatedPortfolio: any) => void;
 }) => {
-    const session = useSession();
+    const { data: session, update } = useSession();
 
-    // Use nullable state values
     const [phone, setPhone] = useState<string | null>(phoneNumber || null);
     const [selectedMajor, setSelectedMajor] = useState<number | null>(major || null);
     const [selectedWorkingStatus, setSelectedWorkingStatus] = useState<number | null>(workingStatus || null);
@@ -74,45 +73,38 @@ const EditPortfolioDialog = ({
         setSelectedMajor(major || null);
         setSelectedWorkingStatus(workingStatus || null);
         setAbout(aboutMe || null);
-        setPhotoString(session.data?.user?.image ?? null);
+        setPhotoString(session?.user?.image ?? null);
 
     }
         , [phoneNumber, major, workingStatus, aboutMe]);
 
     const handleOnEdit = async () => {
         if (!selectedMajor || !selectedWorkingStatus || !phone || !about) {
-            // setError("Please fill in all required fields.");
             return;
         }
         setLoading(true);
 
         try {
-            console.log("Selected Major:", selectedMajor);
-            console.log("Selected Working Status:", selectedWorkingStatus);
-            console.log("Phone Number:", phone);
-            console.log("About Me:", about);
-            console.log("Image Files:", imageFiles);
-
             const formData = new FormData();
 
             formData.append('major_id', selectedMajor.toString());
             formData.append('phone_number', phone);
             formData.append('about', about);
             formData.append('working_status', selectedWorkingStatus.toString());
-            // formData.append('photo', imageFiles[0]);
+            if (imageFiles.length > 0) {
+                formData.append('photo', imageFiles[0]);
+            }
 
-            const response = await axios.put(
+            const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_API_URL}update_portfolio/${portfolioId}`,
                 formData,
                 {
                     headers: {
-                        Authorization: `Bearer ${session?.data?.accessToken}`,
-                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${session?.accessToken}`,
                     },
                 }
             );
 
-            console.log(response)
             if (response.status == 200) {
                 setLoading(false);
                 const updatedPortfolio = {
@@ -123,6 +115,15 @@ const EditPortfolioDialog = ({
                     about: response.data.about,
                     photo: response.data.photo,
                 }
+                // if (response.data.photo) {
+                //     if (update) {
+                //         update({
+                //             ...session,
+                //             'photo': response.data.photo,
+                //         });
+                //     }
+                // }
+                // window.location.reload();
                 handlePortfolioUpdate(updatedPortfolio);
                 onClose();
                 setSuccessMessage("Portfolio updated successfully.");
@@ -238,7 +239,7 @@ const EditPortfolioDialog = ({
                                             alt={`Selected ${index + 1}`}
                                             width={300}
                                             height={300}
-                                            className="object-cover rounded shadow mx-auto"
+                                            className=" aspect-square object-cover rounded shadow mx-auto"
                                             unoptimized
                                         />
                                         <div

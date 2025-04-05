@@ -3,6 +3,7 @@ import axios from "axios";
 import HomeComponent, { PortfolioProfile } from "./home-portfolio";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/option";
+import Layout from "@/components/layout/layout";
 
 export default async function Home() {
 	const session = await getServerSession(authOptions);
@@ -22,8 +23,8 @@ export default async function Home() {
 	const phoneNumber = response2.data.portfolio.phone_number;
 	const major = response2.data.portfolio.major;
 	return (
-		<div>
+		<Layout>
 			<HomeComponent portfolios={portfolioData} photo={photo} major={major} phoneNumber={phoneNumber}/>
-		</div>
+		</Layout>
 	);
 }

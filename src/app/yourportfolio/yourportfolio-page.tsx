@@ -2,8 +2,6 @@
 
 "use client"
 
-import Appbar from "@/components/appbar/appbar";
-import CertificateCard from "@/components/certificateCard/certificateCard";
 import ExperienceCard from "@/components/experienceCard/experienceCard";
 import ProjectCard from "@/components/projectCard/projectCard";
 import WorkingStatusBar from "@/components/workingStatus/workingStatusBar";
@@ -29,6 +27,8 @@ import { Education } from "../type/education";
 import EditEducationDialog from "./editeducation-dialog";
 import { Experience } from "../type/experience";
 import EditExperienceDialog from "./editexperience-dialog";
+import { Achievement } from "../type/achievement";
+import AchievementCard from "@/components/certificateCard/certificateCard";
 
 export default function YourPortfolioPageComponent({ portfolio }: { portfolio: Portfolio }) {
 
@@ -36,6 +36,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
     const [skillData, setSkillData] = useState<Skill[]>(portfolio.skills);
     const [educationData, setEducationData] = useState<Education[]>(portfolio.education);
     const [experienceData, setExperienceData] = useState<Experience[]>(portfolio.experiences);
+    const [achievementData, setAchievementData] = useState<Achievement[]>(portfolio.achievements);
 
     const [expandedExperience, setExpandedExperience] = useState(false);
     const [expandedSkill, setExpandedSkill] = useState(false);
@@ -199,9 +200,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
     };
 
     return (
-        <div className={`bg-[#E8E8E8] w-screen h-screen overflow-hidden`}>
-
-            <Appbar />
+        <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
                 {successMessage && (
                     <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
@@ -252,8 +251,8 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                 </button>
                             </div>
                             <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
-                            {certificates.map((certificate) => (
-                                <CertificateCard key={certificate.id} certificate={certificate} onClick={toggleCertificateDialog} />
+                            {achievementData.map((achievement) => (
+                                <AchievementCard key={achievement.id} achievement={achievement} onClick={toggleCertificateDialog} />
                             ))}
                         </div>
                     </div>
@@ -271,7 +270,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                                 alt="placeholder"
                                                 width={200}
                                                 height={200}
-                                                className="object-cover"
+                                                className="aspect-square object-cover"
                                             />
                                         </div>
                                     </div>

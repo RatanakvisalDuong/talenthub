@@ -1,3 +1,4 @@
+import { Achievement } from "./achievement";
 import { Education } from "./education";
 import { Experience } from "./experience";
 import { Project } from "./project";
@@ -21,7 +22,7 @@ export interface Portfolio {
     },
     projects: Project[];
     education: Education[];
-    achievements: string[];
+    achievements: Achievement[];
     skills: Skill[];
     experiences: Experience[];
 }

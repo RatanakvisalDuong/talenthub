@@ -2,12 +2,11 @@ import Appbar from "@/components/appbar/appbar";
 
 export default function ProjectPage() {
     return (
-        <div className={`bg-[#E8E8E8] w-screen h-screen overflow-hidden`}>
-
+        <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
             <Appbar />
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
                 <div className="flex justify-between w-full">
-                    <div className="h-[85vh] w-[66%] flex flex-col justify-between overflow-y-auto">
+                    <div className="h-[85vh] w-[73%] flex flex-col justify-between overflow-y-auto">
                         <div className="h-[55%] w-full bg-[#F5F5F5] p-4">
                             <div className="w-full flex justify-between items-center">
                                 <p className="text-xl font-bold text-black">
@@ -31,14 +30,16 @@ export default function ProjectPage() {
                                     </button>
                                 </div>
                             </div>
-
+                            <div>
+                                
+                            </div>
                         </div>
                         <div className="h-[40%] w-full bg-[#F5F5F5]" >
 
                         </div>
                     </div>
 
-                    <div className="h-[85vh] w-[30%] flex flex-col justify-between overflow-y-auto bg-black">
+                    <div className="h-[85vh] w-[25%] flex flex-col justify-between overflow-y-auto bg-black">
 
                     </div>
 

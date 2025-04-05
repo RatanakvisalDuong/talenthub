@@ -147,7 +147,7 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; o
 
                         <BigTextInput
                             id="description"
-                            label="Certificate Description"
+                            label="Description"
                             required
                             placeholder="Eg.I completed a course on Web Development, covering HTML, CSS, and JavaScript."
                         />

@@ -78,7 +78,7 @@ export default function Sidebar({
                                 alt="Profile Picture"
                                 width={100}
                                 height={100}
-                                className="rounded-sm"
+                                className="rounded-sm  aspect-square object-cover"
                             />
                         </div>
                         <p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">

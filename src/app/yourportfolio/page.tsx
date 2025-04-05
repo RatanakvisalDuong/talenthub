@@ -52,23 +52,21 @@
 //   return <PortfolioPageWrapper portfolio={portfolioData} />;
 // }
 
-
 import axios from "axios";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/option"; // Correct path to authOptions
+import { authOptions } from "../api/auth/[...nextauth]/option";
 import { Portfolio } from "../type/portfolio";
-import LoadingSpinner from "@/components/loading/loading";
 import YourPortfolioPageComponent from "./yourportfolio-page";
+import Layout from "@/components/layout/layout";
+import Link from "next/link";
+import { redirect } from 'next/navigation';
+
 
 export default async function YourPortfolioPage() {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.googleId) {
-    return (
-      <div>
-        Please log in to view your portfolio.
-      </div>
-    );
+    redirect('/');
   }
 
   try {
@@ -78,8 +76,18 @@ export default async function YourPortfolioPage() {
 
     const portfolioData: Portfolio = response.data;
 
-    return <YourPortfolioPageComponent portfolio={portfolioData} />;
+    return (
+      <Layout>
+        <YourPortfolioPageComponent portfolio={portfolioData} />;
+      </Layout>
+    );
+
+
   } catch (error) {
-    return <div>Portfolio not found or failed to load.</div>;
+    return (
+      <div>
+        Error fetching portfolio data. Please try again later.
+      </div>
+    );
   }
 }

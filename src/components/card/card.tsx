@@ -47,7 +47,7 @@ export default function Card({ portfolio }: { portfolio: Portfolio }) {
                 alt="Profile Picture"
                 width={100}
                 height={100}
-                className="rounded-sm m-auto mx-auto mt-2"
+                className="rounded-sm m-auto mx-auto mt-2 aspect-square object-cover"
             />
             <div className='w-full mt-2'>
                 <p className="text-sm mx-auto w-max">{portfolio.name}</p>
