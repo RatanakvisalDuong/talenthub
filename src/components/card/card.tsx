@@ -63,14 +63,11 @@ export default function Card({ portfolio }: { portfolio: Portfolio }) {
                     <p className='font-bold text-[12px]'>
                         Major:
                     </p>
-                    <p className='text-[12px] ml-2 break-words overflow-hidden text-ellipsis 
-        -webkit-box -webkit-line-clamp-2 -webkit-box-orient-vertical w-full'>
+                    <p className='text-[12px] ml-2 break-words overflow-hidden text-ellipsis -webkit-box -webkit-line-clamp-2 -webkit-box-orient-vertical w-full'>
                         {getMajorName(portfolio.major ?? 0)}
                     </p>
                 </div> : null
                 }
-
-
             </div>
         </Link>
     );

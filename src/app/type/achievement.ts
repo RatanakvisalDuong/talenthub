@@ -9,5 +9,5 @@ export interface Achievement {
     issue_year: string,
     description: string,
     image: string,
-    endorser: Endorser[]
+    endorsers: Endorser[]
 }

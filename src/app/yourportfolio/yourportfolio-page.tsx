@@ -20,15 +20,16 @@ import EducationCard from "@/components/educationCard/educationCard";
 import AddEducationDialog from "./addeducation-dialog";
 import { Skill } from "../type/skill";
 import EditSkillDialog from "./editskill-dialog";
-import AddCertificateDialog from "./addcertificate-dialog";
-import CertificateDialog from "@/components/certificateDialog/certificateDialog";
+import AddCertificateDialog from "./addachievement-dialog";
+import CertificateDialog from "@/components/achievementDialog/achievementDialog";
 import EditPortfolioDialog from "./editportfolio-dialog";
 import { Education } from "../type/education";
 import EditEducationDialog from "./editeducation-dialog";
 import { Experience } from "../type/experience";
 import EditExperienceDialog from "./editexperience-dialog";
 import { Achievement } from "../type/achievement";
-import AchievementCard from "@/components/certificateCard/certificateCard";
+import AchievementCard from "@/components/achievementCard/achievementCard";
+import EditCertificateDialog from "./editachievement-dialog";
 
 export default function YourPortfolioPageComponent({ portfolio }: { portfolio: Portfolio }) {
 
@@ -37,6 +38,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
     const [educationData, setEducationData] = useState<Education[]>(portfolio.education);
     const [experienceData, setExperienceData] = useState<Experience[]>(portfolio.experiences);
     const [achievementData, setAchievementData] = useState<Achievement[]>(portfolio.achievements);
+    const [singleAchievementData, setSingleAchievementData] = useState<Achievement | null>(null);
 
     const [expandedExperience, setExpandedExperience] = useState(false);
     const [expandedSkill, setExpandedSkill] = useState(false);
@@ -76,6 +78,8 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
     const [successMessage, setSuccessMessage] = useState<string>("");
 
     const [viewCertificateDialog, setViewCertificateDialog] = useState(false);
+    const [editCertificateDialog, setEditCertificateDialog] = useState(false);
+    const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
 
     const toggleDropdownSkill = (skillId: number) => {
         setDropdownSkillOpen(prev => ({
@@ -146,8 +150,38 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
     }
 
 
-    const toggleCertificateDialog = () => {
-        setViewCertificateDialog(!viewCertificateDialog);
+    const toggleCertificateDialog = (achievement: Achievement) => {
+        setSingleAchievementData(achievement); 
+        setViewCertificateDialog(!viewCertificateDialog); 
+    };
+
+    const toggleEditCertificateDialog = () => {
+        console.log("Edit Certificate Dialog");
+        setViewCertificateDialog(false); 
+        setEditCertificateDialog(true); 
+    };
+
+    const handleAddAchievement = (newAchievement: Achievement) => {
+        setAchievementData((prevAchievements) => [...prevAchievements, newAchievement]);
+        setOpenAddCertificateDialog(false);
+    };
+
+    const handleUpdatedAchievement = (updatedAchievement: Achievement) => {
+
+        setAchievementData((prevAchievements) =>
+            prevAchievements.map((achievement) =>
+                achievement.id === updatedAchievement.id ? updatedAchievement : achievement
+            )
+        );
+        setEditCertificateDialog(false);
+    };
+
+    const handleDeleteAchievement = (deletedAchievementId: number) => {
+        setAchievementData((prevAchievements) =>
+            prevAchievements.filter((achievement) => achievement.id !== deletedAchievementId)
+        );
+        setEditCertificateDialog(false);
+        displaySuccessMessage("Achievement deleted successfully.");
     };
 
     const toggleDropdown = (experienceId: number) => {
@@ -251,9 +285,18 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                 </button>
                             </div>
                             <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
-                            {achievementData.map((achievement) => (
-                                <AchievementCard key={achievement.id} achievement={achievement} onClick={toggleCertificateDialog} />
-                            ))}
+                            {Array.isArray(achievementData) && achievementData.length === 0 ? (
+                                <div className="flex justify-center items-center h-[90%]">
+                                    <p className="flex text-[#808080]">No achievement or certificate available</p>
+                                </div>
+                            ) : (
+                                Array.isArray(achievementData) && achievementData.length > 0 && (
+                                    achievementData.map((achievement) => (
+                                        <AchievementCard key={achievement.id} achievement={achievement} onClick={() => toggleCertificateDialog(achievement)}
+                                        />
+                                    ))
+                                )
+                            )}
                         </div>
                     </div>
                     <div className="h-[87vh] w-[68%] overflow-y-auto pr-6 overflow-x-hidden">
@@ -417,7 +460,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                     </div>
                 </div>
             </div>
-            {(openAddProjectDialog || openAddSkillDialog || openAddExpereinceDialog || openAddEducationDialog || openAddCertificateDialog || openEditSkillDialog || viewCertificateDialog || openEditPortfolioDialog || openEditEducationDialog || openEditExperienceDialog) && (
+            {(openAddProjectDialog || openAddSkillDialog || openAddExpereinceDialog || openAddEducationDialog || openAddCertificateDialog || openEditSkillDialog || viewCertificateDialog || openEditPortfolioDialog || openEditEducationDialog || openEditExperienceDialog || editCertificateDialog) && (
                 <div className="fixed inset-0 blur-sm backdrop-blur-md z-40" />
             )}
 
@@ -426,7 +469,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
             )}
 
             {openAddCertificateDialog && (
-                <AddCertificateDialog isOpen={true} onClose={toggleAddCertificateDialog} onClick={() => addCertificate()} />
+                <AddCertificateDialog isOpen={true} onClose={toggleAddCertificateDialog} onClick={() => addCertificate()} portfolioId={portfolioData.portfolio.id} handleUpdatedAchievement={handleAddAchievement} setSuccessMessage={displaySuccessMessage} />
             )}
 
             {openAddSkillDialog && (
@@ -506,8 +549,24 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                 />
             )}
 
-            {viewCertificateDialog && (
-                <CertificateDialog owner={true} onClose={toggleCertificateDialog} />
+            {viewCertificateDialog && achievementData && (
+                <CertificateDialog
+                    owner={true}
+                    onClose={() => setViewCertificateDialog(false)} 
+                    achievement={singleAchievementData} 
+                    onEdit={toggleEditCertificateDialog} 
+                />
+            )}
+
+            {editCertificateDialog 
+                && singleAchievementData && (
+                <EditCertificateDialog
+                    achievement={singleAchievementData} 
+                    onClose={() => setEditCertificateDialog(false)}
+                    onSave={handleUpdatedAchievement}
+                    setSuccessMessage={displaySuccessMessage}
+                    onDelete={handleDeleteAchievement}
+                />
             )}
 
         </div>

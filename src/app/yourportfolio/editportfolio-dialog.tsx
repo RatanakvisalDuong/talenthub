@@ -60,12 +60,13 @@ const EditPortfolioDialog = ({
         if (!files) return;
 
         const newFiles = Array.from(files);
-        const combined = [...imageFiles, ...newFiles].slice(0, 1);
-        setImageFiles(combined);
+
+        setImageFiles((prevFiles) => [...prevFiles, ...newFiles]);
+        event.target.value = "";
     };
 
     const handleRemoveImage = (index: number) => {
-        setImageFiles(imageFiles.filter((_, i) => i !== index));
+        setImageFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
     };
 
     useEffect(() => {
@@ -95,6 +96,8 @@ const EditPortfolioDialog = ({
                 formData.append('photo', imageFiles[0]);
             }
 
+            console.log("Form data:", formData);
+
             const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_API_URL}update_portfolio/${portfolioId}`,
                 formData,
@@ -115,18 +118,9 @@ const EditPortfolioDialog = ({
                     about: response.data.about,
                     photo: response.data.photo,
                 }
-                // if (response.data.photo) {
-                //     if (update) {
-                //         update({
-                //             ...session,
-                //             'photo': response.data.photo,
-                //         });
-                //     }
-                // }
-                // window.location.reload();
                 handlePortfolioUpdate(updatedPortfolio);
-                onClose();
                 setSuccessMessage("Portfolio updated successfully.");
+                onClose();
             }
         } catch (error) {
             console.error("Error updating portfolio:", error);

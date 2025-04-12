@@ -33,7 +33,7 @@ const EducationCard: React.FC<Props> = ({ education, index, owner, openEditSkill
                             className="text-sm text-white hover:underline cursor-pointer p-2 bg-[#ffc107] rounded-md"
                             onClick={() => openEditSkillDialog(education)}
                         >
-                            Edit
+                            Update
                         </button>
                     )}
                 </div>

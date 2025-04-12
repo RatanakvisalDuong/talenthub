@@ -177,6 +177,22 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
                             placeholder="Eg.https://github.com/RVisalD/TalentHub"
                         />
 
+                        <div className="mb-4">
+                            <label htmlFor="fileUpload" className="block text-sm font-medium text-black">
+                                Project Files
+                            </label>
+                            <input
+                                type="file"
+                                id="fileUpload"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
+                                multiple
+                                onChange={(e) => {
+                                    const files = e.target.files;
+                                }}
+                            />
+                            <p className="mt-1 text-xs text-gray-500">Upload project-related files (documents, source code, etc.)</p>
+                        </div>
+
                         <EndorserInput onEndorserChange={handleEndorserChange} existingEndorsers={endorsers}/>
                     </form>
 

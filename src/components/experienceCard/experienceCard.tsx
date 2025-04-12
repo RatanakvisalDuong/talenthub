@@ -64,7 +64,7 @@ const ExperienceCard: React.FC<Props> = ({ experience, index, dropdownOpen, togg
 							className="text-sm text-white hover:underline cursor-pointer p-2 bg-[#ffc107] rounded-md"
 							onClick={() => openEditExperienceDialog(experience)}
 						>
-							Edit
+							Update
 						</button>
 					)}
 				</div>

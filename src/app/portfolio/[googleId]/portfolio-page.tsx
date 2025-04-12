@@ -5,8 +5,8 @@ import { Education } from "@/app/type/education";
 import { Portfolio } from "@/app/type/portfolio";
 import { Skill } from "@/app/type/skill";
 import Appbar from "@/components/appbar/appbar";
-import AchievementCard from "@/components/certificateCard/certificateCard";
-import CertificateCard from "@/components/certificateCard/certificateCard";
+import AchievementCard from "@/components/achievementCard/achievementCard";
+import CertificateCard from "@/components/achievementCard/achievementCard";
 import EducationCard from "@/components/educationCard/educationCard";
 import ExperienceCard from "@/components/experienceCard/experienceCard";
 import ProjectCard from "@/components/projectCard/projectCard";
@@ -21,11 +21,6 @@ import { useState } from 'react';
 
 
 export default function PortfolioPageComponent({ portfolio }: { portfolio: Portfolio }) {
-
-    const [skillData, setSkillData] = useState<Skill[]>(portfolio.skills);
-    const [educationData, setEducationData] = useState<Education[]>(portfolio.education);
-    const [achievementData, setAchievementData] = useState<Achievement[]>(portfolio.achievements);
-
     const [expandedExperience, setExpandedExperience] = useState(false);
     const [expandedSkill, setExpandedSkill] = useState(false);
     const [expandedProject, setExpandedProject] = useState(false);
@@ -82,7 +77,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
 
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
-            <Appbar/>
+            <Appbar />
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
                 {successMessage && (
                     <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
@@ -118,7 +113,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                         <div className={`h-[65%] bg-white rounded-lg shadow-md p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto`}>
                             <p className="text-black font-bold text-lg">Achievements & Certifications</p>
                             <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
-                            {achievementData.map((achievement) => (
+                            {portfolio.achievements.map((achievement) => (
                                 <AchievementCard key={achievement.id} achievement={achievement} onClick={() => { }} />
                             ))}
                         </div>
@@ -199,10 +194,10 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             <p className="text-black font-bold text-xl mb-2">Skill</p>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
-                            {skillData.length === 0 ? (
+                            {portfolio.skills.length === 0 ? (
                                 <p className="justify-center items-center flex text-[#808080]">No skill available</p>
                             ) : (
-                                skillData.slice(0, expandedSkill ? skillData.length : 2).map((skill, index) => (
+                                portfolio.skills.slice(0, expandedSkill ? portfolio.skills.length : 2).map((skill, index) => (
                                     <SkillCard
                                         key={`skill-${skill.id || index}`}
                                         skill={skill}
@@ -214,7 +209,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                     />
                                 ))
                             )}
-                            <div className={`h-40px ${skillData.length > 2 ? 'block' : 'hidden'}`}>
+                            <div className={`h-40px ${portfolio.skills.length > 2 ? 'block' : 'hidden'}`}>
                                 <button
                                     onClick={toggleExpandedSkill}
                                     className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
@@ -227,10 +222,10 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             <p className="text-black font-bold text-xl mb-2">Education</p>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
-                            {educationData.length === 0 ? (
+                            {portfolio.education.length === 0 ? (
                                 <p className="justify-center items-center flex text-[#808080]">No skill available</p>
                             ) : (
-                                educationData.slice(0, expandedEducation ? educationData.length : 2).map((education, index) => (
+                                portfolio.education.slice(0, expandedEducation ? portfolio.education.length : 2).map((education, index) => (
                                     <EducationCard
                                         key={education.id}
                                         education={education}

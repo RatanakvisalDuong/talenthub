@@ -66,7 +66,7 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                             className="text-sm text-white hover:underline cursor-pointer p-2 bg-[#ffc107] rounded-md"
                             onClick={() => openEditSkillDialog(skill)}
                         >
-                            Edit
+                            Update
                         </button>
                     )}
                 </div>

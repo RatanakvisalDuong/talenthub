@@ -3,53 +3,31 @@
 import BigTextInput from "@/components/bigtextinput/bigtextinput";
 import TextInput from "@/components/textinput/textInput";
 import Image from "next/image";
-import { useRef, useState, useMemo } from "react";
+import axios from "axios";
+import { useRef, useState, useMemo, useEffect } from "react";
 import TextEditor from "./text-editor";
-import { allLanguages } from "@/dummydata/programmingLanguages";
 import EndorserInput from "@/components/endorsementInput/endorsementInput";
 import SelectMonthInput from "@/components/selectMonthInput/selectMonthInput";
+import { useSession } from "next-auth/react";
 
-const AddCertificateDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClose: () => void; onClick: () => void }) => {
+const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpdatedAchievement, setSuccessMessage }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number; handleUpdatedAchievement: (updatedAchievement: any) => void;setSuccessMessage: (message: string) => void; }) => {
+    const session = useSession();
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [languageInput, setLanguageInput] = useState("");
-    const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
     const [selectIssuedMonth, setSelectIssuedMonth] = useState<string>("");
+    const [selectIssuedYear, setSelectIssuedYear] = useState<string>("");
+    const [organization, setOrganization] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+    const [error, setError] = useState<string | null>(null);
+    // const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [endorsers, setEndorsers] = useState<string[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [title, setTitle] = useState<string>("");
 
     const handleEndorserChange = (endorsers: string[]) => {
+        setEndorsers(endorsers);
     };
 
-    const filteredSuggestions = allLanguages.filter(
-        (lang) =>
-            lang.name.toLowerCase().includes(languageInput.toLowerCase()) &&
-            !selectedLanguages.includes(lang.name)
-    );
-
-    const handleSelectLanguage = (lang: string) => {
-        if (!selectedLanguages.includes(lang)) {
-            setSelectedLanguages([...selectedLanguages, lang]);
-        }
-        setLanguageInput("");
-    };
-
-
-    const handleRemoveLanguage = (lang: string) => {
-        setSelectedLanguages(selectedLanguages.filter((l) => l !== lang));
-    };
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter" && languageInput.trim()) {
-            e.preventDefault();
-
-            const newLang = languageInput.trim();
-
-            if (!selectedLanguages.includes(newLang)) {
-                setSelectedLanguages((prev) => [...prev, newLang]);
-            }
-
-            setLanguageInput("");
-        }
-    };
 
     const imagePreviews = useMemo(() => {
         return imageFiles.map((file) => URL.createObjectURL(file));
@@ -67,22 +45,89 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; o
 
         const newFiles = Array.from(files);
 
-        const combined = [...imageFiles, ...newFiles].slice(0, 1);
-        setImageFiles(combined);
+        setImageFiles((prevFiles) => [...prevFiles, ...newFiles]);
+        event.target.value = "";
     };
 
     const handleRemoveImage = (index: number) => {
-        setImageFiles(imageFiles.filter((_, i) => i !== index));
+        setImageFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
     };
 
     const handleSelectMonthMonthChange = (value: string | null) => {
         setSelectIssuedMonth(value ? value : "");
     };
 
+    const handleAddAchievement = async () => {
+        console.log('test')
+        if (title === "" || organization === "" || description === "" || selectIssuedMonth === "" || selectIssuedYear === "" || imageFiles.length === 0) {
+            setError("Please fill in all required fields.");
+            return;
+        }
+        if (endorsers.some(endorser => endorser === session?.data?.user?.email)) {
+            setError("You cannot endorse your own achievement.");
+            return;
+        }
+        setLoading(true);
+        const formData = new FormData();
+        formData.append("portfolio_id", portfolioId.toString());
+        formData.append("title", title);
+        formData.append("issued_by", organization);
+        formData.append("description", description);
+        formData.append("issue_month", selectIssuedMonth);
+        formData.append("issue_year", selectIssuedYear);
+        formData.append('image', imageFiles[0]);
+
+        for (let i = 0; i < endorsers.length; i++) {
+            formData.append(`endorsers[]`, endorsers[i]);
+        }
+
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}create_achievement`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${session?.data?.accessToken}`,
+                    },
+                },
+            );
+            console.log(response)
+            if (response.status === 200) {
+                const achievement = {
+                    id: response.data.achievement_id,
+                    portfolio_id: portfolioId,
+                    title: title,
+                    issued_by: organization,
+                    issue_month: selectIssuedMonth,
+                    issue_year: selectIssuedYear,
+                    description: description,
+                    image: response.data.photo,
+                    endorsers: endorsers,
+                };
+                handleUpdatedAchievement(achievement);
+                setSuccessMessage("Achievement created successfully!");
+                onClose();
+            } else {
+                setError("Failed to create achievement.");
+            }
+        }
+        catch (error) {
+            setError("Failed to create achievement.");
+        }
+        finally {
+            setLoading(false);
+        }
+        // onClose();
+    }
+
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-max overflow-y-auto">
+            <div className="bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-max overflow-y-auto z-50 relative">
+                {loading && (
+                    <div className="absolute inset-0 bg-white backdrop-blur-sm z-10 flex items-center justify-center">
+                        <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
+                    </div>
+                )}
                 <div className="flex justify-between items-start mb-2">
                     <h2 className="text-xl font-bold text-black">Create New Achievement or Certificate</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
@@ -100,6 +145,8 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; o
                             id="link"
                             label="Title of Achievement or Certificate"
                             required
+                            onChange={(e) => setTitle(e.target.value)}
+                            value={title}
                             placeholder="Eg.Certificate of Completion in Web Development"
                         />
 
@@ -107,15 +154,12 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; o
                             id="link"
                             label="Issued by Organization"
                             required
+                            onChange={(e) => setOrganization(e.target.value)}
+                            value={organization}
                             placeholder="Eg.Coursera, Udemy, etc."
                         />
 
-                        {/* <BigTextInput
-                            id="description"
-                            label="Project Description"
-                            required
-                            placeholder="Eg.A portfolio platform for ParagonIU students"
-                        /> */}
+
 
                         <div className="flex justify-between gap-2">
                             <div className="mb-2 w-1/2">
@@ -133,6 +177,9 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; o
                                 </label>
                                 <select
                                     id="issuedYear"
+                                    value={selectIssuedYear}
+                                    onChange={(e) => setSelectIssuedYear(e.target.value)}
+                                    // defaultValue={''}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
                                 >
                                     <option value="" disabled>Select Year</option>
@@ -149,11 +196,19 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; o
                             id="description"
                             label="Description"
                             required
+                            onChange={(e) => setDescription(e.target.value)}
+                            value={description}
                             placeholder="Eg.I completed a course on Web Development, covering HTML, CSS, and JavaScript."
                         />
 
-                        {/* <EndorserInput onEndorserChange={handleEndorserChange} existingEndorsers={Endoser}/> */}
+                        <EndorserInput onEndorserChange={handleEndorserChange} existingEndorsers={endorsers} />
+                        {error && (
+                            <div className="text-red-500 text-sm ">
+                                {error}
+                            </div>
+                        )}
                     </form>
+
 
                     {/* Right side: Multiple Image Upload */}
                     <div className="w-2/5">
@@ -203,9 +258,9 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; o
                     <button
                         type="submit"
                         className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600"
-                        onClick={onClick}
+                        onClick={handleAddAchievement}
                     >
-                        Create Certificate
+                        Create Achievement or Certificate
                     </button>
                 </div>
             </div>

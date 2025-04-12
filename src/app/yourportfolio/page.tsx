@@ -69,7 +69,7 @@ export default async function YourPortfolioPage() {
     redirect('/');
   }
 
-  try {
+  // try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}view_portfolio_details/${session.googleId}`
     );
@@ -83,11 +83,11 @@ export default async function YourPortfolioPage() {
     );
 
 
-  } catch (error) {
-    return (
-      <div>
-        Error fetching portfolio data. Please try again later.
-      </div>
-    );
-  }
+  // } catch (error) {
+  //   return (
+  //     <div>
+  //       {error instanceof Error}
+  //     </div>
+  //   );
+  // }
 }
