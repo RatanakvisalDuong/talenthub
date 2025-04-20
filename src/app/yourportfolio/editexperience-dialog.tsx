@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import CompanyInput from "@/components/companyInput/companyInput";
 import { Experience } from "../type/experience";
 import { Endorser } from "../type/endorser";
+import { useRouter } from "next/navigation";
 
 const EditExperienceDialog = ({
     isOpen,
@@ -27,6 +28,7 @@ const EditExperienceDialog = ({
     endorser: Endorser[] | [];
 }) => {
     const session = useSession();
+    const router = useRouter();
 
     const [jobTitle, setJobTitle] = useState<string>("");
     const [companyName, setCompanyName] = useState<string>("");
@@ -123,6 +125,7 @@ const EditExperienceDialog = ({
                     end_year: isPresent ? null : endYear,
                     endorsers: response.data.endorsers,
                 }
+                router.refresh();
 
                 handleExperienceUpdate((prev) =>
                     prev.map((experience) => (experience.id === existingExperience?.id ? updatedExperience : experience))
@@ -154,6 +157,7 @@ const EditExperienceDialog = ({
             );
 
             if (response.data.message === 'Experience and related data deleted successfully.') {
+                router.refresh();
                 handleExperienceUpdate((prev) => prev.filter((s) => s.id !== existingExperience?.id));
                 setSuccessMessage("Experience deleted successfully!");
                 setShowDeleteConfirmation(false);

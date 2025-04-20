@@ -7,6 +7,7 @@ import BigTextInput from "../../components/bigtextinput/bigtextinput";
 import SelectMonthInput from "@/components/selectMonthInput/selectMonthInput";
 import EndorserInput from "@/components/endorsementInput/endorsementInput";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type Props = {
     achievement: Achievement;
@@ -17,7 +18,8 @@ type Props = {
 };
 
 const EditCertificateDialog: React.FC<Props> = ({ achievement, onClose, onSave, setSuccessMessage, onDelete }) => {
-    const [editedAchievement, setEditedAchievement] = useState<Achievement>(achievement);
+    const router = useRouter();
+    // const [editedAchievement, setEditedAchievement] = useState<Achievement>(achievement);
     const session = useSession();
 
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -109,6 +111,7 @@ const EditCertificateDialog: React.FC<Props> = ({ achievement, onClose, onSave, 
             }
             
             if (response.status === 200) {
+                router.refresh();
                 onSave(updateAchievement);
                 setSuccessMessage("Achievement updated successfully.");
                 onClose();
@@ -135,6 +138,7 @@ const EditCertificateDialog: React.FC<Props> = ({ achievement, onClose, onSave, 
             });
 
             if (response.status === 200) {
+                router.refresh();
                 onDelete?.(achievement.id);
                 setSuccessMessage("Achievement deleted successfully.");
                 onClose();

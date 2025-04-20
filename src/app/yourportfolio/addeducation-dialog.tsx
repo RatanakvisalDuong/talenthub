@@ -8,10 +8,12 @@ import SelectMonthInput from '@/components/selectMonthInput/selectMonthInput';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { Education } from '../type/education';
+import { useRouter } from 'next/navigation';
 
 const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMessage, setEducationData }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number;setSuccessMessage: (message: string) => void; setEducationData: React.Dispatch<React.SetStateAction<Education[]>>;}) => {
 
     const { data: session} = useSession();
+    const router = useRouter();
 
     const [isPresent, setIsPresent] = useState(false);
     const [selectedStartMonth, setSelectedStartMonth] = useState<string>("");
@@ -85,6 +87,7 @@ const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessM
                     start_month: selectedStartMonth,
                     end_month: isPresent ? null : selectedEndMonth,
                 };
+                router.refresh();
                 setEducationData((prev) => [...prev, education]);
                 setSuccessMessage("Education created successfully!");
                 setLoading(false);

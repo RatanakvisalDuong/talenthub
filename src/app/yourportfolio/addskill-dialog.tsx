@@ -6,9 +6,8 @@ import TextInput from "@/components/textinput/textInput";
 import axios from "axios";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { Portfolio } from "../type/portfolio";
 import { Skill } from "../type/skill";
-import { Endorser } from "../type/endorser";
+import { useRouter } from "next/navigation";
 
 const AddSkillDialog = ({
     isOpen,
@@ -26,6 +25,7 @@ const AddSkillDialog = ({
     setSuccessMessage: (message: string) => void;
 }) => {
     const { data: session } = useSession();
+    const router = useRouter();
 
     const [skillTitle, setSkillTitle] = useState<string>("");
     const [skillDescription, setSkillDescription] = useState<string>("");
@@ -77,6 +77,7 @@ const AddSkillDialog = ({
                         'updated_at': new Date().toISOString(),
                         'endorsers': response.data.endorsers
                     };
+                    router.refresh();
                     setSuccessMessage("Skill created successfully!");
                     setSkilldata(prevSkills => [...prevSkills, skill]);
                 }

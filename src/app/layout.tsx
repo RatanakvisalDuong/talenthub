@@ -29,7 +29,6 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <title>TalentHub</title>
       </head>
-      {/* Use client-side wrapper to handle the SessionProvider */}
       <body className={`${ubuntuFont.className} bg-[#E8E8E8]`}>
         <ClientSessionWrapper session={session}>{children}</ClientSessionWrapper>
       </body>

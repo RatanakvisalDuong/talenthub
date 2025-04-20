@@ -1,4 +1,4 @@
-name: Build NextJS web application
+name: Building Project TalentHub 
 on: push
 jobs: 
   build-project:

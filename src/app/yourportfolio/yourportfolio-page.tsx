@@ -5,7 +5,6 @@
 import ExperienceCard from "@/components/experienceCard/experienceCard";
 import ProjectCard from "@/components/projectCard/projectCard";
 import WorkingStatusBar from "@/components/workingStatus/workingStatusBar";
-import { certificates } from "@/dummydata/certificate";
 import { getMajorName, majors } from "@/dummydata/major";
 import { ShareIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import Image from "next/image";
@@ -96,6 +95,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                 ...updatedPortfolio,
             }
         });
+        // window.location.reload();
     };
 
     const toggleAddProjectDialog = () => {
@@ -156,7 +156,6 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
     };
 
     const toggleEditCertificateDialog = () => {
-        console.log("Edit Certificate Dialog");
         setViewCertificateDialog(false); 
         setEditCertificateDialog(true); 
     };

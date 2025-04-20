@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Skill } from "../type/skill";
 import { Endorser } from "../type/endorser";
+import { useRouter } from "next/navigation";
 
 const EditSkillDialog = ({
     isOpen,
@@ -31,6 +32,7 @@ const EditSkillDialog = ({
     setSuccessMessage: (message: string) => void;
 }) => {
     const { data: session } = useSession();
+    const router = useRouter();
 
     const [skillTitle, setSkillTitle] = useState(existingSkillTitle);
     const [skillDescription, setSkillDescription] = useState(existingSkillDescription);
@@ -82,6 +84,7 @@ const EditSkillDialog = ({
                     updated_at: new Date().toISOString(),
                     endorsers: response.data.endorsers,
                 };
+                router.refresh();
 
                 setSuccessMessage("Skill updated successfully!");
                 changeSkillData((prev) =>
@@ -111,6 +114,7 @@ const EditSkillDialog = ({
             if (response.data.message == 'Skill and its endorsers deleted successfully.') {
                 changeSkillData((prev) => prev.filter((s) => s.id !== skillId));
             }
+            router.refresh();
             setShowDeleteConfirmation(false)
             setSuccessMessage("Skill deleted successfully!");
             onClose();

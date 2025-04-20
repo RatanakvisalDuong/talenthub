@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import CompanyInput from "@/components/companyInput/companyInput";
 import { Experience } from "../type/experience";
+import { useRouter } from "next/navigation";
 
 const AddExperienceDialog = ({
   isOpen,
@@ -26,6 +27,7 @@ const AddExperienceDialog = ({
   setExperienceData: React.Dispatch<React.SetStateAction<Experience[]>>;
 }) => {
   const session = useSession();
+  const router = useRouter();
 
   const [jobTitle, setJobTitle] = useState<string>("");
   const [companyName, setCompanyName] = useState<string>("");
@@ -105,7 +107,7 @@ const AddExperienceDialog = ({
           end_year: isPresent ? null : endYear,
           endorsers: response.data.endorsers,
         }
-          
+        router.refresh();
         setExperienceData(prevExperience => [...prevExperience, experience]);
 
         setSuccessMessage("Experience created successfully");

@@ -5,6 +5,7 @@ import SelectMonthInput from '@/components/selectMonthInput/selectMonthInput';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { Education } from '../type/education';
+import { useRouter } from "next/navigation";
 
 const EditEducationDialog = ({
     isOpen,
@@ -39,6 +40,7 @@ const EditEducationDialog = ({
 }) => {
 
     const { data: session, status } = useSession();
+    const router = useRouter();
 
     const [educationId, setEducationId] = useState<number>(existingEducationId);
     const [isPresent, setIsPresent] = useState(false);
@@ -111,9 +113,6 @@ const EditEducationDialog = ({
                     },
                 }
             );
-
-            console.log(response.data);
-
             if (response.status === 200) {
                 const education: Education = {
                     id: response.data.education_id,
@@ -126,7 +125,7 @@ const EditEducationDialog = ({
                     start_month: selectedStartMonth,
                     end_month: isPresent ? null : selectedEndMonth,
                 };
-
+                router.refresh();
                 setSuccessMessage("Education updated successfully!");
                 changeEducationData((prev) =>
                     prev.map((edu) => (edu.id === educationId ? education : edu))

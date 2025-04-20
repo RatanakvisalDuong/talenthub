@@ -8,8 +8,10 @@ import TextEditor from "./text-editor";
 import { allLanguages } from "@/dummydata/programmingLanguages";
 import EndorserInput from "@/components/endorsementInput/endorsementInput";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClose: () => void; onClick: () => void }) => {
+    const router = useRouter();
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [languageInput, setLanguageInput] = useState("");
@@ -79,8 +81,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
     const handleAddProject = async () => {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}create_project`, {
         })
-
-        
+    
     }
 
     return (

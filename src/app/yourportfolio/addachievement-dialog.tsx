@@ -5,12 +5,13 @@ import TextInput from "@/components/textinput/textInput";
 import Image from "next/image";
 import axios from "axios";
 import { useRef, useState, useMemo, useEffect } from "react";
-import TextEditor from "./text-editor";
 import EndorserInput from "@/components/endorsementInput/endorsementInput";
 import SelectMonthInput from "@/components/selectMonthInput/selectMonthInput";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpdatedAchievement, setSuccessMessage }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number; handleUpdatedAchievement: (updatedAchievement: any) => void;setSuccessMessage: (message: string) => void; }) => {
+    const router = useRouter();
     const session = useSession();
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -19,7 +20,6 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
     const [organization, setOrganization] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
-    // const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [endorsers, setEndorsers] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState<string>("");
@@ -103,6 +103,7 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
                     image: response.data.photo,
                     endorsers: endorsers,
                 };
+                router.refresh();
                 handleUpdatedAchievement(achievement);
                 setSuccessMessage("Achievement created successfully!");
                 onClose();

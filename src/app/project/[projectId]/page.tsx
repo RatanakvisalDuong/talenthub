@@ -31,7 +31,7 @@ export default function ProjectPage() {
                                 </div>
                             </div>
                             <div>
-                                
+
                             </div>
                         </div>
                         <div className="h-[40%] w-full bg-[#F5F5F5]" >

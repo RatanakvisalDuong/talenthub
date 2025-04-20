@@ -8,6 +8,7 @@ import axios from "axios";
 import { useSession, getSession } from "next-auth/react";
 import { Portfolio } from "../type/portfolio";
 import { error } from "console";
+import { useRouter } from "next/navigation";
 
 const EditPortfolioDialog = ({
     isOpen,
@@ -33,6 +34,7 @@ const EditPortfolioDialog = ({
     handlePortfolioUpdate: (updatedPortfolio: any) => void;
 }) => {
     const { data: session, update } = useSession();
+    const router = useRouter();
 
     const [phone, setPhone] = useState<string | null>(phoneNumber || null);
     const [selectedMajor, setSelectedMajor] = useState<number | null>(major || null);
@@ -109,6 +111,7 @@ const EditPortfolioDialog = ({
             );
 
             if (response.status == 200) {
+                router.refresh();
                 setLoading(false);
                 const updatedPortfolio = {
                     portfolioId,
