@@ -39,8 +39,6 @@ export default function Card({ portfolio }: { portfolio: Portfolio }) {
                     </div>
 
                 )}
-
-
             </div>
             <Image
                 src={portfolio.photo || "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*"}

@@ -54,8 +54,8 @@ export default function HomeComponent(
 	});
 
 	return (
-		<div className="bg-[#E8E8E8] w-[100%] h-[100%] overflow-hidden fixed">
-			<div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
+		<div className="bg-[#E8E8E8] w-full h-screen overflow-hidden">
+			<div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between h-full">
 				<div className="w-[23%]">
 					<Sidebar
 						photo={photo || 'https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*'}
@@ -66,17 +66,18 @@ export default function HomeComponent(
 						onWorkingStatusSelect={handleWorkingStatusSelect}
 					/>
 				</div>
-				<div className="w-[78%] px-4">
+				<div className="h-[87vh] w-[78%] px-4 flex flex-col ">
 					<SearchBar onSearch={handleSearch} />
-					<div className="h-[87vh] grid grid-cols-4 gap-3 overflow-y-auto mt-4 px-2 pt-2 pb-16">
+					<div className="flex-grow overflow-y-auto mt-4 px-2 pt-2 pb-16">
 						{filteredPortfolio.length > 0 ? (
-							filteredPortfolio.map((portfolio) => (
-								<Card key={portfolio.user_id} portfolio={portfolio} />
-							))
+							<div className="grid grid-cols-4 gap-3 auto-rows-max">
+								{filteredPortfolio.map((portfolio) => (
+									<Card key={portfolio.user_id} portfolio={portfolio} />
+								))}
+							</div>
 						) : (
 							<p className="text-black text-center">No Portfolio found</p>
 						)}
-						<div className="h-8"></div>
 					</div>
 				</div>
 			</div>
