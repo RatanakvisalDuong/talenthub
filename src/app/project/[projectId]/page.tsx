@@ -130,7 +130,6 @@ export default function ProjectPage() {
                                         </div>
                                     ))}
                                 </div>
-
                                 <button 
                                     onClick={prevSlide}
                                     className="absolute top-1/2 left-2 transform -translate-y-1/2 p-1 text-gray-800 hover:bg-opacity-60 transition-all focus:outline-none hover:cursor-pointer"
