@@ -17,6 +17,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
     const [languageInput, setLanguageInput] = useState("");
     const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
     const [endorsers, setEndorsers] = useState<string[]>([]);
+    const [editorContent, setEditorContent] = useState<string>();
 
     const handleEndorserChange = () => {
         setEndorsers(endorsers);
@@ -79,9 +80,9 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
     };
 
     const handleAddProject = async () => {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}create_project`, {
-        })
-    
+        // const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}create_project`, {
+        // })
+        console.log(editorContent)
     }
 
     return (
@@ -115,7 +116,12 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
                             placeholder="Eg.A portfolio platform for ParagonIU students"
                         />
 
-                        <TextEditor id="instruction" required={true} label="Project Instruction" />
+                        <TextEditor
+                            id="myEditor"
+                            label="My Editor"
+                            value={editorContent}
+                            onChange={(html) => setEditorContent(html)}
+                        />
 
                         <div className="mb-2 relative">
                             <label htmlFor="language" className="block text-sm font-medium text-black">
@@ -131,7 +137,6 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
                                 placeholder="Eg.Python, Javascript, C++, Press Enter to add new language"
                                 autoComplete="off"
                             />
-
 
                             {/* Suggestion list */}
                             {languageInput && filteredSuggestions.length > 0 && (
@@ -194,7 +199,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
                             <p className="mt-1 text-xs text-gray-500">Upload project-related files (documents, source code, etc.)</p>
                         </div>
 
-                        <EndorserInput onEndorserChange={handleEndorserChange} existingEndorsers={endorsers}/>
+                        <EndorserInput onEndorserChange={handleEndorserChange} existingEndorsers={endorsers} />
                     </form>
 
                     {/* Right side: Multiple Image Upload */}
@@ -233,7 +238,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick }: { isOpen: boolean; onClo
                                             onClick={() => handleRemoveImage(index)}
                                             className="absolute top-0 right-0 text-red-500 p-1 rounded-full"
                                         >
-                                            <i className="fas fa-times"></i> 
+                                            <i className="fas fa-times"></i>
                                         </div>
                                     </div>
                                 ))}
