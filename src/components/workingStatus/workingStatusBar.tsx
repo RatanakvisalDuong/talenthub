@@ -1,5 +1,8 @@
-export default function WorkingStatusBar({ status }: { status: number }) {
-    
+export default function WorkingStatusBar({ status }: { status: number | null }) {
+    if (status === null) {
+        return null;
+    }
+
     return (
         <div
             className={` h-6 flex justify-center items-center text-white text-[12px] rounded-md ${status === 1 ? 'bg-[#0277B6]' : 'bg-[#00BD62]'

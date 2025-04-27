@@ -10,7 +10,7 @@ import SelectMonthInput from "@/components/selectMonthInput/selectMonthInput";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpdatedAchievement, setSuccessMessage }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number; handleUpdatedAchievement: (updatedAchievement: any) => void;setSuccessMessage: (message: string) => void; }) => {
+const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpdatedAchievement, setSuccessMessage }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number; handleUpdatedAchievement: (updatedAchievement: any) => void; setSuccessMessage: (message: string) => void; }) => {
     const router = useRouter();
     const session = useSession();
     const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -258,7 +258,7 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
                 <div className="flex justify-end mt-2">
                     <button
                         type="submit"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600"
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer"
                         onClick={handleAddAchievement}
                     >
                         Create Achievement or Certificate

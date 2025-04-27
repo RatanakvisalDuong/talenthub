@@ -9,6 +9,7 @@ declare module "next-auth" {
 		roleId: number;
 		googleId: string;
 		photo: string;
+		expires: string; // ISO date string for session expiry
 	}
 }
 
@@ -18,11 +19,11 @@ declare module "next-auth/jwt" {
 		roleId: number;
 		googleId: string;
 		photo: string;
+		exp: number; // Standard JWT expiration claim
 	}
 }
 
 const BLOCKED_DOMAINS = ["gmail.com", "yahoo.com", "email.com", "aupp.edu.kh", "hotmail.com", "outlook.com", "live.com", "icloud.com", "protonmail.com", "tutanota.com", "yandex.com", "zoho.com", "gmx.com", "mailinator.com", "rupp.edu.kh"];
-// const BLOCKED_DOMAINS = ["yahoo.com", "email.com", "aupp.edu.kh", "hotmail.com", "outlook.com", "live.com", "icloud.com", "protonmail.com", "tutanota.com", "yandex.com", "zoho.com", "gmx.com", "mailinator.com", "rupp.edu.kh"];
 
 let laravelToken = "";
 let roleId = 0;
@@ -48,6 +49,15 @@ export const authOptions: NextAuthOptions = {
 	pages: {
 		error: "/auth/error",
 	},
+	// Set session max age to 14 days
+	session: {
+		strategy: "jwt",
+		maxAge: 14 * 24 * 60 * 60, // 14 days in seconds
+	},
+	// Set JWT max age to 14 days for consistency
+	jwt: {
+		maxAge: 14 * 24 * 60 * 60, // 14 days in seconds
+	},
 	callbacks: {
 		async signIn({ user }) {
 			if (user?.email) {
@@ -72,12 +82,17 @@ export const authOptions: NextAuthOptions = {
 					}
 				);
 
-				console.log('Res:', res.data)
-
 				laravelToken = res.data.token;
 				roleId = res.data.role_id;
 				googleId = res.data.google_id;
 				photo = res.data.photo;
+
+				// Store expiry in localStorage
+				if (typeof window !== "undefined") {
+					const expiryDate = new Date();
+					expiryDate.setDate(expiryDate.getDate() + 14);
+					localStorage.setItem("auth_expiry", expiryDate.getTime().toString());
+				}
 
 			} catch (error) {
 				console.error("Error:", error);
@@ -102,7 +117,10 @@ export const authOptions: NextAuthOptions = {
 			session.roleId = token.roleId;
 			session.googleId = token.googleId;
 			session.photo = token.photo;
+
 			return session;
 		},
 	},
 };
+
+export default NextAuth(authOptions);

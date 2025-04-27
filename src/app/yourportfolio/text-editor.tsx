@@ -109,9 +109,6 @@ export default function TextEditor({
                             <button className="ql-list" value="ordered" />
                             <button className="ql-list" value="bullet" />
                         </span>
-                        <span className="ql-formats">
-                            <select className="ql-align" />
-                        </span>
                     </div>
                     <div
                         id={id}

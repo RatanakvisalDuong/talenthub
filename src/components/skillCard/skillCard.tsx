@@ -63,7 +63,7 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
 
                     {owner && (
                         <button
-                            className="text-sm text-white hover:underline cursor-pointer p-2 bg-[#ffc107] rounded-md"
+                            className="text-sm text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-md items-center justify-center transition-all duration-200"
                             onClick={() => openEditSkillDialog(skill)}
                         >
                             Update

@@ -309,7 +309,7 @@ const EditCertificateDialog: React.FC<Props> = ({ achievement, onClose, onSave, 
                 <div className="flex justify-end mt-2">
                     <button
                         type="button"
-                        className="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600"
+                        className="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600 hover:cursor-pointer" 
                         onClick={() => setShowDeleteConfirmation(true)}
                         disabled={loading}
                     >
@@ -317,7 +317,7 @@ const EditCertificateDialog: React.FC<Props> = ({ achievement, onClose, onSave, 
                     </button>
                     <button
                         type="submit"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600"
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer"
                         onClick={handleSave}
                     >
                         Save Changes
@@ -332,14 +332,14 @@ const EditCertificateDialog: React.FC<Props> = ({ achievement, onClose, onSave, 
                         <p className="text-gray-700 mb-6">Are you sure you want to delete this education entry? This action cannot be undone.</p>
                         <div className="flex justify-center gap-4">
                             <button
-                                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 hover:cursor-pointer"
                                 onClick={handleDeleteAchievement}
                                 disabled={loading}
                             >
                                 {loading ? "Deleting..." : "Yes, Delete"}
                             </button>
                             <button
-                                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300"
+                                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 hover:cursor-pointer"
                                 onClick={() => setShowDeleteConfirmation(false)}
                                 disabled={loading}
                             >

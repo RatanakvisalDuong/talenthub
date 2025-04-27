@@ -2,6 +2,7 @@ import axios from "axios";
 import PortfolioPageComponent from "./portfolio-page";
 import { Portfolio } from "../../type/portfolio";
 
+
 export default async function PortfolioPage({ params }: { params: Promise<{ googleId: string }> }) {
   const {googleId} = await params;
   try {
@@ -10,6 +11,7 @@ export default async function PortfolioPage({ params }: { params: Promise<{ goog
     );
 
     const portfolioData: Portfolio = response.data;
+    console.log("Portfolio Data:", portfolioData);
 
     return <PortfolioPageComponent portfolio={portfolioData} />;
   } catch (error) {

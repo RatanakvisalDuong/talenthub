@@ -89,33 +89,37 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                         <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'} bg-white rounded-lg shadow-md p-4 relative`}>
                             <p className="text-black font-bold text-lg">Projects</p>
                             <div className="w-25 bg-[#dfdfdf] h-[2px] mt-1"></div>
-                            {portfolio.projects.length === 0 ? (
-                                <p className="text-black text-smdmt-4 justify-center items-center flex">No project available</p>
+                            {portfolio.projects.filter(project => project.project_visibility_status === 0).length === 0 ? (
+                                <p className="text-[#808080] text-md mt-4 justify-center items-center flex">No project available</p>
                             ) : (
                                 <>
                                     {portfolio.projects
-                                        .slice(0, expandedProject ? portfolio.projects.length : 2)
+                                        .filter(project => project.project_visibility_status === 1)
+                                        .slice(0, expandedProject ? portfolio.projects.filter(p => p.project_visibility_status === 1).length : 2)
                                         .map((project) => (
-                                            <ProjectCard key={project.id} project={project} />
+                                            <ProjectCard
+                                                key={project.id}
+                                                project={project}
+                                            />
                                         ))}
 
-                                    {portfolio.projects.length > 2 && (
-                                        <button
-                                            onClick={toggleDropdownProject}
-                                            className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
-                                        >
-                                            {expandedProject ? 'See Less' : 'See More'}
-                                        </button>
-                                    )}
+                                    <button onClick={() => setExpandedProject(!expandedProject)}>
+                                        {expandedProject ? 'See Less' : 'See More'}
+                                    </button>
                                 </>
                             )}
+
                         </div>
                         <div className={`h-[65%] bg-white rounded-lg shadow-md p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto`}>
                             <p className="text-black font-bold text-lg">Achievements & Certifications</p>
                             <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
-                            {portfolio.achievements.map((achievement) => (
-                                <AchievementCard key={achievement.id} achievement={achievement} onClick={() => { }} />
-                            ))}
+                            {portfolio.achievements.length === 0 ? (
+                                <p className="text-[#808080] text-md mt-4 justify-center items-center flex">No achievement & certificate available</p>
+                            ) : (
+                                portfolio.achievements.map((achievement) => (
+                                    <AchievementCard key={achievement.id} achievement={achievement} onClick={() => { }} />
+                                ))
+                            )}
                         </div>
                     </div>
                     <div className="h-[87vh] w-[68%] overflow-y-auto pr-6 overflow-x-hidden">
@@ -124,7 +128,16 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                 <div className="flex items-center justify-start h-full">
                                     <div className="w-[40%] relative flex items-center justify-center">
                                         <div className="absolute top-0 right-0 z-10 -translate-y-1/2">
-                                            <WorkingStatusBar status={portfolio.portfolio.working_status} />
+                                            {portfolio.portfolio.role_id === 1 ? (
+                                                <WorkingStatusBar status={portfolio.portfolio.working_status} />
+                                            ) :
+                                                <div
+                                                    className="h-6 flex justify-center items-center text-white text-[12px] rounded-md bg-[#5086ed] p-2"
+                                                >
+                                                    Endorser
+                                                </div>
+                                            }
+
                                         </div>
                                         <div className="h-[90%] w-[90%] rounded-md overflow-hidden mx-auto flex items-center justify-center">
                                             <Image
@@ -146,9 +159,11 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                         <p className="text-black mt-2 text-sm">
                                             <span className="font-bold mr-2">Contact:</span> {portfolio.portfolio.phone_number ? portfolio.portfolio.phone_number : 'N/A'}
                                         </p>
-                                        <p className="text-black mt-2 text-sm">
-                                            <span className="font-bold mr-2">Major:</span> {getMajorName()}
-                                        </p>
+                                        {portfolio.portfolio.role_id === 1 ?
+                                            (<p className="text-black mt-2 text-sm">
+                                                <span className="font-bold mr-2">Major:</span> {getMajorName()}
+                                            </p>)
+                                            : <div></div>}
                                         <button className="mt-4 rounded-sm text-black px-4 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:transform hover:scale-105" onClick={toggleSharePortfolio}><ShareIcon className="w-5 h-5 mr-2" /> Share Portfolio</button>
                                     </div>
                                 </div>

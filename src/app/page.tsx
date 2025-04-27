@@ -4,6 +4,7 @@ import HomeComponent, { PortfolioProfile } from "./home-portfolio";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/option";
 import Layout from "@/components/layout/layout";
+import { signOut } from "next-auth/react";
 
 export default async function Home() {
 	const session = await getServerSession(authOptions);
@@ -12,7 +13,6 @@ export default async function Home() {
 	const portfolioData: PortfolioProfile[] = response.data;
 	let response2: any = { data: { portfolio: { photo: null } } };
 
-	// Check if the session is available
 	if(session?.user?.email){
 		response2 = await axios.get(
 			`${process.env.NEXT_PUBLIC_API_URL}view_portfolio_details/${session?.googleId}`

@@ -174,135 +174,85 @@ const EditExperienceDialog = ({
     if (!isOpen) return null;
 
     return (
-        // <div className="fixed inset-0 z-50 flex items-center justify-center">
-        //     <div className={`bg-white rounded-md p-6 w-[700px] h-[650px] max-w-full shadow-lg overflow-y-auto z-50 relative ${showDeleteConfirmation ? "blur-sm" : ""}`}>
-        //         {loading && (
-        //             <div className="absolute inset-0 bg-white backdrop-blur-sm z-10 flex items-center justify-center">
-        //                 <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
-        //             </div>
-        //         )}
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className={`bg-white rounded-md p-6 w-[700px] h-[650px] max-w-full shadow-lg overflow-y-auto z-50 relative ${showDeleteConfirmation ? "blur-sm" : ""}`}>
-                {loading && (
-                    <div className="absolute inset-0 bg-white backdrop-blur-sm z-10 flex items-center justify-center">
-                        <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
-                    </div>
-                )}
-                <div className="flex justify-between items-start mb-2">
-                    <h2 className="text-xl font-bold text-black">Update Experience</h2>
-                    <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+            {loading ? (
+                <div className={`bg-white rounded-md p-6 w-[700px] h-[650px] max-w-full shadow-lg overflow-y-auto z-50 relative flex items-center justify-center`}>
+                    <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
                 </div>
+            ) : <div>
+                <div className={`bg-white rounded-md p-6 w-[700px] h-[650px] max-w-full shadow-lg overflow-y-auto z-50 relative ${showDeleteConfirmation ? "blur-sm" : ""}`}>
+                    <div className="flex justify-between items-start mb-2">
+                        <h2 className="text-xl font-bold text-black">Update Experience</h2>
+                        <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
 
-                <div className="h-[2px] w-24 bg-gray-200 mb-2" />
+                    <div className="h-[2px] w-24 bg-gray-200 mb-2" />
 
-                <div className="flex gap-x-6">
-                    <form className="w-full">
-                        <TextInput
-                            id="title"
-                            label="Job Title"
-                            required
-                            placeholder="Eg. Penetration Tester"
-                            value={jobTitle}
-                            onChange={(e) => setJobTitle(e.target.value)}
-                        />
+                    <div className="flex gap-x-6">
+                        <form className="w-full">
+                            <TextInput
+                                id="title"
+                                label="Job Title"
+                                required
+                                placeholder="Eg. Penetration Tester"
+                                value={jobTitle}
+                                onChange={(e) => setJobTitle(e.target.value)}
+                            />
 
-                        <CompanyInput inputValue={companyName} onInputChange={handleCompanyNameChange} />
+                            <CompanyInput inputValue={companyName} onInputChange={handleCompanyNameChange} />
 
-                        <div className="mb-2">
-                            <label htmlFor="jobTitle" className="block text-sm font-medium text-black">
-                                Employment Type<span className="text-red-400 ml-2">*</span>
-                            </label>
-                            <select
-                                id="jobTitle"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                value={employmentType}
-                                onChange={(e) => setEmploymentType(e.target.value)}
-                            >
-                                <option value="" disabled>
-                                    Select Employment Type
-                                </option>
-                                <option value="Internship">Internship</option>
-                                <option value="Part-time">Part-time</option>
-                                <option value="Full-time">Full-time</option>
-                                <option value="Freelance">Freelance</option>
-                            </select>
-                        </div>
-
-                        <BigTextInput
-                            id="description"
-                            label="Description"
-                            required
-                            onChange={(e) => setJobDescription(e.target.value)}
-                            placeholder="Eg. Perform penetration testing on various systems and networks to identify vulnerabilities and recommend security improvements."
-                            value={jobDescription}
-                        />
-
-                        <div className="flex justify-between gap-2">
-                            <div className="mb-2 w-1/2">
-                                <SelectMonthInput
-                                    label="Start Month"
-                                    id="startMonth"
-                                    required={true}
-                                    onChange={handleSelectStartMonthChange}
-                                    value={selectedStartMonth}
-                                />
-                            </div>
-                            <div className="mb-2 w-1/2">
-                                <label htmlFor="startYear" className="block text-sm font-medium text-black">
-                                    Start Year<span className="text-red-400 ml-2">*</span>
+                            <div className="mb-2">
+                                <label htmlFor="jobTitle" className="block text-sm font-medium text-black">
+                                    Employment Type<span className="text-red-400 ml-2">*</span>
                                 </label>
                                 <select
-                                    id="startYear"
+                                    id="jobTitle"
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                    value={startYear}
-                                    onChange={(e) => setStartYear(e.target.value)}
+                                    value={employmentType}
+                                    onChange={(e) => setEmploymentType(e.target.value)}
                                 >
-                                    <option value="" disabled>Select Year</option>
-                                    {Array.from({ length: new Date().getFullYear() - 2000 + 1 }, (_, i) => new Date().getFullYear() - i).map((year) => (
-                                        <option key={year} value={year}>{year}</option>
-                                    ))}
+                                    <option value="" disabled>
+                                        Select Employment Type
+                                    </option>
+                                    <option value="Internship">Internship</option>
+                                    <option value="Part-time">Part-time</option>
+                                    <option value="Full-time">Full-time</option>
+                                    <option value="Freelance">Freelance</option>
                                 </select>
                             </div>
-                        </div>
-                        {/* Present Checkbox */}
-                        <div className="mb-2 w-full flex items-center gap-2">
-                            <input
-                                type="checkbox"
-                                id="present"
-                                checked={isPresent}
-                                onChange={(e) => setIsPresent(e.target.checked)}
-                                className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
-                            />
-                            <label htmlFor="present" className="text-sm font-medium text-black">
-                                Present
-                            </label>
-                        </div>
 
-                        {/* End Month */}
-                        {!isPresent && (
+                            <BigTextInput
+                                id="description"
+                                label="Description"
+                                required
+                                onChange={(e) => setJobDescription(e.target.value)}
+                                placeholder="Eg. Perform penetration testing on various systems and networks to identify vulnerabilities and recommend security improvements."
+                                value={jobDescription}
+                            />
+
                             <div className="flex justify-between gap-2">
                                 <div className="mb-2 w-1/2">
                                     <SelectMonthInput
-                                        label="End Month"
-                                        id="endMonth"
+                                        label="Start Month"
+                                        id="startMonth"
                                         required={true}
-                                        onChange={handleSelectEndMonthChange}
-                                        value={selectedEndMonth}
+                                        onChange={handleSelectStartMonthChange}
+                                        value={selectedStartMonth}
                                     />
                                 </div>
                                 <div className="mb-2 w-1/2">
-                                    <label htmlFor="endYear" className="block text-sm font-medium text-black">
-                                        End Year<span className="text-red-400 ml-2">*</span>
+                                    <label htmlFor="startYear" className="block text-sm font-medium text-black">
+                                        Start Year<span className="text-red-400 ml-2">*</span>
                                     </label>
                                     <select
-                                        id="endYear"
+                                        id="startYear"
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                        value={endYear}
-                                        onChange={(e) => setEndYear(e.target.value)}
+                                        value={startYear}
+                                        onChange={(e) => setStartYear(e.target.value)}
                                     >
                                         <option value="" disabled>Select Year</option>
                                         {Array.from({ length: new Date().getFullYear() - 2000 + 1 }, (_, i) => new Date().getFullYear() - i).map((year) => (
@@ -311,56 +261,100 @@ const EditExperienceDialog = ({
                                     </select>
                                 </div>
                             </div>
-                        )}
+                            {/* Present Checkbox */}
+                            <div className="mb-2 w-full flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    id="present"
+                                    checked={isPresent}
+                                    onChange={(e) => setIsPresent(e.target.checked)}
+                                    className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                                />
+                                <label htmlFor="present" className="text-sm font-medium text-black">
+                                    Present
+                                </label>
+                            </div>
 
-                        <EndorserInput onEndorserChange={handleEndorserChange} existingEndorsers={endorsers} />
-                        {error && <p className="text-red-500 text-sm">{error}</p>}
-                    </form>
+                            {/* End Month */}
+                            {!isPresent && (
+                                <div className="flex justify-between gap-2">
+                                    <div className="mb-2 w-1/2">
+                                        <SelectMonthInput
+                                            label="End Month"
+                                            id="endMonth"
+                                            required={true}
+                                            onChange={handleSelectEndMonthChange}
+                                            value={selectedEndMonth}
+                                        />
+                                    </div>
+                                    <div className="mb-2 w-1/2">
+                                        <label htmlFor="endYear" className="block text-sm font-medium text-black">
+                                            End Year<span className="text-red-400 ml-2">*</span>
+                                        </label>
+                                        <select
+                                            id="endYear"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
+                                            value={endYear}
+                                            onChange={(e) => setEndYear(e.target.value)}
+                                        >
+                                            <option value="" disabled>Select Year</option>
+                                            {Array.from({ length: new Date().getFullYear() - 2000 + 1 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+                                                <option key={year} value={year}>{year}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                            )}
+
+                            <EndorserInput onEndorserChange={handleEndorserChange} existingEndorsers={endorsers} />
+                            {error && <p className="text-red-500 text-sm">{error}</p>}
+                        </form>
+                    </div>
+                    <div className="flex justify-between items-center mt-6">
+                        <button
+                            type="button"
+                            className="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600 hover:cursor-pointer"
+                            onClick={() => setShowDeleteConfirmation(true)}
+                            disabled={loading}
+                        >
+                            Delete
+                        </button>
+                        <button
+                            type="submit"
+                            className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer"
+                            onClick={handleUpdateExperience}
+                        >
+                            Update Experience
+                        </button>
+                    </div>
+
+
                 </div>
-                <div className="flex justify-between items-center mt-6">
-                    <button
-                        type="button"
-                        className="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600"
-                        onClick={() => setShowDeleteConfirmation(true)}
-                        disabled={loading}
-                    >
-                        Delete
-                    </button>
-                    <button
-                        type="submit"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600"
-                        onClick={handleUpdateExperience}
-                    >
-                        Update Experience
-                    </button>
-                </div>
-
-
-            </div>
-            {showDeleteConfirmation && (
-                <div className="fixed inset-0 z-60 flex items-center justify-center">
-                    <div className="bg-white rounded-md shadow-lg p-6 w-[400px] text-center">
-                        <p className="text-lg font-semibold mb-4 text-red-600">Confirm Delete</p>
-                        <p className="text-gray-700 mb-6">Are you sure you want to delete this experience entry? This action cannot be undone.</p>
-                        <div className="flex justify-center gap-4">
-                            <button
-                                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                                onClick={handleDeleteExperience}
-                                disabled={loading}
-                            >
-                                {loading ? "Deleting..." : "Yes, Delete"}
-                            </button>
-                            <button
-                                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300"
-                                onClick={() => setShowDeleteConfirmation(false)}
-                                disabled={loading}
-                            >
-                                Cancel
-                            </button>
+                {showDeleteConfirmation && (
+                    <div className="fixed inset-0 z-60 flex items-center justify-center">
+                        <div className="bg-white rounded-md shadow-lg p-6 w-[400px] text-center">
+                            <p className="text-lg font-semibold mb-4 text-red-600">Confirm Delete</p>
+                            <p className="text-gray-700 mb-6">Are you sure you want to delete this experience entry? This action cannot be undone.</p>
+                            <div className="flex justify-center gap-4">
+                                <button
+                                    className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 hover:cursor-pointer"
+                                    onClick={handleDeleteExperience}
+                                    disabled={loading}
+                                >
+                                    {loading ? "Deleting..." : "Yes, Delete"}
+                                </button>
+                                <button
+                                    className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 hover:cursor-pointer"
+                                    onClick={() => setShowDeleteConfirmation(false)}
+                                    disabled={loading}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}</div>}
+
         </div>
     );
 };

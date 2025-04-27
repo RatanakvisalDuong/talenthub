@@ -4,27 +4,25 @@ import BigTextInput from "@/components/bigtextinput/bigtextinput";
 import TextInput from "@/components/textinput/textInput";
 import Image from "next/image";
 import { useRef, useState, useMemo } from "react";
-import TextEditor from "./text-editor";
 import { allLanguages } from "@/dummydata/programmingLanguages";
+import EndorserInput from "@/components/endorsementInput/endorsementInput";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import TextEditor from "@/app/yourportfolio/text-editor";
+import { Project } from "@/app/type/project";
 
-const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMessage }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number; setSuccessMessage: (message: string) => void; }) => {
+const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: boolean; onClose: () => void; onClick: () => void; projectData: Project }) => {
     const router = useRouter();
-    const { data: session } = useSession();
-    const [title, setTitle] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
-    const [projectLink, setProjectLink] = useState<string>("");
-    const [projectFiles, setProjectFiles] = useState<File[]>([]);
-    const [projectInstruction, setProjectInstruction] = useState<string>("");
-
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [languageInput, setLanguageInput] = useState("");
     const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [endorsers, setEndorsers] = useState<string[]>([]);
+    const [editorContent, setEditorContent] = useState<string>();
+
+    const handleEndorserChange = () => {
+        setEndorsers(endorsers);
+    };
 
     const filteredSuggestions = allLanguages.filter(
         (lang) =>
@@ -81,75 +79,18 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
     const handleRemoveImage = (index: number) => {
         setImageFiles(imageFiles.filter((_, i) => i !== index));
     };
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
-        if (!files) return;
 
-        const newFiles = Array.from(files);
-        setProjectFiles(newFiles);
-    };
-
-    const handleAddProject = async () => {
-        if (title === "" || description === "" || projectLink === "") {
-            setError("Please fill in all required fields.");
-            return;
-        }
-        setLoading(true);
-        const formData = new FormData();
-        formData.append("portfolio_id", portfolioId.toString());
-        formData.append("title", title);
-        formData.append("description", description);
-        formData.append("link", projectLink);
-        formData.append("instruction", projectInstruction.toString());
-        formData.append("file", projectFiles[0]);
-
-        if (imageFiles.length > 0) {
-            for (let i = 0; i < imageFiles.length; i++) {
-                formData.append(`image[]`, imageFiles[i]);
-            }
-        }
-        if (selectedLanguages.length > 0) {
-            for (let i = 0; i < selectedLanguages.length; i++) {
-                formData.append(`programming_languages[]`, selectedLanguages[i].toString());
-            }
-        }
-        try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}create_project`,
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${session?.accessToken}`,
-                    },
-                },
-            );
-
-            console.log('Response:', response);
-            if (response.status === 200) {
-                setLoading(false);
-                onClose();
-
-                setSuccessMessage("Project added successfully!");
-
-            }
-        }
-        catch (error) {
-            console.error("Error uploading files:", error);
-            setLoading(false);
-            setError("Failed to upload files. Please try again.");
-            return;
-        }
-
-    }
+    // const handleAddProject = async () => {
+    //     // const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}create_project`, {
+    //     // })
+    //     console.log(editorContent)
+    // }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            {loading ? (
-                <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
-                </div>
-            ) : <div className={`bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto`}>
+            <div className="bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] overflow-y-auto">
                 <div className="flex justify-between items-start mb-2">
-                    <h2 className="text-xl font-bold text-black">Create New Project</h2>
+                    <h2 className="text-xl font-bold text-black">Update Project</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -166,8 +107,6 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                             id="link"
                             label="Project Title"
                             required
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
                             placeholder="Eg.TalentHub"
                         />
 
@@ -175,16 +114,14 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                             id="description"
                             label="Project Description"
                             required
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
                             placeholder="Eg.A portfolio platform for ParagonIU students"
                         />
 
                         <TextEditor
                             id="myEditor"
                             label="Project Instruction"
-                            value={projectInstruction}
-                            onChange={(html) => setProjectInstruction(html)}
+                            value={editorContent}
+                            onChange={(html) => setEditorContent(html)}
                         />
 
                         <div className="mb-2 relative">
@@ -244,12 +181,10 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                             id="link"
                             label="Project Link"
                             required
-                            value={projectLink}
-                            onChange={(e) => setProjectLink(e.target.value)}
                             placeholder="Eg.https://github.com/RVisalD/TalentHub"
                         />
 
-                        <div className="mb-4">
+                        {/* <div className="mb-4">
                             <label htmlFor="fileUpload" className="block text-sm font-medium text-black">
                                 Project Files
                             </label>
@@ -259,18 +194,11 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
                                 multiple
                                 onChange={(e) => {
-                                    handleFileChange(e);
-                                    setProjectFiles(Array.from(e.target.files || []));
+                                    const files = e.target.files;
                                 }}
                             />
                             <p className="mt-1 text-xs text-gray-500">Upload project-related files (documents, source code, etc.)</p>
-                        </div>
-
-                        {error && (
-                            <div className="text-red-500 text-sm ">
-                                {error}
-                            </div>
-                        )}
+                        </div> */}
                     </form>
 
                     {/* Right side: Multiple Image Upload */}
@@ -320,16 +248,15 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                 <div className="flex justify-end mt-2">
                     <button
                         type="submit"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer "
-                        onClick={handleAddProject}
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600"
+                    // onClick={handleAddProject}
                     >
-                        Create Project
+                        Save Changes
                     </button>
                 </div>
             </div>
-            }
         </div>
     );
 };
 
-export default AddProjectDialog;
+export default EditProjectDialog;

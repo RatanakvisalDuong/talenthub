@@ -155,7 +155,7 @@ const AddSkillDialog = ({
                 <div className="flex justify-end mt-2">
                     <button
                         type="submit"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600"
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer" 
                         onClick={handleAddSkill}
                         disabled={loading}
                     >

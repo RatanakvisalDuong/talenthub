@@ -12,11 +12,7 @@ export interface Project {
             name: string
         }
     ],
-    project_visibility_status: [
-        {
-            id: number,
-        }
-    ],
+    project_visibility_status: number,
     created_at: string,
     updated_at: string
 }

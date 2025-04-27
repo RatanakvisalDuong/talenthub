@@ -151,13 +151,13 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
 
 
     const toggleCertificateDialog = (achievement: Achievement) => {
-        setSingleAchievementData(achievement); 
-        setViewCertificateDialog(!viewCertificateDialog); 
+        setSingleAchievementData(achievement);
+        setViewCertificateDialog(!viewCertificateDialog);
     };
 
     const toggleEditCertificateDialog = () => {
-        setViewCertificateDialog(false); 
-        setEditCertificateDialog(true); 
+        setViewCertificateDialog(false);
+        setEditCertificateDialog(true);
     };
 
     const handleAddAchievement = (newAchievement: Achievement) => {
@@ -246,10 +246,10 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             <div className="flex justify-between items-center">
                                 <p className="text-black font-bold text-lg">Projects</p>
                                 <button
-                                    className="flex items-center bg-[#5086ed] text-black font-semibold py-2 px-4 rounded-md hover:bg-[#A9CBEF] cursor-pointer"
+                                    className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-md cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group"
                                     onClick={() => toggleAddProjectDialog()}
                                 >
-                                    <i className="fas fa-plus text-white"></i>
+                                    <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
                                 </button>
                             </div>
                             <div className="w-25 bg-[#dfdfdf] h-[2px] mt-1"></div>
@@ -279,15 +279,13 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                         <div className={`h-[65%] bg-white rounded-lg shadow-md p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto`}>
                             <div className="flex justify-between items-center">
                                 <p className="text-black font-bold text-lg">Achievements & Certificate</p>
-                                <button className="flex items-center bg-[#5086ed] text-black font-semibold py-2 px-4 rounded-md hover:bg-[#A9CBEF] transition-colors cursor-pointer" onClick={toggleAddCertificateDialog}>
-                                    <i className="fas fa-plus text-white"></i>
+                                <button className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-md cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={toggleAddCertificateDialog}>
+                                    <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
                                 </button>
                             </div>
                             <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
                             {Array.isArray(achievementData) && achievementData.length === 0 ? (
-                                <div className="flex justify-center items-center h-[90%]">
-                                    <p className="flex text-[#808080]">No achievement or certificate available</p>
-                                </div>
+                                <p className="text-[#808080] text-md mt-4 justify-center items-center flex">No achievement & certificate available</p>
                             ) : (
                                 Array.isArray(achievementData) && achievementData.length > 0 && (
                                     achievementData.map((achievement) => (
@@ -330,8 +328,21 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                             <span className="font-bold mr-2">Major:</span> {portfolio.portfolio.major ? getMajorName(portfolio.portfolio.major) : 'N/A'}
                                         </p>
                                         <div className="flex justify-between">
-                                            <button className="mt-4 rounded-sm text-black px-2 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:transform hover:scale-105" onClick={toggleSharePortfolio}><ShareIcon className="w-5 h-5 mr-2" /> Share Portfolio</button>
-                                            <button className="mt-4 rounded-sm text-white px-2 py-2 bg-[#ffc107]  flex items-center font-bold cursor-pointer hover:transform hover:scale-105" onClick={toggleEditPortfolioDialog}><PencilSquareIcon className="w-5 h-5 mr-2" />Edit</button>
+                                            <button
+                                                className="mt-4 rounded-sm text-black px-2 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:scale-105 hover:brightness-105 transition-all duration-200 ease-in-out"
+                                                onClick={toggleSharePortfolio}
+                                            >
+                                                <ShareIcon className="w-5 h-5 mr-2" />
+                                                Share Portfolio
+                                            </button>
+
+                                            <button
+                                                className="mt-4 rounded-sm text-white px-2 py-2 bg-[#ffc107] flex items-center font-bold cursor-pointer hover:scale-105 hover:brightness-105 transition-all duration-200 ease-in-out"
+                                                onClick={toggleEditPortfolioDialog}
+                                            >
+                                                <PencilSquareIcon className="w-5 h-5 mr-2" />
+                                                Edit
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -346,8 +357,8 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                         <div className={`w-full ${expandedExperience ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
                             <div className="flex justify-between items-center">
                                 <p className="text-black font-bold text-lg">Experience</p>
-                                <button className="flex items-center bg-[#5086ed] text-black font-semibold py-2 px-4 rounded-md hover:bg-[#A9CBEF] transition-colors cursor-pointer" onClick={toggleAddExperienceDialog}>
-                                    <i className="fas fa-plus text-white"></i>
+                                <button className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-md cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={toggleAddExperienceDialog}>
+                                    <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
                                 </button>
                             </div>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
@@ -382,8 +393,8 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                         <div className={`w-full ${expandedSkill ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
                             <div className="flex justify-between items-center">
                                 <p className="text-black font-bold text-lg">Skill</p>
-                                <button className="flex items-center bg-[#5086ed] text-black font-semibold py-2 px-4 rounded-md hover:bg-[#A9CBEF] transition-colors cursor-pointer" onClick={toggleAddSkillDialog}>
-                                    <i className="fas fa-plus text-white"></i>
+                                <button className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-md cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={toggleAddSkillDialog}>
+                                    <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
                                 </button>
                             </div>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
@@ -422,11 +433,12 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             <div className="flex justify-between items-center">
                                 <p className="text-black font-bold text-lg">Education</p>
                                 <button
-                                    className="flex items-center bg-[#5086ed] text-black font-semibold py-2 px-4 rounded-md hover:bg-[#A9CBEF] cursor-pointer"
+                                    className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-md cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group"
                                     onClick={() => toggleAddEducationDialog()}
                                 >
-                                    <i className="fas fa-plus text-white"></i>
+                                    <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
                                 </button>
+
                             </div>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
                             {educationData.length > 0 ? (
@@ -464,7 +476,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
             )}
 
             {openAddProjectDialog && (
-                <AddProjectDialog isOpen={true} onClose={toggleAddProjectDialog} onClick={() => addProject()} />
+                <AddProjectDialog isOpen={true} onClose={toggleAddProjectDialog} onClick={() => addProject()} portfolioId={portfolioData.portfolio.id} setSuccessMessage={displaySuccessMessage}/>
             )}
 
             {openAddCertificateDialog && (
@@ -551,22 +563,22 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
             {viewCertificateDialog && achievementData && (
                 <CertificateDialog
                     owner={true}
-                    onClose={() => setViewCertificateDialog(false)} 
-                    achievement={singleAchievementData} 
-                    onEdit={toggleEditCertificateDialog} 
+                    onClose={() => setViewCertificateDialog(false)}
+                    achievement={singleAchievementData}
+                    onEdit={toggleEditCertificateDialog}
                 />
             )}
 
-            {editCertificateDialog 
+            {editCertificateDialog
                 && singleAchievementData && (
-                <EditCertificateDialog
-                    achievement={singleAchievementData} 
-                    onClose={() => setEditCertificateDialog(false)}
-                    onSave={handleUpdatedAchievement}
-                    setSuccessMessage={displaySuccessMessage}
-                    onDelete={handleDeleteAchievement}
-                />
-            )}
+                    <EditCertificateDialog
+                        achievement={singleAchievementData}
+                        onClose={() => setEditCertificateDialog(false)}
+                        onSave={handleUpdatedAchievement}
+                        setSuccessMessage={displaySuccessMessage}
+                        onDelete={handleDeleteAchievement}
+                    />
+                )}
 
         </div>
     );

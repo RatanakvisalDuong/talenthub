@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 interface EndorserInputProps {
   onEndorserChange: (endorsers: string[]) => void;
   existingEndorsers: string[];
+  title?: string;
+  label?: string;
 }
 
-const EndorserInput: React.FC<EndorserInputProps> = ({ onEndorserChange, existingEndorsers }) => {
+const EndorserInput: React.FC<EndorserInputProps> = ({ onEndorserChange, existingEndorsers, title, label }) => {
   const [endorserInput, setEndorserInput] = useState("");
   const [endorsers, setEndorsers] = useState<string[]>(existingEndorsers);
 
@@ -18,7 +20,7 @@ const EndorserInput: React.FC<EndorserInputProps> = ({ onEndorserChange, existin
     if (!endorsers.includes(email)) {
       const newEndorsers = [...endorsers, email];
       setEndorsers(newEndorsers);
-      onEndorserChange(newEndorsers); 
+      onEndorserChange(newEndorsers);
     }
     setEndorserInput("");
   };
@@ -26,7 +28,7 @@ const EndorserInput: React.FC<EndorserInputProps> = ({ onEndorserChange, existin
   const handleRemoveEndorser = (email: string) => {
     const newEndorsers = endorsers.filter((e) => e !== email);
     setEndorsers(newEndorsers);
-    onEndorserChange(newEndorsers); 
+    onEndorserChange(newEndorsers);
   };
 
   const handleEndorserKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -38,14 +40,21 @@ const EndorserInput: React.FC<EndorserInputProps> = ({ onEndorserChange, existin
 
   return (
     <div className="mb-2 relative">
-      <h1 className="text-black text-lg font-bold">
-        Endorsement
-      </h1>
-      <div className="h-[2px] w-24 bg-gray-200 mb-2">
-      </div>
-      <label htmlFor="endorser" className="block text-sm font-medium text-black">
+      {title == null ? <div>
+        <h1 className="text-black text-lg font-bold">
+          Endorsement
+        </h1>
+        <div className="h-[2px] w-24 bg-gray-200 mb-2">
+        </div>
+      </div> : (
+        <div></div>
+      )}
+      {label == null ? <label htmlFor="endorser" className="block text-sm font-medium text-black">
         Endorser
-      </label>
+      </label> : (<label htmlFor="endorser" className="block text-sm font-medium text-black">
+        {label}
+      </label>)}
+
 
       <input
         type="text"

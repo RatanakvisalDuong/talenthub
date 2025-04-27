@@ -162,40 +162,51 @@ const EditPortfolioDialog = ({
                             onChange={(e) => setPhone(e.target.value || null)}
                         />
 
-                        <div className="mb-2">
-                            <label htmlFor="major" className="block text-sm font-medium text-black">
-                                Major<span className="text-red-400 ml-2">*</span>
-                            </label>
-                            <select
-                                id="major"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                required
-                                value={selectedMajor || ""}
-                                onChange={(e) => setSelectedMajor(Number(e.target.value) || null)}
-                            >
-                                <option value="" disabled>Select Major</option>
-                                <option value="1">Computer Science</option>
-                                <option value="2">Management of Information Systems</option>
-                                <option value="3">Digital Art and Designs</option>
-                            </select>
-                        </div>
+                        {session?.roleId === 1 ? (
+                            <div className="mb-2">
+                                <label htmlFor="major" className="block text-sm font-medium text-black">
+                                    Major<span className="text-red-400 ml-2">*</span>
+                                </label>
+                                <select
+                                    id="major"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
+                                    required
+                                    value={selectedMajor || ""}
+                                    onChange={(e) => setSelectedMajor(Number(e.target.value) || null)}
+                                >
+                                    <option value="" disabled>Select Major</option>
+                                    <option value="1">Computer Science</option>
+                                    <option value="2">Management of Information Systems</option>
+                                    <option value="3">Digital Art and Designs</option>
+                                </select>
+                            </div>
+                        )
+                            :
+                            <div></div>
+                        }
 
-                        <div className="mb-2">
-                            <label htmlFor="workingStatus" className="block text-sm font-medium text-black">
-                                Working Status<span className="text-red-400 ml-2">*</span>
-                            </label>
-                            <select
-                                id="workingStatus"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                required
-                                value={selectedWorkingStatus || ""}
-                                onChange={(e) => setSelectedWorkingStatus(Number(e.target.value) || null)}
-                            >
-                                <option value="" disabled>Select Working Status</option>
-                                <option value="1">Working</option>
-                                <option value="2">Open for Work</option>
-                            </select>
-                        </div>
+
+                        {session?.roleId === 1 ? (
+                            <div className="mb-2">
+                                <label htmlFor="workingStatus" className="block text-sm font-medium text-black">
+                                    Working Status<span className="text-red-400 ml-2">*</span>
+                                </label>
+                                <select
+                                    id="workingStatus"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
+                                    required
+                                    value={selectedWorkingStatus || ""}
+                                    onChange={(e) => setSelectedWorkingStatus(Number(e.target.value) || null)}
+                                >
+                                    <option value="" disabled>Select Working Status</option>
+                                    <option value="1">Working</option>
+                                    <option value="2">Open for Work</option>
+                                </select>
+                            </div>
+                        ) :
+                            <div></div>
+                        }
+
 
                         <BigTextInput
                             id="about"
@@ -254,7 +265,7 @@ const EditPortfolioDialog = ({
                 <div className="flex justify-end mt-2">
                     <button
                         type="submit"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600"
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer"
                         onClick={handleOnEdit}
                     >
                         Save Changes
