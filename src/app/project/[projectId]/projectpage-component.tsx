@@ -1,6 +1,6 @@
 'use client';
 
-import { UserPlus, Code } from "lucide-react";
+import { UserPlus, Code, XIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
@@ -11,6 +11,9 @@ import { useSession } from "next-auth/react";
 import EditProjectDialog from "./editproject-dialog";
 import AddCollaboratorDialog from "./addcollaborator-dialog";
 import AddEndorserDialog from "./addendorser-dialog";
+import { Endorser } from "@/app/type/endorser";
+import RemoveCollaboratorDialog from "./removecollaborator-dialog";
+import RemoveEndorserDialog from "./removeendorser-dialog";
 
 interface ProjectPageComponentProps {
     projectData: any;
@@ -24,10 +27,16 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [editorContent, setEditorContent] = useState<string>();
+    const [endorsersers, setEndorsers] = useState<Endorser[]>([]);
 
     const [updateProjectDialog, setUpdateProjectDialog] = useState(false);
     const [addCollaboratorDialog, setAddCollaboratorDialog] = useState(false);
     const [addEndorserDialog, setAddEndorserDialog] = useState(false);
+    const [confirmRemoveCollaboratorDialog, setConfirmRemoveCollaboratorDialog] = useState(false);
+    const [confirmRemoveEndorserDialog, setConfirmRemoveEndorserDialog] = useState(false);
+    const [removeCollaboratorId, setRemoveCollaboratorId] = useState<string | null>(null);
+    const [removeEndorserId, setRemoveEndorserId] = useState<string | null>(null);
+
 
     const slidePairs = [];
     for (let i = 0; i < projectData.images.length; i += 2) {
@@ -51,6 +60,8 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
         }
     };
 
+    // const handleRemoveEndorser = (googleId: string) => {
+
     useEffect(() => {
         const interval = setInterval(nextSlide, 5000);
         return () => clearInterval(interval);
@@ -67,9 +78,20 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
     const toggleAddEndorser = () => {
         setAddEndorserDialog(!addEndorserDialog);
     }
+
+    const toggleRemoveCollabDialog = (collaboratorId: string) => {
+        setRemoveCollaboratorId(collaboratorId);
+        setConfirmRemoveCollaboratorDialog(!confirmRemoveCollaboratorDialog);
+    }
+
+    const toggleRemoveEndorserDialog = (endorserId: string) => {
+        setRemoveEndorserId(endorserId);
+        setConfirmRemoveEndorserDialog(!confirmRemoveEndorserDialog);
+    }
+
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
-            <div className={`max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between ${updateProjectDialog || addCollaboratorDialog || addEndorserDialog ? "blur-md" : ""}`}>
+            <div className={`max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between ${updateProjectDialog || addCollaboratorDialog || addEndorserDialog || confirmRemoveCollaboratorDialog || confirmRemoveEndorserDialog ? "blur-md" : ""}`}>
                 <div className="flex justify-between w-full">
                     <div className="h-[88vh] w-[73%]">
                         <div className="h-full w-full bg-white p-4 overflow-y-auto rounded-lg shadow-md">
@@ -104,7 +126,6 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 }
                             </div>
 
-                            {/* Carousel */}
                             <div className="w-full h-60 bg-white rounded-lg mx-auto flex justify-center items-center shadow-md">
                                 <button onClick={prevSlide} className="text-gray-800 hover:bg-opacity-60 transition-all focus:outline-none hover:cursor-pointer">
                                     <ArrowLeftCircleIcon className="h-10 w-10" />
@@ -180,7 +201,6 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 <div className="h-[2px] bg-gray-300 w-64 mt-2 mb-2"></div>
                                 <div className="space-y-4">
                                     <div className="text-gray-700 text-sm">
-                                        {/* <QuillDisplay content={projectData?.instruction || ""}/> */}
                                         <TextEditor
                                             id="myEditor"
                                             label=""
@@ -197,7 +217,6 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                     </div>
 
                     <div className="h-[88vh] w-[26%] overflow-y-auto">
-                        {/* Sidebar content */}
                         <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
                             <div className="flex items-center justify-between">
                                 <p className="font-bold text-black ">
@@ -210,12 +229,15 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 }
 
                             </div>
-                            {projectData.endorsers.length > 0 ? (
-                                projectData.endorsers.map((endorser: any, index: number) => (
-                                    <Link key={index} className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" href={`/portfolio/${endorser.google_id}`}>
-                                        <p className="text-sm font-medium">{endorser.name}</p>
-                                    </Link>
-                                ))
+                            {projectData.endorsers.filter((endorser: any) => endorser.endorsement_status === 2).length > 0 ? (
+                                projectData.endorsers
+                                    .filter((endorser: any) => endorser.endorsement_status === 2)
+                                    .map((endorser: any, index: number) => (
+                                        <div key={index} className="bg-white text-black shadow-md rounded-lg justify-between px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group">
+                                            <Link className="text-sm font-medium" href={`/portfolio/${endorser.google_id}`}>{endorser.name}</Link>
+                                            <XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => {toggleRemoveEndorserDialog(endorser.google_id) }} />
+                                        </div>
+                                    ))
                             ) : <div className="text-gray-700 w-full flex justify-center items-center mt-4">
                                 <p className="text-sm font-medium">No endorsers available.</p>
                             </div>
@@ -232,14 +254,16 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                     <p className="text-sm">Add Collaborator</p>
                                 </div>
                                 }
-
                             </div>
-                            {projectData.collaborators.length > 0 ? (
-                                projectData.collaborators.map((collaborator: any, index: number) => (
-                                    <Link className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" href={`/portfolio/${collaborator.google_id}`} key={index}>
-                                        <p className="text-sm font-medium">{collaborator.name}</p>
-                                    </Link>
-                                ))
+                            {projectData.collaborators.filter((collaborator: any) => collaborator.collaboration_status === 2).length > 0 ? (
+                                projectData.collaborators
+                                    .filter((collaborator: any) => collaborator.collaboration_status === 2)
+                                    .map((collaborator: any, index: number) => (
+                                        <div className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex justify-between items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" key={index}>
+                                            <Link className="text-sm font-medium" href={`/portfolio/${collaborator.google_id}`}>{collaborator.name}</Link>
+                                            <XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => {toggleRemoveCollabDialog(collaborator.google_id)}} />
+                                        </div>
+                                    ))
                             ) :
                                 <div className="text-gray-700 w-full flex justify-center items-center mt-4">
                                     <p className="text-sm font-medium">No collaborators available.</p>
@@ -282,6 +306,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                     isOpen={addCollaboratorDialog}
                     onClose={toggleAddCollaborator}
                     onClick={toggleAddCollaborator}
+                    projectId={projectData.project_id}
                 />
             )}
 
@@ -290,6 +315,23 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                     isOpen={addCollaboratorDialog}
                     onClose={toggleAddEndorser}
                     onClick={toggleAddEndorser}
+                    projectId={projectData.project_id}
+                />
+            )}
+
+            {confirmRemoveCollaboratorDialog && (
+                <RemoveCollaboratorDialog
+                    projectId={projectData.project_id}
+                    collaboratorId={removeCollaboratorId ? removeCollaboratorId : ""}
+                    onClose={() => setConfirmRemoveCollaboratorDialog(false)}
+                />
+            )}
+
+            {confirmRemoveEndorserDialog && (
+                <RemoveEndorserDialog
+                    projectId={projectData.project_id}
+                    endorserId={removeEndorserId ? removeEndorserId : ""}
+                    onClose={() => setConfirmRemoveEndorserDialog(false)}
                 />
             )}
         </div>

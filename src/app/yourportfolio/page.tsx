@@ -4,9 +4,7 @@ import { authOptions } from "../api/auth/[...nextauth]/option";
 import { Portfolio } from "../type/portfolio";
 import YourPortfolioPageComponent from "./yourportfolio-page";
 import Layout from "@/components/layout/layout";
-import Link from "next/link";
 import { redirect } from 'next/navigation';
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import BanPage from "@/components/banPage/page";
 
 export default async function YourPortfolioPage() {

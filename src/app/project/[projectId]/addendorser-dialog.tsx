@@ -1,23 +1,64 @@
 "use client";
 
+import { Endorser } from "@/app/type/endorser";
 import EndorserInput from "@/components/endorsementInput/endorsementInput";
-import TextInput from "@/components/textinput/textInput";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const AddEndorserDialog = ({ isOpen, onClose, onClick}: { isOpen: boolean; onClose: () => void; onClick: () => void}) => {
+const AddEndorserDialog = ({ isOpen, onClose, onClick, projectId }: { isOpen: boolean; onClose: () => void; onClick: () => void; projectId: number }) => {
     const router = useRouter();
+    const session = useSession();
     const [endorsers, setEndorsers] = useState<string[]>([]);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
-    const handleEndorserChange = () => {
+    const handleEndorserChange = (endorsers: string[]) => {
         setEndorsers(endorsers);
     };
+
+    const handleAddEndorser = async () => {
+        setLoading(true);
+        if(endorsers.includes(session?.data?.user?.email || '')) {
+            setError("You cannot endorse your own project.");
+            setLoading(false);
+            return;
+        }
+        if(endorsers.length === 0 || endorsers[0] === '') {
+            setError("Please fill in all fields.");
+            setLoading(false);
+            return;
+        }
+        try {
+            await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}add_endorser_to_project/${projectId}`,
+                {
+                    emails: endorsers,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${session.data?.accessToken}`,
+                    },
+                }
+            );
+            setLoading(false);
+            router.refresh();
+            onClick();
+        }
+        catch (error) {
+            console.error("Error adding endorsers:", error);
+        }
+    }
 
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="bg-white rounded-md p-6 w-[700px] max-w-full shadow-lg ">
+            {loading ? (
+                <div className="bg-white rounded-md p-6 w-[700px] max-w-full shadow-lg justify-center flex items-center">
+                    <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
+                </div>
+            ) : <div className="bg-white rounded-md p-6 w-[700px] max-w-full shadow-lg ">
                 <div className="flex justify-between items-start mb-2">
                     <h2 className="text-xl font-bold text-black">Add Endorsers</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
@@ -30,29 +71,28 @@ const AddEndorserDialog = ({ isOpen, onClose, onClick}: { isOpen: boolean; onClo
                 <div className="h-[2px] w-24 bg-gray-200 mb-2" />
 
                 <div className="flex gap-x-6">
-                    {/* Left side: Form */}
                     <form className="w-full">
-                        {/* <TextInput
-                            id="link"
-                            label="Collaborator Email"
-                            required
-                            placeholder="Eg.rduong1@paragoniu.edu.kh"
-                        /> */}
-
-                        <EndorserInput onEndorserChange={handleEndorserChange} existingEndorsers={endorsers} title="yes"/>
-
+                        <EndorserInput onEndorserChange={handleEndorserChange} existingEndorsers={endorsers} title="yes" />
                     </form>
                 </div>
+                {
+                    error && (
+                        <div className="mt-2 text-red-500 text-sm">
+                            {error}
+                        </div>
+                    )
+                }
                 <div className="flex justify-end mt-2">
                     <button
                         type="submit"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600"
-                        // onClick={handleAddProject}
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 cursor-pointer"
+                        onClick={handleAddEndorser}
                     >
                         Add Endorsers
                     </button>
                 </div>
             </div>
+            }
         </div>
     );
 };
