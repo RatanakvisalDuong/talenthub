@@ -13,12 +13,14 @@ export default async function Home() {
 	const portfolioData: PortfolioProfile[] = response.data;
 	let response2: any = { data: { portfolio: { photo: null } } };
 
-	if(session?.user?.email){
+	if(session?.googleId) {
 		response2 = await axios.get(
 			`${process.env.NEXT_PUBLIC_API_URL}view_portfolio_details/${session?.googleId}`
 		);
 	}
-	
+
+	console.log(portfolioData);
+
 	const photo = response2.data.portfolio.photo;
 	const phoneNumber = response2.data.portfolio.phone_number;
 	const major = response2.data.portfolio.major;

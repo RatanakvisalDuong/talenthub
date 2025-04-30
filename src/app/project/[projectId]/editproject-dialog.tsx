@@ -3,26 +3,34 @@
 import BigTextInput from "@/components/bigtextinput/bigtextinput";
 import TextInput from "@/components/textinput/textInput";
 import Image from "next/image";
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, useEffect } from "react";
 import { allLanguages } from "@/dummydata/programmingLanguages";
-import EndorserInput from "@/components/endorsementInput/endorsementInput";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import TextEditor from "@/app/yourportfolio/text-editor";
 import { Project } from "@/app/type/project";
+import { useSession } from "next-auth/react";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import { Link } from "lucide-react";
+
 
 const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: boolean; onClose: () => void; onClick: () => void; projectData: Project }) => {
     const router = useRouter();
-    const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const { data: session } = useSession();
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [existingFilesUrl, setExistingFilesUrl] = useState<string>("");
+    const [projectFiles, setProjectFiles] = useState<File[]>([]);
+    const [existingImages, setExistingImages] = useState<Array<{ id: number, url: string }>>([]);
     const [languageInput, setLanguageInput] = useState("");
     const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
-    const [endorsers, setEndorsers] = useState<string[]>([]);
-    const [editorContent, setEditorContent] = useState<string>();
-
-    const handleEndorserChange = () => {
-        setEndorsers(endorsers);
-    };
+    const [editorContent, setEditorContent] = useState<string>("");
+    const [title, setTitle] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+    const [link, setLink] = useState<string>("");
+    const [loading, setLoading] = useState(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
     const filteredSuggestions = allLanguages.filter(
         (lang) =>
@@ -30,13 +38,20 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
             !selectedLanguages.includes(lang.name)
     );
 
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (!files) return;
+
+        const newFiles = Array.from(files);
+        setProjectFiles(newFiles);
+    };
+
     const handleSelectLanguage = (lang: string) => {
         if (!selectedLanguages.includes(lang)) {
             setSelectedLanguages([...selectedLanguages, lang]);
         }
         setLanguageInput("");
     };
-
 
     const handleRemoveLanguage = (lang: string) => {
         setSelectedLanguages(selectedLanguages.filter((l) => l !== lang));
@@ -56,9 +71,54 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
         }
     };
 
-    const imagePreviews = useMemo(() => {
+    const handleDeleteProject = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}delete_project/${projectData.project_id}`, {
+                headers: {
+                    Authorization: `Bearer ${session?.accessToken}`,
+                },
+            });
+            if (response.status === 200) {
+                setLoading(false);
+                onClick();
+                router.refresh();
+                router.push("/yourportfolio");
+            }
+        } catch (error) {
+            // console.error("Error deleting project:", error);
+            setLoading(false);
+        }
+    };
+
+    const fileToURL = useMemo(() => {
         return imageFiles.map((file) => URL.createObjectURL(file));
     }, [imageFiles]);
+
+    useEffect(() => {
+        // console.log("Project Data:", projectData);
+        setLoading(true);
+        if (projectData) {
+            setEditorContent(projectData.instruction || "");
+            setTitle(projectData.title || "");
+            setDescription(projectData.description || "");
+            setLink(projectData.link || "");
+            setExistingFilesUrl(projectData.file || "");
+
+            if (projectData.images && Array.isArray(projectData.images)) {
+                setExistingImages(projectData.images);
+            }
+
+            if (projectData.programming_languages && Array.isArray(projectData.programming_languages)) {
+                const languages = projectData.programming_languages.map(lang =>
+                    typeof lang === 'object' && lang.name ? lang.name :
+                        typeof lang === 'string' ? lang : ''
+                ).filter(Boolean);
+                setSelectedLanguages(languages);
+            }
+            setLoading(false);
+        }
+    }, [projectData]);
 
     if (!isOpen) return null;
 
@@ -71,24 +131,65 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
         if (!files) return;
 
         const newFiles = Array.from(files);
-
-        const combined = [...imageFiles, ...newFiles].slice(0, 6);
+        const combined = [...imageFiles, ...newFiles].slice(0, 6 - existingImages.length);
         setImageFiles(combined);
     };
 
-    const handleRemoveImage = (index: number) => {
+    const handleRemoveExistingImage = (id: number) => {
+        setExistingImages(existingImages.filter(img => img.id !== id));
+    };
+
+    const handleRemoveNewImage = (index: number) => {
         setImageFiles(imageFiles.filter((_, i) => i !== index));
     };
 
-    // const handleAddProject = async () => {
-    //     // const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}create_project`, {
-    //     // })
-    //     console.log(editorContent)
-    // }
+    const handleSaveChanges = async () => {
+        setLoading(true);
+        try {
+            const formData = new FormData();
+            formData.append('project_id', projectData.project_id.toString());
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('instruction', editorContent || "");
+            formData.append('link', link);
+
+            selectedLanguages.forEach((lang, index) => {
+                formData.append(`programming_languages[${index}]`, lang);
+            });
+
+            existingImages.forEach((img, index) => {
+                formData.append(`existing_images[${index}]`, img.id.toString());
+            });
+
+            imageFiles.forEach((file, index) => {
+                formData.append(`new_images[${index}]`, file);
+            });
+
+            const response = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}update_project`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${session?.accessToken}`,
+                    },
+                }
+            );
+
+            if (response.status === 200) {
+                setLoading(false);
+                onClick();
+                router.refresh();
+            }
+        } catch (error) {
+            // console.error("Error updating project:", error);
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] overflow-y-auto">
+            <div className={`bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] overflow-y-auto z-50 relative ${showDeleteConfirmation ? "blur-sm" : ""}`}>
                 <div className="flex justify-between items-start mb-2">
                     <h2 className="text-xl font-bold text-black">Update Project</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
@@ -104,9 +205,11 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
                     {/* Left side: Form */}
                     <form className="w-3/5">
                         <TextInput
-                            id="link"
+                            id="title"
                             label="Project Title"
                             required
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
                             placeholder="Eg.TalentHub"
                         />
 
@@ -114,6 +217,8 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
                             id="description"
                             label="Project Description"
                             required
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                             placeholder="Eg.A portfolio platform for ParagonIU students"
                         />
 
@@ -154,7 +259,6 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
                                 </ul>
                             )}
 
-
                             {/* Display selected languages */}
                             {selectedLanguages.length > 0 && (
                                 <div className="mt-2 flex flex-wrap gap-2">
@@ -181,24 +285,46 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
                             id="link"
                             label="Project Link"
                             required
+                            value={link}
+                            onChange={(e) => setLink(e.target.value)}
                             placeholder="Eg.https://github.com/RVisalD/TalentHub"
                         />
-
-                        {/* <div className="mb-4">
+                        <div className="mb-4">
                             <label htmlFor="fileUpload" className="block text-sm font-medium text-black">
                                 Project Files
                             </label>
-                            <input
-                                type="file"
-                                id="fileUpload"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                multiple
-                                onChange={(e) => {
-                                    const files = e.target.files;
-                                }}
-                            />
-                            <p className="mt-1 text-xs text-gray-500">Upload project-related files (documents, source code, etc.)</p>
-                        </div> */}
+                            {existingFilesUrl ? (
+                                <div className="flex items-center gap-4">
+                                    <div 
+                                        className="h-10 w-max bg-white rounded-md flex items-center justify-center text-black shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group px-4 py-2" 
+                                        onClick={() => window.open(existingFilesUrl, "_blank")}
+                                    >
+                                        <ArrowDownTrayIcon className="h-5 w-5" /><span className="ml-2"> Download File</span>
+                                    </div>
+                                    <button
+                                        onClick={() => setExistingFilesUrl("")}
+                                        className="text-red-500 hover:text-red-700"
+                                    >
+                                        <i className="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            ) : (
+                                <>
+                                    <input
+                                        type="file"
+                                        id="fileUpload"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
+                                        multiple
+                                        onChange={(e) => {
+                                            handleFileChange(e);
+                                            setProjectFiles(Array.from(e.target.files || []));
+                                        }}
+                                    />
+                                    <p className="mt-1 text-xs text-gray-500">Upload project-related files (documents, source code, etc.)</p>
+                                </>
+                            )}
+                        </div>
+
                     </form>
 
                     {/* Right side: Multiple Image Upload */}
@@ -221,40 +347,90 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
                             style={{ display: "none" }}
                         />
 
-                        {imagePreviews.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mt-2">
-                                {imagePreviews.map((src, index) => (
-                                    <div key={index} className="relative">
-                                        <Image
-                                            src={src}
-                                            alt={`Selected ${index + 1}`}
-                                            width={96}
-                                            height={96}
-                                            className="object-cover rounded shadow"
-                                            unoptimized
-                                        />
-                                        <div
-                                            onClick={() => handleRemoveImage(index)}
-                                            className="absolute top-0 right-0 text-red-500 p-1 rounded-full"
-                                        >
-                                            <i className="fas fa-times"></i>
-                                        </div>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                            {existingImages.map((image) => (
+                                <div key={`existing-${image.id}`} className="relative">
+                                    <Image
+                                        src={image.url}
+                                        alt="Project image"
+                                        width={96}
+                                        height={96}
+                                        className="object-cover rounded shadow"
+                                        unoptimized
+                                    />
+                                    <div
+                                        onClick={() => handleRemoveExistingImage(image.id)}
+                                        className="absolute top-0 right-0 text-red-500 p-1 rounded-full"
+                                    >
+                                        <i className="fas fa-times"></i>
                                     </div>
-                                ))}
-                            </div>
-                        )}
+                                </div>
+                            ))}
+
+                            {fileToURL.map((src, index) => (
+                                <div key={`new-${index}`} className="relative group">
+                                    <Image
+                                        src={src}
+                                        alt={`New upload ${index + 1}`}
+                                        width={96}
+                                        height={96}
+                                        className="object-cover rounded shadow"
+                                        unoptimized
+                                    />
+                                    <div
+                                        onClick={() => handleRemoveNewImage(index)}
+                                        className="absolute top-0 right-0 text-red-500 p-1 rounded-full"
+                                    >
+                                        <i className="fas fa-times"></i>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
-                <div className="flex justify-end mt-2">
+                <div className="flex justify-between items-center mt-6">
                     <button
-                        type="submit"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600"
-                    // onClick={handleAddProject}
+                        type="button"
+                        className="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600 hover:cursor-pointer"
+                        onClick={() => setShowDeleteConfirmation(true)}
+                        disabled={loading}
                     >
-                        Save Changes
+                        Delete
+                    </button>
+                    <button
+                        type="button"
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600"
+                        onClick={handleSaveChanges}
+                        disabled={loading}
+                    >
+                        {loading ? "Saving..." : "Save Changes"}
                     </button>
                 </div>
             </div>
+            {showDeleteConfirmation && (
+                <div className="fixed inset-0 z-60 flex items-center justify-center">
+                    <div className="bg-white rounded-md shadow-lg p-6 w-[400px] text-center">
+                        <p className="text-lg font-semibold mb-4 text-red-600">Confirm Delete</p>
+                        <p className="text-gray-700 mb-6">Are you sure you want to delete this project? This action cannot be undone.</p>
+                        <div className="flex justify-center gap-4">
+                            <button
+                                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 hover:cursor-pointer"
+                                onClick={handleDeleteProject}
+                                disabled={loading}
+                            >
+                                {loading ? "Deleting..." : "Yes, Delete"}
+                            </button>
+                            <button
+                                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 hover:cursor-pointer"
+                                onClick={() => setShowDeleteConfirmation(false)}
+                                disabled={loading}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -7,9 +7,10 @@ type Props = {
     onClose: () => void;
     achievement: Achievement | null;
     onEdit: (updatedAchievement: Achievement) => void;
+    ableToUpdate: boolean;
 };
 
-const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdit }) => {
+const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdit, ableToUpdate }) => {
     console.log("Achievement data:", achievement);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -18,7 +19,7 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
     };
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="relative bg-white rounded-md p-6 w-[850px] h-[350px] max-w-full shadow-lg flex items-start gap-4">
+            <div className="relative bg-white rounded-md p-6 w-max h-max max-w-full shadow-lg flex items-start gap-4">
                 <button
                     onClick={onClose}
                     className="absolute top-4 right-4 text-black hover:text-red-500"
@@ -35,7 +36,7 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
                     </svg>
                 </button>
                 <div className="w-[60%] h-[300px] flex items-center justify-center">
-                    <Image src={achievement?.image || ''} alt="Certificate" width={500} height={350} className="object-cover w-[500px] h-[330px]" />
+                    <Image src={achievement?.image || ''} alt="Certificate" width={500} height={350} className="w-auto h-[330px]" />
                 </div>
                 <div className="w-[38%] flex flex-col justify-start items-start ml-2 text-black">
                     <p className="w-full text-lg font-bold">
@@ -71,7 +72,7 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
                                 )}
                             </div>
                         )}
-                        {owner && (
+                        {owner && ableToUpdate && (
                             <div
                                 className="text-sm h-[40px] text-white hover:underline cursor-pointer px-4 bg-[#ffc107] rounded-md flex items-center justify-center font-bold"
                                 onClick={() => {

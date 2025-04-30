@@ -16,6 +16,7 @@ import { majors } from "@/dummydata/major";
 import { ShareIcon } from '@heroicons/react/24/outline';
 import Image from "next/image";
 import { useState } from 'react';
+import CertificateDialog from "@/components/achievementDialog/achievementDialog";
 
 
 
@@ -27,6 +28,9 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
     const [expandedEducation, setExpandedEducation] = useState(false);
     const [dropdownExperienceOpen, setDropdownExperienceOpen] = useState<{ [key: number]: boolean }>({});
     const [dropdownSkillOpen, setDropdownSkillOpen] = useState<{ [key: number]: boolean }>({});
+    const [openAchivementDialog, setOpenAchivementDialog] = useState(false);
+    const [singleAchievementData, setSingleAchievementData] = useState<Achievement | null>(null);
+    const [viewCertificateDialog, setViewCertificateDialog] = useState(false);
 
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -75,15 +79,17 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
         setTimeout(() => setSuccessMessage(""), 4000);
     };
 
+    const handleOpenAchivementDialog = (achievement: Achievement) => {
+        console.log(achievement);
+        setSingleAchievementData(achievement);
+        setOpenAchivementDialog(!openAchivementDialog);
+    };
+
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
             <Appbar />
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
-                {successMessage && (
-                    <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
-                        {successMessage}
-                    </div>
-                )}
+            <div className={`max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between ${openAchivementDialog ? 'blur-sm' : ''} `}>
+
                 <div className="flex justify-between w-full">
                     <div className="h-[87vh] w-[30%] flex flex-col justify-between overflow-y-auto">
                         <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'} bg-white rounded-lg shadow-md p-4 relative`}>
@@ -94,21 +100,27 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             ) : (
                                 <>
                                     {portfolio.projects
-                                        .filter(project => project.project_visibility_status === 1)
-                                        .slice(0, expandedProject ? portfolio.projects.filter(p => p.project_visibility_status === 1).length : 2)
+                                        .filter(project => project.project_visibility_status === 0)
+                                        .slice(0, expandedProject ? portfolio.projects.filter(p => p.project_visibility_status === 0).length : 2)
                                         .map((project) => (
                                             <ProjectCard
-                                                key={project.id}
+                                                key={project.project_id}
                                                 project={project}
                                             />
                                         ))}
 
-                                    <button onClick={() => setExpandedProject(!expandedProject)}>
-                                        {expandedProject ? 'See Less' : 'See More'}
-                                    </button>
+                                    {portfolio.projects.filter(project => project.project_visibility_status === 0).length > 2 && (
+                                        <div className={`h-40px ${portfolio.projects.length > 2 ? 'block' : 'hidden'}`}>
+                                            <button
+                                                onClick={toggleDropdownProject}
+                                                className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
+                                            >
+                                                {expandedProject ? 'See Less' : 'See More'}
+                                            </button>
+                                        </div>
+                                    )}
                                 </>
                             )}
-
                         </div>
                         <div className={`h-[65%] bg-white rounded-lg shadow-md p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto`}>
                             <p className="text-black font-bold text-lg">Achievements & Certifications</p>
@@ -117,7 +129,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                 <p className="text-[#808080] text-md mt-4 justify-center items-center flex">No achievement & certificate available</p>
                             ) : (
                                 portfolio.achievements.map((achievement) => (
-                                    <AchievementCard key={achievement.id} achievement={achievement} onClick={() => { }} />
+                                    <AchievementCard key={achievement.id} achievement={achievement} onClick={() => { handleOpenAchivementDialog(achievement) }} />
                                 ))
                             )}
                         </div>
@@ -150,27 +162,29 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                         </div>
                                     </div>
                                     <div className="justify-start w-[60%] h-full items-start ml-4 mt-4">
-                                        <p className="text-black font-bold text-lg">{portfolio.portfolio.user_name}</p>
+                                        <p className="text-black font-bold text-lg ">{portfolio.portfolio.user_name}</p>
                                         <div className="w-20 bg-[#dfdfdf] h-[2px] mt-1">
                                         </div>
-                                        <p className="text-black mt-2 text-sm">
-                                            <span className="font-bold mr-2">Email:</span> {portfolio.portfolio.email}
-                                        </p>
-                                        <p className="text-black mt-2 text-sm">
-                                            <span className="font-bold mr-2">Contact:</span> {portfolio.portfolio.phone_number ? portfolio.portfolio.phone_number : 'N/A'}
-                                        </p>
+                                        <div className="text-black mt-2 text-sm flex">
+                                            <span className="font-bold mr-2">Email:</span> <p className="text-gray-600">{portfolio.portfolio.email}</p>
+                                        </div>
+                                        <div className="text-black mt-2 text-sm flex">
+                                            <span className="font-bold mr-2">Contact:</span>  <p className="text-gray-600">{portfolio.portfolio.phone_number ? portfolio.portfolio.phone_number : 'N/A'}</p>
+                                        </div>
                                         {portfolio.portfolio.role_id === 1 ?
-                                            (<p className="text-black mt-2 text-sm">
-                                                <span className="font-bold mr-2">Major:</span> {getMajorName()}
-                                            </p>)
+                                            (<div className="text-black mt-2 text-sm flex">
+                                                <span className="font-bold mr-2">Major:</span><p className="text-gray-600">{getMajorName()}</p>
+                                            </div>)
                                             : <div></div>}
                                         <button className="mt-4 rounded-sm text-black px-4 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:transform hover:scale-105" onClick={toggleSharePortfolio}><ShareIcon className="w-5 h-5 mr-2" /> Share Portfolio</button>
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-[30%] bg-white rounded-lg shadow-md p-4 overflow-y-auto">
-                                <p className="text-black font-bold text-lg">About Me</p>
-                                <p className="text-black mt-2 text-sm text-justify">
+                            <div className="w-[30%] bg-gradient-to-br from-white to-gray-100 rounded-2xl shadow-lg p-6 overflow-y-auto hover:shadow-2xl transition-all duration-300">
+                                <p className="text-gray-800 font-semibold text-xl mb-4 border-b pb-2 border-gray-300">
+                                    About Me
+                                </p>
+                                <p className="text-gray-600 mt-2 text-sm leading-relaxed text-justify">
                                     {portfolio.portfolio.about ? portfolio.portfolio.about : 'No description available'}
                                 </p>
                             </div>
@@ -265,6 +279,16 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                     </div>
                 </div>
             </div>
+
+            {openAchivementDialog && (
+                <CertificateDialog
+                    owner={true}
+                    achievement={singleAchievementData}
+                    onClose={() => handleOpenAchivementDialog(singleAchievementData!)} 
+                    onEdit={() => {}}
+                    ableToUpdate={false}
+                />
+            )}
         </div>
     );
 }

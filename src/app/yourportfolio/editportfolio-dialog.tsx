@@ -41,6 +41,7 @@ const EditPortfolioDialog = ({
     const [selectedWorkingStatus, setSelectedWorkingStatus] = useState<number | null>(workingStatus || null);
     const [about, setAbout] = useState<string | null>(aboutMe || null);
     const [photoString, setPhotoString] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -82,7 +83,8 @@ const EditPortfolioDialog = ({
         , [phoneNumber, major, workingStatus, aboutMe]);
 
     const handleOnEdit = async () => {
-        if (!selectedMajor || !selectedWorkingStatus || !phone || !about) {
+        if (selectedMajor == null || selectedWorkingStatus == null || phone == null || about == null) {
+            setError("Please fill in all required fields.");
             return;
         }
         setLoading(true);
@@ -98,8 +100,6 @@ const EditPortfolioDialog = ({
                 formData.append('photo', imageFiles[0]);
             }
 
-            console.log("Form data:", formData);
-
             const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_API_URL}update_portfolio/${portfolioId}`,
                 formData,
@@ -111,7 +111,6 @@ const EditPortfolioDialog = ({
             );
 
             if (response.status == 200) {
-                router.refresh();
                 setLoading(false);
                 const updatedPortfolio = {
                     portfolioId,
@@ -121,6 +120,7 @@ const EditPortfolioDialog = ({
                     about: response.data.about,
                     photo: response.data.photo,
                 }
+                router.refresh();
                 handlePortfolioUpdate(updatedPortfolio);
                 setSuccessMessage("Portfolio updated successfully.");
                 onClose();
@@ -216,6 +216,11 @@ const EditPortfolioDialog = ({
                             onChange={(e) => setAbout(e.target.value || null)}
                             placeholder="Eg.I am a student at Paragon International University, majoring in Computer Science. I have learned various programming languages and software development methodologies."
                         />
+                        {error && (
+                            <div className="text-red-500 text-sm ">
+                                {error}
+                            </div>
+                        )}
                     </form>
 
                     {/* Right side: Multiple Image Upload */}

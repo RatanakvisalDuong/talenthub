@@ -23,7 +23,7 @@ declare module "next-auth/jwt" {
 	}
 }
 
-const BLOCKED_DOMAINS = ["gmail.com", "yahoo.com", "email.com", "aupp.edu.kh", "hotmail.com", "outlook.com", "live.com", "icloud.com", "protonmail.com", "tutanota.com", "yandex.com", "zoho.com", "gmx.com", "mailinator.com", "rupp.edu.kh"];
+const BLOCKED_DOMAINS = ["yahoo.com", "email.com", "aupp.edu.kh", "hotmail.com", "outlook.com", "live.com", "icloud.com", "protonmail.com", "tutanota.com", "yandex.com", "zoho.com", "gmx.com", "mailinator.com", "rupp.edu.kh"];
 
 let laravelToken = "";
 let roleId = 0;
@@ -81,6 +81,10 @@ export const authOptions: NextAuthOptions = {
 						},
 					}
 				);
+
+				if(res.data.user_status === 0){
+					return "/auth/ban";
+				}
 
 				laravelToken = res.data.token;
 				roleId = res.data.role_id;

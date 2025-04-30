@@ -20,7 +20,6 @@ export default function Card({ portfolio }: { portfolio: Portfolio }) {
     return (
         <Link className="w-53 h-64 rounded-sm shadow-md p-4 bg-white shadow-sm p-4 text-black transform transition-transform duration-200 hover:scale-105 hover:cursor-pointer" href={`/portfolio/${portfolio.user_id}`}>
             <div className="flex justify-between items-center">
-                <div></div>
                 {portfolio.role === 1 ? (
                     portfolio.working_status != null ? (
                         <WorkingStatusBar status={portfolio.working_status} />
@@ -54,7 +53,7 @@ export default function Card({ portfolio }: { portfolio: Portfolio }) {
                         Contact:
                     </p>
                     <p className='text-[12px] ml-2'>
-                        {portfolio.phone_number}
+                        {portfolio.phone_number || 'N/A'}
                     </p>
                 </div>
                 {portfolio.role == 1 ? <div className='flex mt-2'>
@@ -62,7 +61,7 @@ export default function Card({ portfolio }: { portfolio: Portfolio }) {
                         Major:
                     </p>
                     <p className='text-[12px] ml-2 break-words overflow-hidden text-ellipsis -webkit-box -webkit-line-clamp-2 -webkit-box-orient-vertical w-full'>
-                        {getMajorName(portfolio.major ?? 0)}
+                        {getMajorName(portfolio.major ?? 0) || 'N/A'}
                     </p>
                 </div> : null
                 }

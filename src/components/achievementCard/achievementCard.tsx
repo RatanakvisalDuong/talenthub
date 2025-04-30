@@ -6,12 +6,12 @@ import { Achievement } from '@/app/type/achievement';
 export default function AchievementCard({ achievement, onClick }: { achievement: Achievement; onClick: () => void }) {
 	return (
 		<div
-			className="bg-white w-full h-50 shadow-md mt-4 px-4 py-2 rounded-md cursor-pointer hover:transform hover:scale-105"
+			className="bg-white w-full h-55 shadow-md mt-4 px-4 py-2 rounded-md cursor-pointer hover:transform hover:scale-105"
 			onClick={onClick}
 		>
 			<div className="flex w-full justify-between">
 				<div className="w-[70%] overflow-hidden">
-					<p className="text-sm text-black">{achievement.title}</p>
+					<p className="text-sm text-gray-600">{achievement.title}</p>
 				</div>
 				{achievement.endorsers && achievement.endorsers.filter(endorser => endorser.status_id === 2).length > 0 && (
 					<div className="w-[30%] flex justify-end">
@@ -26,8 +26,8 @@ export default function AchievementCard({ achievement, onClick }: { achievement:
 					src={achievement.image}
 					alt="Certificate"
 					width={200}
-					height={200}
-					className="object-cover w-[220px] h-[130px]"
+					height={130}
+					className="w-[220px] h-[130px]"
 				/>
 			</div>
 		</div>

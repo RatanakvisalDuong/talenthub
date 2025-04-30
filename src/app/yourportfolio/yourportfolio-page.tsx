@@ -33,6 +33,7 @@ import EditCertificateDialog from "./editachievement-dialog";
 export default function YourPortfolioPageComponent({ portfolio }: { portfolio: Portfolio }) {
 
     const [portfolioData, setPortfolioData] = useState<Portfolio>(portfolio);
+    const [projectData, setProjectData] = useState(portfolio.projects);
     const [skillData, setSkillData] = useState<Skill[]>(portfolio.skills);
     const [educationData, setEducationData] = useState<Education[]>(portfolio.education);
     const [experienceData, setExperienceData] = useState<Experience[]>(portfolio.experiences);
@@ -78,7 +79,6 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
 
     const [viewCertificateDialog, setViewCertificateDialog] = useState(false);
     const [editCertificateDialog, setEditCertificateDialog] = useState(false);
-    const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
 
     const toggleDropdownSkill = (skillId: number) => {
         setDropdownSkillOpen(prev => ({
@@ -224,7 +224,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
 
     const toggleSharePortfolio = () => {
         displaySuccessMessage("Portfolio link copied to clipboard!");
-        navigator.clipboard.writeText(`http://localhost:3000/portfolio/${portfolio.portfolio.user_id}`);
+        navigator.clipboard.writeText(`http://localhost:3000/portfolio/${portfolio.portfolio.id}`);
     }
 
     const displaySuccessMessage = (message: string) => {
@@ -234,6 +234,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
 
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
+            {}
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
                 {successMessage && (
                     <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
@@ -253,16 +254,16 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                 </button>
                             </div>
                             <div className="w-25 bg-[#dfdfdf] h-[2px] mt-1"></div>
-                            {portfolio.projects.length > 0 ? (
+                            {projectData.length > 0 ? (
                                 <>
-                                    {portfolio.projects
-                                        .slice(0, expandedProject ? portfolio.projects.length : 2)
+                                    {projectData
+                                        .slice(0, expandedProject ? projectData.length : 2)
                                         .map((project) => (
-                                            <ProjectCard key={project.id} project={project} />
+                                            <ProjectCard key={project.project_id} project={project} />
                                         ))}
 
-                                    {portfolio.projects.length > 2 && (
-                                        <div className={`h-40px ${portfolio.projects.length > 2 ? 'block' : 'hidden'}`}>
+                                    {projectData.length > 2 && (
+                                        <div className={`h-40px ${projectData.length > 2 ? 'block' : 'hidden'}`}>
                                             <button
                                                 onClick={toggleDropdownProject}
                                                 className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
@@ -298,7 +299,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                     </div>
                     <div className="h-[87vh] w-[68%] overflow-y-auto pr-6 overflow-x-hidden">
                         <div className="flex justify-between h-[35%]">
-                            <div className="w-[68%] bg-white rounded-lg shadow-md p-4 overflow-y-auto">
+                            <div className="w-[68%] bg-white rounded-lg shadow-md px-2 py-4 overflow-y-auto">
                                 <div className="flex items-center justify-start h-full">
                                     <div className="w-[40%] relative flex items-center justify-center">
                                         <div className="absolute top-0 right-0 z-10 -translate-y-1/2">
@@ -315,18 +316,25 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                         </div>
                                     </div>
                                     <div className="justify-start w-[50%] h-full items-start ml-4 mt-4">
-                                        <p className="text-black font-bold text-lg">{portfolio.portfolio.user_name}</p>
+                                        <p className="text-black font-bold text-lg truncate">{portfolio.portfolio.user_name}</p>
                                         <div className="w-20 bg-[#dfdfdf] h-[2px] mt-1">
                                         </div>
-                                        <p className="text-black mt-2 text-sm">
-                                            <span className="font-bold mr-2">Email:</span> {portfolio.portfolio.email}
-                                        </p>
-                                        <p className="text-black mt-2 text-sm">
-                                            <span className="font-bold mr-2">Contact:</span> {portfolioData.portfolio.phone_number ? portfolioData.portfolio.phone_number : 'N/A'}
-                                        </p>
-                                        <p className="text-black mt-2 text-sm">
-                                            <span className="font-bold mr-2">Major:</span> {portfolio.portfolio.major ? getMajorName(portfolio.portfolio.major) : 'N/A'}
-                                        </p>
+                                        <div className="text-black mt-2 text-sm flex">
+                                            <span className="font-bold mr-2">Email:</span>
+                                            <p className="text-gray-600 truncate"> {portfolio.portfolio.email}</p>
+                                        </div>
+                                        <div className="text-black mt-2 text-sm flex">
+                                            <span className="font-bold mr-2">Contact:</span> 
+                                            <p className="text-gray-600 truncate"> {portfolioData.portfolio.phone_number ? portfolioData.portfolio.phone_number : 'N/A'}</p>
+                                        </div>
+                                        {portfolio.portfolio.role_id === 1 ?
+                                            (<div className="text-black mt-2 text-sm flex">
+                                                <span className="font-bold mr-2">Major:</span>
+                                                <p className="text-gray-600 truncate"> {portfolio.portfolio.major ? getMajorName(portfolio.portfolio.major) : 'N/A'}</p>
+                                            </div>
+                                            )
+                                            : <div></div>
+                                        }
                                         <div className="flex justify-between">
                                             <button
                                                 className="mt-4 rounded-sm text-black px-2 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:scale-105 hover:brightness-105 transition-all duration-200 ease-in-out"
@@ -341,18 +349,23 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                                 onClick={toggleEditPortfolioDialog}
                                             >
                                                 <PencilSquareIcon className="w-5 h-5 mr-2" />
-                                                Edit
+                                                Update
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-[30%] bg-white rounded-lg shadow-md p-4 overflow-y-auto">
-                                <p className="text-black font-bold text-lg">About Me</p>
-                                <p className="text-black mt-2 text-sm text-justify">
+                            <div className="w-[30%] bg-white rounded-2xl shadow-lg p-6 overflow-y-auto hover:shadow-2xl transition-all duration-300">
+                                <p className="text-gray-800 font-semibold text-lg pb-1">
+                                    About Me
+                                </p>
+                                <div className="w-20 bg-[#dfdfdf] h-[2px] ">
+                                </div>
+                                <p className="text-gray-600 mt-2 text-sm leading-relaxed text-justify">
                                     {portfolioData.portfolio.about ? portfolioData.portfolio.about : 'No description available'}
                                 </p>
                             </div>
+
                         </div>
                         <div className={`w-full ${expandedExperience ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
                             <div className="flex justify-between items-center">
@@ -476,7 +489,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
             )}
 
             {openAddProjectDialog && (
-                <AddProjectDialog isOpen={true} onClose={toggleAddProjectDialog} onClick={() => addProject()} portfolioId={portfolioData.portfolio.id} setSuccessMessage={displaySuccessMessage}/>
+                <AddProjectDialog isOpen={true} onClose={toggleAddProjectDialog} onClick={() => addProject()} portfolioId={portfolioData.portfolio.id} setSuccessMessage={displaySuccessMessage} setProjectdata={setProjectData} />
             )}
 
             {openAddCertificateDialog && (
@@ -566,6 +579,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                     onClose={() => setViewCertificateDialog(false)}
                     achievement={singleAchievementData}
                     onEdit={toggleEditCertificateDialog}
+                    ableToUpdate={true}
                 />
             )}
 

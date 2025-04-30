@@ -29,14 +29,6 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
     const [addCollaboratorDialog, setAddCollaboratorDialog] = useState(false);
     const [addEndorserDialog, setAddEndorserDialog] = useState(false);
 
-    // const slides = [
-    //     { id: 1, image: "/project.png" },
-    //     { id: 2, image: "/project2.png" },
-    //     { id: 3, image: "/project3.png" },
-    //     { id: 4, image: "/project4.png" },
-    //     { id: 5, image: "/project4.png" }
-    // ];
-
     const slidePairs = [];
     for (let i = 0; i < projectData.images.length; i += 2) {
         if (i + 1 < projectData.images.length) slidePairs.push([projectData.images[i], projectData.images[i + 1]]);
@@ -65,10 +57,6 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
     }, []);
 
     const goToSlide = (index: number) => setCurrentSlide(index);
-
-    const downloadProject = () => {
-        // console.log("Download project");
-    }
 
     const toggleUpdateProject = () => {
         setUpdateProjectDialog(!updateProjectDialog);
@@ -122,49 +110,49 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                     <ArrowLeftCircleIcon className="h-10 w-10" />
                                 </button>
                                 <div className="relative w-[85%] overflow-hidden shadow-md mx-auto">
-    <div className="flex transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-        {slidePairs.map((pair, pairIndex) => (
-            <div key={pairIndex} className="w-full flex-shrink-0 flex gap-2">
-                {pair.length === 2 ? pair.map(slide => (
-                    <div key={slide.id} className="w-1/2">
-                        <div className="relative aspect-[16/9] overflow-hidden">
-                            <Image 
-                                src={slide.url} 
-                                alt={`Project slide ${slide.id}`} 
-                                fill
-                                sizes="(max-width: 768px) 100vw, 500px"
-                                className="object-cover" 
-                                priority={pairIndex === currentSlide} 
-                            />
-                        </div>
-                    </div>
-                )) : (
-                    <div className="w-full flex justify-center">
-                        <div className="w-1/2">
-                            <div className="relative aspect-[16/9] overflow-hidden">
-                                <Image 
-                                    src={pair[0].url} 
-                                    alt={`Project slide ${pair[0].id}`} 
-                                    fill
-                                    sizes="(max-width: 768px) 100vw, 500px"
-                                    className="object-cover" 
-                                    priority={pairIndex === currentSlide} 
-                                />
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </div>
-        ))}
-    </div>
-    <div className="absolute bottom-3 left-0 right-0 z-10">
-        <div className="flex justify-center gap-1">
-            {slidePairs.map((_, index) => (
-                <button key={index} onClick={() => goToSlide(index)} className={`h-2 transition-all ${currentSlide === index ? 'bg-[#5086ed] w-4 rounded-md' : 'bg-white bg-opacity-50 w-2 rounded-full'}`} />
-            ))}
-        </div>
-    </div>
-</div>
+                                    <div className="flex transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+                                        {slidePairs.map((pair, pairIndex) => (
+                                            <div key={pairIndex} className="w-full flex-shrink-0 flex gap-2">
+                                                {pair.length === 2 ? pair.map(slide => (
+                                                    <div key={slide.id} className="w-1/2">
+                                                        <div className="relative aspect-[16/9] overflow-hidden">
+                                                            <Image
+                                                                src={slide.url}
+                                                                alt={`Project slide ${slide.id}`}
+                                                                fill
+                                                                sizes="(max-width: 768px) 100vw, 500px"
+                                                                className="object-cover"
+                                                                priority={pairIndex === currentSlide}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                )) : (
+                                                    <div className="w-full flex justify-center">
+                                                        <div className="w-1/2">
+                                                            <div className="relative aspect-[16/9] overflow-hidden">
+                                                                <Image
+                                                                    src={pair[0].url}
+                                                                    alt={`Project slide ${pair[0].id}`}
+                                                                    fill
+                                                                    sizes="(max-width: 768px) 100vw, 500px"
+                                                                    className="object-cover"
+                                                                    priority={pairIndex === currentSlide}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="absolute bottom-3 left-0 right-0 z-10">
+                                        <div className="flex justify-center gap-1">
+                                            {slidePairs.map((_, index) => (
+                                                <button key={index} onClick={() => goToSlide(index)} className={`h-2 transition-all ${currentSlide === index ? 'bg-[#5086ed] w-4 rounded-md' : 'bg-white bg-opacity-50 w-2 rounded-full'}`} />
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
                                 <button onClick={nextSlide} className="text-gray-800 hover:bg-opacity-60 transition-all focus:outline-none hover:cursor-pointer">
                                     <ArrowRightCircleIcon className="h-10 w-10" />
                                 </button>
@@ -215,10 +203,12 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 <p className="font-bold text-black ">
                                     Endorsers
                                 </p>
-                                <div className="bg-white text-black shadow-md rounded-lg p-2 flex items-center space-x-2 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={() => { toggleAddEndorser() }}>
+                                {projectData.google_id == session?.googleId && <div className="bg-white text-black shadow-md rounded-lg p-2 flex items-center space-x-2 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={() => { toggleAddEndorser() }}>
                                     <UserPlus className="w-4 h-4" />
                                     <p className="text-sm">Add Endorser</p>
                                 </div>
+                                }
+
                             </div>
                             {projectData.endorsers.length > 0 ? (
                                 projectData.endorsers.map((endorser: any, index: number) => (
@@ -237,10 +227,12 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 <p className="font-bold text-black ">
                                     Collaborators
                                 </p>
-                                <div className="bg-white text-black shadow-md rounded-lg p-2 flex items-center space-x-2 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={() => { toggleAddCollaborator() }}>
+                                {projectData.google_id == session?.googleId && <div className="bg-white text-black shadow-md rounded-lg p-2 flex items-center space-x-2 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={() => { toggleAddCollaborator() }}>
                                     <UserPlus className="w-4 h-4" />
                                     <p className="text-sm">Add Collaborator</p>
                                 </div>
+                                }
+
                             </div>
                             {projectData.collaborators.length > 0 ? (
                                 projectData.collaborators.map((collaborator: any, index: number) => (
@@ -253,7 +245,6 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                     <p className="text-sm font-medium">No collaborators available.</p>
                                 </div>
                             }
-
                         </div>
                         <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
                             <div className="flex items-center justify-between">

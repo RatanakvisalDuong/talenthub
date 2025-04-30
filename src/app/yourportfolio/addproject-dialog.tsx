@@ -9,8 +9,9 @@ import { allLanguages } from "@/dummydata/programmingLanguages";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Project } from "../type/project";
 
-const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMessage }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number; setSuccessMessage: (message: string) => void; }) => {
+const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMessage, setProjectdata }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number; setSuccessMessage: (message: string) => void; setProjectdata: React.Dispatch<React.SetStateAction<Project[]>>;}) => {
     const router = useRouter();
     const { data: session } = useSession();
     const [title, setTitle] = useState<string>("");
@@ -90,6 +91,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
     };
 
     const handleAddProject = async () => {
+        var images: any[] = [];
         if (title === "" || description === "" || projectLink === "") {
             setError("Please fill in all required fields.");
             return;
@@ -123,10 +125,28 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                 },
             );
 
-            console.log('Response:', response);
             if (response.status === 200) {
+                const project: Project = {
+                    project_id: response.data.project.project_id,
+                    portfolio_id: portfolioId,
+                    title: title,
+                    description: description,
+                    instruction: projectInstruction,
+                    link: projectLink,
+                    images: images,
+                    file: projectFiles[0].name,
+                    programming_languages: selectedLanguages.map((lang) => ({
+                        id: response.data.programming_language_id,
+                        name: lang,
+                    })),
+                    project_visibility_status: 0,
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString(),
+                };
+                setProjectdata((prevProjects) => [...prevProjects, project]);
                 setLoading(false);
                 onClose();
+                router.refresh();
 
                 setSuccessMessage("Project added successfully!");
 
@@ -144,8 +164,8 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             {loading ? (
-                <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+                <div className={`bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto flex justify-center items-center`}>
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-blue-500"></div>
                 </div>
             ) : <div className={`bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto`}>
                 <div className="flex justify-between items-start mb-2">

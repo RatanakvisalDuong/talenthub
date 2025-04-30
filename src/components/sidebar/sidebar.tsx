@@ -71,7 +71,7 @@ export default function Sidebar({
             {session?.user?.name && (
                 <div className="bg-white w-64 h-max rounded-sm shadow-md p-4 items-center justify-center text-black mb-4 transform transition-transform hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group">
                     <Link href={`/yourportfolio`}>
-                        <p className="w-max m-auto font-bold">{session.user.name}</p>
+                        <p className="w-max m-auto font-bold">{session.user.name || 'N/A'}</p>
                         <div className="rounded-full m-auto mt-4 items-center justify-center flex">
                             <Image
                                 src={photo || session.user.image || "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*"}
@@ -83,19 +83,19 @@ export default function Sidebar({
                         </div>
                         <p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
                             <span className='font-bold'>Contact: </span>
-                            <span className='ml-1'>{phoneNumber}</span>
+                            <span className='ml-1'>{phoneNumber || 'N/A'}</span>
                         </p>
                         <p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
                             <span className='font-bold'>Email: </span>
                             <span className='ml-1'>
-                                {session.user.email}
+                                {session.user.email || 'N/A'}
                             </span>
                         </p>
                         <p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
                             <span className='font-bold'>Major: </span>
                             <span className="ml-1">
                                 {
-                                    getMajorName(major ?? 0)
+                                    getMajorName(major ?? 0)  || 'N/A'
                                 }
                             </span>
                         </p>
