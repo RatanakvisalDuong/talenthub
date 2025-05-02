@@ -10,6 +10,8 @@ import { projectEndorsement } from "@/dummydata/projectEndorsement";
 import Link from "next/link";
 import LoginDialog from "@/dialogs/login_dialog/login_dialog";
 import { Ubuntu } from "next/font/google";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/option";
 
 const ubuntuFont = Ubuntu({
 	subsets: ["latin"],

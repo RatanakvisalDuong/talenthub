@@ -42,5 +42,5 @@ export default async function ProjectPageContainer({ params }: { params: Promise
             );
         }
     }
-    return <Layout><ProjectPage projectData={projectData} /></Layout>;
+    return <ProjectPage projectData={projectData} />
 }

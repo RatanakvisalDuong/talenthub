@@ -13,6 +13,7 @@ import { Project } from "@/app/type/project";
 import { useSession } from "next-auth/react";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Link } from "lucide-react";
+import RemoveImageDialog from "./removeimage-dialog";
 
 
 const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: boolean; onClose: () => void; onClick: () => void; projectData: Project }) => {
@@ -31,6 +32,11 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
     const [link, setLink] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [removeImageDialog, setRemoveImageDialog] = useState(false);
+
+    const [removingImageIds, setRemovingImageIds] = useState<number[]>([]);
+    const [selectedImageToRemove, setSelectedImageToRemove] = useState<number | null>(null);
+    const [isRemoved, setIsRemoved] = useState(false);
 
     const filteredSuggestions = allLanguages.filter(
         (lang) =>
@@ -86,7 +92,6 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
                 router.push("/yourportfolio");
             }
         } catch (error) {
-            // console.error("Error deleting project:", error);
             setLoading(false);
         }
     };
@@ -96,7 +101,6 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
     }, [imageFiles]);
 
     useEffect(() => {
-        // console.log("Project Data:", projectData);
         setLoading(true);
         if (projectData) {
             setEditorContent(projectData.instruction || "");
@@ -136,8 +140,25 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
     };
 
     const handleRemoveExistingImage = (id: number) => {
-        setExistingImages(existingImages.filter(img => img.id !== id));
+        setSelectedImageToRemove(id);
+        setRemoveImageDialog(true);
     };
+    
+    var updatedRemovingIds = [...removingImageIds];
+
+    const handleConfirmImageRemoval = () => {
+        if (selectedImageToRemove === null) return;
+        
+        const imageIdToRemove = selectedImageToRemove;
+        
+        updatedRemovingIds = [...removingImageIds, imageIdToRemove];
+        setRemovingImageIds(updatedRemovingIds);
+        
+        setExistingImages(existingImages.filter(img => img.id !== imageIdToRemove));
+
+        setRemoveImageDialog(false);
+        setSelectedImageToRemove(null);
+      };
 
     const handleRemoveNewImage = (index: number) => {
         setImageFiles(imageFiles.filter((_, i) => i !== index));
@@ -189,7 +210,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className={`bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] overflow-y-auto z-50 relative ${showDeleteConfirmation ? "blur-sm" : ""}`}>
+            <div className={`bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] overflow-y-auto z-50 relative ${showDeleteConfirmation || removeImageDialog ? "blur-sm" : ""}`}>
                 <div className="flex justify-between items-start mb-2">
                     <h2 className="text-xl font-bold text-black">Update Project</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
@@ -295,8 +316,8 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
                             </label>
                             {existingFilesUrl ? (
                                 <div className="flex items-center gap-4">
-                                    <div 
-                                        className="h-10 w-max bg-white rounded-md flex items-center justify-center text-black shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group px-4 py-2" 
+                                    <div
+                                        className="h-10 w-max bg-white rounded-md flex items-center justify-center text-black shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group px-4 py-2"
                                         onClick={() => window.open(existingFilesUrl, "_blank")}
                                     >
                                         <ArrowDownTrayIcon className="h-5 w-5" /><span className="ml-2"> Download File</span>
@@ -349,6 +370,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
 
                         <div className="flex flex-wrap gap-2 mt-2">
                             {existingImages.map((image) => (
+
                                 <div key={`existing-${image.id}`} className="relative">
                                     <Image
                                         src={image.url}
@@ -358,12 +380,16 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
                                         className="object-cover rounded shadow"
                                         unoptimized
                                     />
+                                    {/* {existingImages.length + imageFiles.length > 1 && ( */}
                                     <div
                                         onClick={() => handleRemoveExistingImage(image.id)}
                                         className="absolute top-0 right-0 text-red-500 p-1 rounded-full"
                                     >
                                         <i className="fas fa-times"></i>
                                     </div>
+                                    {/* )} */}
+                                    <p>
+                                    </p>
                                 </div>
                             ))}
 
@@ -377,12 +403,14 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
                                         className="object-cover rounded shadow"
                                         unoptimized
                                     />
-                                    <div
-                                        onClick={() => handleRemoveNewImage(index)}
-                                        className="absolute top-0 right-0 text-red-500 p-1 rounded-full"
-                                    >
-                                        <i className="fas fa-times"></i>
-                                    </div>
+                                    {existingImages.length + imageFiles.length > 1 && (
+                                        <div
+                                            onClick={() => handleRemoveNewImage(index)}
+                                            className="absolute top-0 right-0 text-red-500 p-1 rounded-full"
+                                        >
+                                            <i className="fas fa-times"></i>
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -407,6 +435,17 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
                     </button>
                 </div>
             </div>
+
+            {removeImageDialog && (
+                <RemoveImageDialog
+                    onClose={() => setRemoveImageDialog(false)}
+                    onConfirm={() => {
+                        // setExistingImages(existingImages.filter(img => img.id !== existingImages[0].id));
+                        handleConfirmImageRemoval()
+                    }}
+                />
+            )}
+
             {showDeleteConfirmation && (
                 <div className="fixed inset-0 z-60 flex items-center justify-center">
                     <div className="bg-white rounded-md shadow-lg p-6 w-[400px] text-center">

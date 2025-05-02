@@ -21,12 +21,14 @@ export default async function YourPortfolioPage() {
   const portfolioData: Portfolio = response.data;
 
   return (
-    <Layout>
+    // <Layout>
+    <div>
       {portfolioData.portfolio.status === 1 ? (
         <YourPortfolioPageComponent portfolio={portfolioData} />
       ) : (
         <BanPage />
       )}
-    </Layout>
+    </div>
+    // </Layout>
   );
 }

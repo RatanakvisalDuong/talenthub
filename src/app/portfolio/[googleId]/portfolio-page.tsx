@@ -87,7 +87,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
 
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
-            <Appbar />
+            {/* <Appbar /> */}
             <div className={`max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between ${openAchivementDialog ? 'blur-sm' : ''} `}>
 
                 <div className="flex justify-between w-full">

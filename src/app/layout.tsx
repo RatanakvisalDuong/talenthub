@@ -6,6 +6,9 @@ import { ReactNode } from "react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/option";  // import auth options for server session handling
 import ClientSessionWrapper from "./ClientSessionWrapper";
+import Appbar from "@/components/appbar/appbar";
+import { Session } from "inspector/promises";
+import SessionProvider from "@/components/providers/SessionProvider";
 
 const ubuntuFont = Ubuntu({
   subsets: ["latin"],
@@ -30,7 +33,9 @@ export default async function RootLayout({
         <title>TalentHub</title>
       </head>
       <body className={`${ubuntuFont.className} bg-[#E8E8E8]`}>
-        <ClientSessionWrapper session={session}>{children}</ClientSessionWrapper>
+        
+        {/* <ClientSessionWrapper session={session}>{children}</ClientSessionWrapper> */}
+        <SessionProvider><Appbar />{children}</SessionProvider>
       </body>
     </html>
   );

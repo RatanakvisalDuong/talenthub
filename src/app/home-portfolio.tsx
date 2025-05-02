@@ -70,7 +70,7 @@ export default function HomeComponent(
 					<SearchBar onSearch={handleSearch} />
 					<div className="flex-grow overflow-y-auto mt-4 px-2 pt-2 pb-16">
 						{filteredPortfolio.length > 0 ? (
-							<div className="grid grid-cols-4 gap-3 auto-rows-max">
+							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-4 gap-4 auto-rows-auto">
 								{filteredPortfolio.map((portfolio) => (
 									<Card key={portfolio.user_id} portfolio={portfolio} />
 								))}
