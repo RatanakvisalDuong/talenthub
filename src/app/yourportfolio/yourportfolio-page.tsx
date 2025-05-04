@@ -299,7 +299,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                     </div>
                     <div className="h-[87vh] w-[68%] overflow-y-auto pr-6 overflow-x-hidden">
                         <div className="flex justify-between h-[35%]">
-                            <div className="w-[68%] bg-white rounded-lg shadow-md px-2 py-4 overflow-y-auto">
+                            <div className="w-[68%] bg-white rounded-lg shadow-md py-4 overflow-y-auto">
                                 <div className="flex items-center justify-start h-full">
                                     <div className="w-[40%] relative flex items-center justify-center">
                                         <div className="absolute top-0 right-0 z-10 -translate-y-1/2">
@@ -355,7 +355,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-[30%] bg-white rounded-2xl shadow-lg p-6 overflow-y-auto hover:shadow-2xl transition-all duration-300">
+                            <div className="w-[30%] bg-white rounded-2xl shadow-lg p-6 overflow-y-auto">
                                 <p className="text-gray-800 font-semibold text-lg pb-1">
                                     About Me
                                 </p>

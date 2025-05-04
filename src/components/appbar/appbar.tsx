@@ -6,12 +6,12 @@ import axios from "axios";
 import { BellIcon } from "@heroicons/react/20/solid";
 import { UserCircleIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import { projectEndorsement } from "@/dummydata/projectEndorsement";
 import Link from "next/link";
 import LoginDialog from "@/dialogs/login_dialog/login_dialog";
 import { Ubuntu } from "next/font/google";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/option";
+import { Notification } from "@/app/type/notification";
 
 const ubuntuFont = Ubuntu({
 	subsets: ["latin"],
@@ -27,6 +27,7 @@ const Appbar = React.memo(() => {
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const notificationRef = useRef<HTMLDivElement>(null);
 	const [profilePicture, setProfilePicture] = useState<string | null>(null);
+	const [notification, setNotification] = useState<Notification[]>([]);
 
 	// const getProfilePicture = async () => {
 	//   const response2 = await axios.get(
@@ -39,6 +40,10 @@ const Appbar = React.memo(() => {
 		// if (session?.user?.email) {
 		// getProfilePicture();
 		// }
+		if (isAuthenticated) {
+			getNotification();
+		}
+
 		function handleClickOutside(event: MouseEvent) {
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
 				setDropdownOpen(false);
@@ -53,6 +58,26 @@ const Appbar = React.memo(() => {
 		};
 	}, [session]);
 
+	const getNotification = async () => {
+		try {
+			const response = await axios.get(
+				`${process.env.NEXT_PUBLIC_API_URL}view_notification`, {
+				params: {
+					user_google_id: session?.googleId,
+					limit: 10
+				},
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${session?.accessToken}`
+				}
+			});
+			console.log("Notification response:", response.data);
+			setNotification(response.data || []);
+		} catch (error) {
+			console.error("Failed to fetch notifications:", error);
+		}
+	}
+
 	const handleLogin = () => {
 		setIsDialogOpen(true);
 	};
@@ -62,23 +87,35 @@ const Appbar = React.memo(() => {
 	};
 
 	const handleNotificationClick = () => {
+		getNotification();
 		setNotificationDropdownOpen(!notificationDropdownOpen);
 	};
 
 	const mapEndorsementStatus = (statusId: number) => {
 		switch (statusId) {
 			case 1:
-				return "Pending + Not yet viewed";
+				return "Pending";
 			case 2:
-				return "Pending + Viewed";
-			case 3:
 				return "Approved";
-			case 4:
+			case 3:
 				return "Declined";
-			case 5:
-				return "Banned";
 			default:
 				return "Unknown Status";
+		}
+	};
+
+	const mapEndorsementType = (endorsementTypeId: number | null) => {
+		switch (endorsementTypeId) {
+			case 1:
+				return "Skill";
+			case 2:
+				return "Project";
+			case 3:
+				return "Experience";
+			case 4:
+				return "Achievement & Certification";
+			default:
+				return "Unknown Type";
 		}
 	};
 
@@ -130,37 +167,65 @@ const Appbar = React.memo(() => {
 									onClick={handleNotificationClick}
 								/>
 								<span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center mr-4">
-									{projectEndorsement.filter((endorsement) => endorsement.endorsement_status_id === 1).length}
+									{notification.filter((notification) => notification.status == 1).length}
 								</span>
 
 								{notificationDropdownOpen && (
-									<div className="absolute right-0 mt-2 w-100 bg-white rounded-md shadow-lg py-1 z-10">
-										{projectEndorsement.map((endorsement) => (
-											<div
-												key={endorsement.id}
-												className={`px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${endorsement.endorsement_status_id === 1 ? "bg-gray-100" : ""}`}
-											>
-												{endorsement.endorsement_status_id === 1
-													? `User ${endorsement.endorser} Request to endorse their project ${endorsement.project}`
-													: `You have ${mapEndorsementStatus(endorsement.endorsement_status_id)} their project: Project ${endorsement.project}`}
-												{endorsement.endorsement_status_id === 1 && (
-													<div className="flex space-x-2 mt-2">
-														<button
-															onClick={() => handleAccept(endorsement.id)}
-															className="px-4 py-1 bg-[#5086ed] text-white rounded-md cursor-pointer"
-														>
-															Accept
-														</button>
-														<button
-															onClick={() => handleDecline(endorsement.id)}
-															className="px-4 py-1 bg-white text-black rounded-md border border-2 border-[#5086ed] cursor-pointer hover:bg-gray-200"
-														>
-															Decline
-														</button>
-													</div>
-												)}
+									<div className="absolute right-0 mt-2 w-130 bg-white rounded-md shadow-lg py-1 z-10">
+										{notification.length > 0 ? (
+											notification.map((notification) => (
+												<div
+													key={notification.id}
+													className={`px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${notification.status === 1 ? "bg-gray-100" : ""}`}
+												>
+													{notification.type === 1 ? (
+														notification.status === 1 ? (
+															<div>
+																{notification.owner_name} has invited you to be a collaborator to their project : Project {notification.title}
+																<div className="flex space-x-2 mt-2">
+																	<button
+																		onClick={() => handleAccept(notification.id)}
+																		className="px-4 py-1 bg-[#5086ed] text-white rounded-md cursor-pointer"
+																	>
+																		Accept
+																	</button>
+																	<button
+																		onClick={() => handleDecline(notification.id)}
+																		className="px-4 py-1 bg-white text-black rounded-md border border-2 border-[#5086ed] cursor-pointer hover:bg-gray-200"
+																	>
+																		Decline
+																	</button>
+																</div>
+															</div>
+														) : <div>You have {mapEndorsementStatus(notification.status).toLowerCase()} {notification.owner_name}'s project {notification.title} collaboration.</div>
+													) : notification.status === 1 ? (
+														<div>
+															{notification.owner_name} has requested you to endorse their {mapEndorsementType(notification.endorsement_type).toLowerCase()}: {mapEndorsementType(notification.endorsement_type)} {notification.title}
+															<div className="flex space-x-2 mt-2">
+																<button
+																	onClick={() => handleAccept(notification.id)}
+																	className="px-4 py-1 bg-[#5086ed] text-white rounded-md cursor-pointer"
+																>
+																	Accept
+																</button>
+																<button
+																	onClick={() => handleDecline(notification.id)}
+																	className="px-4 py-1 bg-white text-black rounded-md border border-2 border-[#5086ed] cursor-pointer hover:bg-gray-200"
+																>
+																	Decline
+																</button>
+															</div>
+														</div>
+													) : (
+														<div>You have {mapEndorsementStatus(notification.status)} their {mapEndorsementType(notification.endorsement_type).toLowerCase()}: Project {notification.title}</div>
+													)}
+												</div>
+											))
+										) : (
+											<div className="px-4 py-2 text-sm text-gray-700 h-20 flex items-center justify-center">
+												No notifications
 											</div>
-										))}
+										)}
 									</div>
 								)}
 							</div>
@@ -173,21 +238,21 @@ const Appbar = React.memo(() => {
 									onClick={() => setDropdownOpen(!dropdownOpen)}
 								>
 									{/* <div className="h-8 w-8 rounded-full overflow-hidden relative">
-                    {session.photo ? (
-                      <Image
-                        src={session.photo || "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*"}
-                        alt="Profile"
-                        fill
-                        className="object-cover"
-                      />
-                    ) : (
-                      <div className="bg-gray-200 h-full w-full flex items-center justify-center">
-                        <span className="text-gray-600">
-                          {session.user?.name?.charAt(0) || "U"}
-                        </span>
-                      </div>
-                    )}
-                  </div> */}
+										{session.photo ? (
+											<Image
+												src={session.photo || "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*"}
+												alt="Profile"
+												fill
+												className="object-cover"
+											/>
+										) : (
+											<div className="bg-gray-200 h-full w-full flex items-center justify-center">
+												<span className="text-gray-600">
+													{session.user?.name?.charAt(0) || "U"}
+												</span>
+											</div>
+										)}
+									</div> */}
 									<span className="text-black font-medium">{session.user?.name || "User"}</span>
 								</div>
 

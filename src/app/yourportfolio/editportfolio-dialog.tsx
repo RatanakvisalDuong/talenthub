@@ -62,9 +62,12 @@ const EditPortfolioDialog = ({
         const files = event.target.files;
         if (!files) return;
 
-        const newFiles = Array.from(files);
-
-        setImageFiles((prevFiles) => [...prevFiles, ...newFiles]);
+        // Only use the first file and replace existing files
+        const newFile = files[0];
+        if (newFile) {
+            setImageFiles([newFile]);
+        }
+        
         event.target.value = "";
     };
 
@@ -78,9 +81,7 @@ const EditPortfolioDialog = ({
         setSelectedWorkingStatus(workingStatus || null);
         setAbout(aboutMe || null);
         setPhotoString(session?.user?.image ?? null);
-
-    }
-        , [phoneNumber, major, workingStatus, aboutMe]);
+    }, [phoneNumber, major, workingStatus, aboutMe]);
 
     const handleOnEdit = async () => {
         if (selectedMajor == null || selectedWorkingStatus == null || phone == null || about == null) {
@@ -127,6 +128,8 @@ const EditPortfolioDialog = ({
             }
         } catch (error) {
             console.error("Error updating portfolio:", error);
+            setLoading(false);
+            setError("An error occurred while updating your portfolio.");
         }
     };
 
@@ -223,7 +226,7 @@ const EditPortfolioDialog = ({
                         )}
                     </form>
 
-                    {/* Right side: Multiple Image Upload */}
+                    {/* Right side: Image Upload */}
                     <div className="w-2/5">
                         <label className="block text-sm font-medium text-black mb-1">Upload Images</label>
                         <button
@@ -237,7 +240,6 @@ const EditPortfolioDialog = ({
                         <input
                             type="file"
                             accept="image/*"
-                            multiple
                             ref={fileInputRef}
                             onChange={handleImageChange}
                             style={{ display: "none" }}
