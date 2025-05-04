@@ -87,9 +87,12 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
 
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
-            {/* <Appbar /> */}
             <div className={`max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between ${openAchivementDialog ? 'blur-sm' : ''} `}>
-
+                {successMessage && (
+                    <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
+                        {successMessage}
+                    </div>
+                )}
                 <div className="flex justify-between w-full">
                     <div className="h-[87vh] w-[30%] flex flex-col justify-between overflow-y-auto">
                         <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'} bg-white rounded-lg shadow-md p-4 relative`}>
@@ -284,8 +287,8 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                 <CertificateDialog
                     owner={true}
                     achievement={singleAchievementData}
-                    onClose={() => handleOpenAchivementDialog(singleAchievementData!)} 
-                    onEdit={() => {}}
+                    onClose={() => handleOpenAchivementDialog(singleAchievementData!)}
+                    onEdit={() => { }}
                     ableToUpdate={false}
                 />
             )}

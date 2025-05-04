@@ -252,7 +252,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
 
                         <div className="mb-2 relative">
                             <label htmlFor="language" className="block text-sm font-medium text-black">
-                                Programming Language
+                                Programming Language / Tools
                             </label>
                             <input
                                 type="text"

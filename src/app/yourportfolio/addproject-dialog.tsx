@@ -209,7 +209,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
 
                         <div className="mb-2 relative">
                             <label htmlFor="language" className="block text-sm font-medium text-black">
-                                Programming Language
+                                Programming Language / Tools
                             </label>
                             <input
                                 type="text"
