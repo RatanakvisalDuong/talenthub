@@ -235,7 +235,9 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                     .map((endorser: any, index: number) => (
                                         <div key={index} className="bg-white text-black shadow-md rounded-lg justify-between px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group">
                                             <Link className="text-sm font-medium" href={`/portfolio/${endorser.google_id}`}>{endorser.name}</Link>
-                                            <XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => {toggleRemoveEndorserDialog(endorser.google_id) }} />
+                                            {session?.googleId == projectData.google_id && (<XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveCollabDialog(endorser.google_id) }} />)}
+                                            {/* <XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { handleRemoveEndorser(endorser.google_id) }} /> */}
+                                            {/* <XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveEndorserDialog(endorser.google_id) }} /> */}
                                         </div>
                                     ))
                             ) : <div className="text-gray-700 w-full flex justify-center items-center mt-4">
@@ -261,7 +263,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                     .map((collaborator: any, index: number) => (
                                         <div className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex justify-between items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" key={index}>
                                             <Link className="text-sm font-medium" href={`/portfolio/${collaborator.google_id}`}>{collaborator.name}</Link>
-                                            <XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => {toggleRemoveCollabDialog(collaborator.google_id)}} />
+                                            {session?.googleId == projectData.google_id && (<XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveCollabDialog(collaborator.google_id) }} />)}
                                         </div>
                                     ))
                             ) :
