@@ -22,7 +22,7 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
             <div className="relative bg-white rounded-md p-6 w-max h-max max-w-full shadow-lg flex items-start gap-4">
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-black hover:text-red-500"
+                    className="absolute top-4 right-4 text-black hover:text-red-500 cursor-pointer"
                     aria-label="Close dialog"
                 >
                     <svg

@@ -26,6 +26,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
     const [isPublic, setIsPublic] = useState<boolean>(projectData?.project_visibility_status === 1);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [editorContent, setEditorContent] = useState<string>();
     const [endorsersers, setEndorsers] = useState<Endorser[]>([]);
 
@@ -89,9 +90,19 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
         setConfirmRemoveEndorserDialog(!confirmRemoveEndorserDialog);
     }
 
+    const displaySuccessMessage = (message: string) => {
+        setSuccessMessage(message);
+        setTimeout(() => setSuccessMessage(""), 4000);
+    };
+
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
             <div className={`max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between ${updateProjectDialog || addCollaboratorDialog || addEndorserDialog || confirmRemoveCollaboratorDialog || confirmRemoveEndorserDialog ? "blur-md" : ""}`}>
+                {successMessage && (
+                    <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
+                        {successMessage}
+                    </div>
+                )}
                 <div className="flex justify-between w-full">
                     <div className="h-[88vh] w-[73%]">
                         <div className="h-full w-full bg-white p-4 overflow-y-auto rounded-lg shadow-md">
@@ -183,9 +194,12 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 <Link className="h-10 w-max bg-white rounded-md flex items-center justify-center text-black px-4 shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group mr-4" href={projectData?.link || "#"} target="_blank" rel="noopener noreferrer">
                                     <LinkIcon className="h-5 w-5" /> Link
                                 </Link>
-                                <Link className="h-10 w-max bg-white rounded-md flex items-center justify-center text-black px-4 shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" href={projectData.file}>
-                                    <ArrowDownTrayIcon className="h-5 w-5" /> Download
-                                </Link>
+                                {projectData.file && (
+                                    <Link className="h-10 w-max bg-white rounded-md flex items-center justify-center text-black px-4 shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" href={projectData.file}>
+                                        <ArrowDownTrayIcon className="h-5 w-5" /> Download
+                                    </Link>
+                                )}
+
                             </div>
 
                             <div className="w-full bg-white h-max mt-4 mb-4 rounded-lg shadow-md p-6">
@@ -236,8 +250,6 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                         <div key={index} className="bg-white text-black shadow-md rounded-lg justify-between px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group">
                                             <Link className="text-sm font-medium" href={`/portfolio/${endorser.google_id}`}>{endorser.name}</Link>
                                             {session?.googleId == projectData.google_id && (<XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveCollabDialog(endorser.google_id) }} />)}
-                                            {/* <XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { handleRemoveEndorser(endorser.google_id) }} /> */}
-                                            {/* <XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveEndorserDialog(endorser.google_id) }} /> */}
                                         </div>
                                     ))
                             ) : <div className="text-gray-700 w-full flex justify-center items-center mt-4">
@@ -300,6 +312,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                     onClose={toggleUpdateProject}
                     projectData={projectData}
                     onClick={toggleUpdateProject}
+                    setSuccessMessage={displaySuccessMessage}
                 />
             )}
 

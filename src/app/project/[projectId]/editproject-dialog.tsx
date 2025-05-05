@@ -16,7 +16,7 @@ import { Link } from "lucide-react";
 import RemoveImageDialog from "./removeimage-dialog";
 
 
-const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: boolean; onClose: () => void; onClick: () => void; projectData: Project }) => {
+const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMessage }: { isOpen: boolean; onClose: () => void; onClick: () => void; projectData: any; setSuccessMessage: (message: string) => void;}) => {
     const router = useRouter();
     const { data: session } = useSession();
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -33,6 +33,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
     const [loading, setLoading] = useState(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [removeImageDialog, setRemoveImageDialog] = useState(false);
+    const [isProjectFileDeleted, setIsProjectFileDeleted] = useState(false);
 
     const [removingImageIds, setRemovingImageIds] = useState<number[]>([]);
     const [selectedImageToRemove, setSelectedImageToRemove] = useState<number | null>(null);
@@ -114,12 +115,13 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
             }
 
             if (projectData.programming_languages && Array.isArray(projectData.programming_languages)) {
-                const languages = projectData.programming_languages.map(lang =>
+                const languages = projectData.programming_languages.map(( lang:any ) =>
                     typeof lang === 'object' && lang.name ? lang.name :
                         typeof lang === 'string' ? lang : ''
                 ).filter(Boolean);
                 setSelectedLanguages(languages);
             }
+            console.log("Project data:", projectData);
             setLoading(false);
         }
     }, [projectData]);
@@ -143,22 +145,22 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
         setSelectedImageToRemove(id);
         setRemoveImageDialog(true);
     };
-    
+
     var updatedRemovingIds = [...removingImageIds];
 
     const handleConfirmImageRemoval = () => {
         if (selectedImageToRemove === null) return;
-        
+
         const imageIdToRemove = selectedImageToRemove;
-        
+
         updatedRemovingIds = [...removingImageIds, imageIdToRemove];
         setRemovingImageIds(updatedRemovingIds);
-        
+
         setExistingImages(existingImages.filter(img => img.id !== imageIdToRemove));
 
         setRemoveImageDialog(false);
         setSelectedImageToRemove(null);
-      };
+    };
 
     const handleRemoveNewImage = (index: number) => {
         setImageFiles(imageFiles.filter((_, i) => i !== index));
@@ -167,27 +169,83 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
     const handleSaveChanges = async () => {
         setLoading(true);
         try {
+            if (removingImageIds.length > 0) {
+                for (let i = 0; i < removingImageIds.length; i++) {
+                    try {
+                        await axios.delete(
+                            `${process.env.NEXT_PUBLIC_API_URL}remove_project_images/${removingImageIds[i]}`,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${session?.accessToken}`,
+                                },
+                            }
+                        );
+                    } catch (error) {
+                        console.error(`Failed to delete image with ID ${removingImageIds[i]}:`, error);
+                    }
+                }
+            }
+
+            if(isProjectFileDeleted) {
+                try {
+                    await axios.delete(
+                        `${process.env.NEXT_PUBLIC_API_URL}remove_project_file/${projectData.project_id}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${session?.accessToken}`,
+                            },
+                        }
+                    );
+                } catch (error) {
+                    console.error("Failed to delete project file:", error);
+                }
+            }
+            // setLoading(false);
+            // router.refresh();
+            // onClose();
+
             const formData = new FormData();
-            formData.append('project_id', projectData.project_id.toString());
             formData.append('title', title);
             formData.append('description', description);
             formData.append('instruction', editorContent || "");
             formData.append('link', link);
 
-            selectedLanguages.forEach((lang, index) => {
-                formData.append(`programming_languages[${index}]`, lang);
+            selectedLanguages.forEach((lang) => {
+                formData.append(`programming_languages[]`, lang);
             });
 
-            existingImages.forEach((img, index) => {
-                formData.append(`existing_images[${index}]`, img.id.toString());
-            });
+            // if(isProjectFileDeleted) {
+            if(projectData.file == null){
+                formData.append('file', projectFiles[0]);
+            }
 
-            imageFiles.forEach((file, index) => {
-                formData.append(`new_images[${index}]`, file);
-            });
+                // ** Check if file exisits for validation
+                // if(existingFilesUrl == ""){
+                    
+                // }
+            // }
+
+            if(imageFiles.length > 0) {
+                imageFiles.forEach((image) => {
+                    formData.append(`image[]`, image);
+                });
+            }
+            
+
+            // if (projectFiles.length > 0) {
+            //     formData.append('file', projectFiles[0]);
+            // }
+
+            // selectedLanguages.forEach((lang) => {
+            //     formData.append(`programming_languages[]`, lang);
+            // });
+
+            // imageFiles.forEach((image) => {
+            //     formData.append(`image[]`, image);
+            // });
 
             const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}update_project`,
+                `${process.env.NEXT_PUBLIC_API_URL}update_project/${projectData.project_id}`,
                 formData,
                 {
                     headers: {
@@ -198,19 +256,65 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
             );
 
             if (response.status === 200) {
+                setSuccessMessage("Project updated successfully");
                 setLoading(false);
-                onClick();
+                onClose();
                 router.refresh();
             }
         } catch (error) {
-            // console.error("Error updating project:", error);
+            console.error("Project update failed", error);
             setLoading(false);
         }
+        // try {
+        //     const formData = new FormData();
+        //     formData.append('title', title);
+        //     formData.append('description', description);
+        //     formData.append('instruction', editorContent || "");
+        //     formData.append('link', link);
+
+        //     formData.append('file', projectFiles[0]);
+
+        //     selectedLanguages.forEach((lang) => {
+        //         formData.append(`programming_languages[]`, lang);
+        //     });
+
+        //     imageFiles.forEach((image) => {
+        //         formData.append(`image[]`, image);
+        //     });
+
+
+
+        //     const response = await axios.post(
+        //         `${process.env.NEXT_PUBLIC_API_URL}update_project/${projectData.project_id}`,
+        //         formData,
+        //         {
+        //             headers: {
+        //                 'Content-Type': 'multipart/form-data',
+        //                 Authorization: `Bearer ${session?.accessToken}`,
+        //             },
+        //         }
+        //     );
+
+        //     if (response.status === 200) {
+        //         console.log("Project updated successfully");
+        //         setLoading(false);
+        //         onClose();
+        //         router.refresh();
+        //     }
+        // } catch (error) {
+        //     console.log("Project updated failed", error);
+        //     setLoading(false);
+        // }
+
     };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className={`bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] overflow-y-auto z-50 relative ${showDeleteConfirmation || removeImageDialog ? "blur-sm" : ""}`}>
+            {loading ? (
+                <div className={`bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto flex justify-center items-center`}>
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-blue-500"></div>
+                </div>
+            ) : <div className={`bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] overflow-y-auto z-50 relative ${showDeleteConfirmation || removeImageDialog ? "blur-sm" : ""}`}>
                 <div className="flex justify-between items-start mb-2">
                     <h2 className="text-xl font-bold text-black">Update Project</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
@@ -323,7 +427,10 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
                                         <ArrowDownTrayIcon className="h-5 w-5" /><span className="ml-2"> Download File</span>
                                     </div>
                                     <button
-                                        onClick={() => setExistingFilesUrl("")}
+                                        onClick={() => {
+                                            setIsProjectFileDeleted(true)
+                                            setExistingFilesUrl("")
+                                        }}
                                         className="text-red-500 hover:text-red-700"
                                     >
                                         <i className="fas fa-times"></i>
@@ -427,7 +534,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
                     </button>
                     <button
                         type="button"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600"
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 cursor-pointer"
                         onClick={handleSaveChanges}
                         disabled={loading}
                     >
@@ -435,6 +542,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData }: { isOpen: 
                     </button>
                 </div>
             </div>
+            }
 
             {removeImageDialog && (
                 <RemoveImageDialog

@@ -87,7 +87,7 @@ const EditCertificateDialog: React.FC<Props> = ({ achievement, onClose, onSave, 
             if (imageFiles.length > 0) {
                 formData.append('image', imageFiles[0]);
             }
-            
+
             const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_API_URL}update_achievement/${achievement.id}`,
                 formData,
@@ -109,7 +109,7 @@ const EditCertificateDialog: React.FC<Props> = ({ achievement, onClose, onSave, 
                 endorsers: response.data.endorsers,
                 image: response.data.photo,
             }
-            
+
             if (response.status === 200) {
                 router.refresh();
                 onSave(updateAchievement);
@@ -159,13 +159,13 @@ const EditCertificateDialog: React.FC<Props> = ({ achievement, onClose, onSave, 
         setSelectIssuedMonth(achievement.issue_month);
         setSelectIssuedYear(achievement.issue_year);
         setOrganization(achievement.issued_by);
-        setEndorsers(achievement.endorsers ? achievement.endorsers.map(e=>e.email) : []);
+        setEndorsers(achievement.endorsers ? achievement.endorsers.map(e => e.email) : []);
     }, [achievement]);
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center text-black">
             <div className={`relative bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg z-50 relative ${showDeleteConfirmation ? "blur-sm" : ""}`}>
-            {loading && (
+                {loading && (
                     <div className="absolute inset-0 bg-white backdrop-blur-sm z-10 flex items-center justify-center">
                         <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
                     </div>
@@ -309,7 +309,7 @@ const EditCertificateDialog: React.FC<Props> = ({ achievement, onClose, onSave, 
                 <div className="flex justify-end mt-2">
                     <button
                         type="button"
-                        className="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600 hover:cursor-pointer" 
+                        className="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600 hover:cursor-pointer"
                         onClick={() => setShowDeleteConfirmation(true)}
                         disabled={loading}
                     >

@@ -266,7 +266,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                         <div className={`h-40px ${projectData.length > 2 ? 'block' : 'hidden'}`}>
                                             <button
                                                 onClick={toggleDropdownProject}
-                                                className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
+                                                className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold cursor-pointer"
                                             >
                                                 {expandedProject ? 'See Less' : 'See More'}
                                             </button>
@@ -396,7 +396,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             <div className={`h-40px ${experienceData.length > 2 ? 'block' : 'hidden'}`}>
                                 <button
                                     onClick={toggleExpandedExperience}
-                                    className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
+                                    className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold cursor-pointer"
                                 >
                                     {expandedExperience ? 'See Less' : 'See More'}
                                 </button>
@@ -436,7 +436,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             <div className={`h-40px ${skillData.length > 2 ? 'block' : 'hidden'}`} key="seeMoreButton">
                                 <button
                                     onClick={toggleExpandedSkill}
-                                    className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
+                                    className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold cursor-pointer"
                                 >
                                     {expandedSkill ? 'See Less' : 'See More'}
                                 </button>
@@ -472,7 +472,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             <div className={`h-40px ${educationData.length > 2 ? 'block' : 'hidden'}`} key="seeMoreButton">
                                 <button
                                     onClick={toggleExpandedEducation}
-                                    className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold"
+                                    className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold cursor-pointer"
                                 >
                                     {expandedEducation ? 'See Less' : 'See More'}
                                 </button>

@@ -29,17 +29,7 @@ const Appbar = React.memo(() => {
 	const [profilePicture, setProfilePicture] = useState<string | null>(null);
 	const [notification, setNotification] = useState<Notification[]>([]);
 
-	// const getProfilePicture = async () => {
-	//   const response2 = await axios.get(
-	//     `${process.env.NEXT_PUBLIC_API_URL}view_portfolio_details/${session?.googleId}`
-	//   );
-	//   setProfilePicture(response2.data.portfolio.photo);
-	// };
-
 	useEffect(() => {
-		// if (session?.user?.email) {
-		// getProfilePicture();
-		// }
 		if (isAuthenticated) {
 			getNotification();
 		}
@@ -70,7 +60,10 @@ const Appbar = React.memo(() => {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${session?.accessToken}`
 				}
+
+
 			});
+			console.log('Session:', session);
 			console.log("Notification response:", response.data);
 			setNotification(response.data || []);
 		} catch (error) {
@@ -178,10 +171,11 @@ const Appbar = React.memo(() => {
 													key={notification.id}
 													className={`px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${notification.status === 1 ? "bg-gray-100" : ""}`}
 												>
+													{/* Type 1: Project collaboration */}
 													{notification.type === 1 ? (
 														notification.status === 1 ? (
 															<div>
-																{notification.owner_name} has invited you to be a collaborator to their project : Project {notification.title}
+																{notification.owner_name} has invited you to be a collaborator to their project: Project {notification.title}
 																<div className="flex space-x-2 mt-2">
 																	<button
 																		onClick={() => handleAccept(notification.id)}
@@ -197,27 +191,40 @@ const Appbar = React.memo(() => {
 																	</button>
 																</div>
 															</div>
-														) : <div>You have {mapEndorsementStatus(notification.status).toLowerCase()} {notification.owner_name}'s project {notification.title} collaboration.</div>
-													) : notification.status === 1 ? (
-														<div>
-															{notification.owner_name} has requested you to endorse their {mapEndorsementType(notification.endorsement_type).toLowerCase()}: {mapEndorsementType(notification.endorsement_type)} {notification.title}
-															<div className="flex space-x-2 mt-2">
-																<button
-																	onClick={() => handleAccept(notification.id)}
-																	className="px-4 py-1 bg-[#5086ed] text-white rounded-md cursor-pointer"
-																>
-																	Accept
-																</button>
-																<button
-																	onClick={() => handleDecline(notification.id)}
-																	className="px-4 py-1 bg-white text-black rounded-md border border-2 border-[#5086ed] cursor-pointer hover:bg-gray-200"
-																>
-																	Decline
-																</button>
-															</div>
-														</div>
+														) : session.googleId === notification.owner_google_id ? (
+															/* Owner viewing collaboration response (status 2 or 3) */
+															<div>{notification.receiver_name} has {mapEndorsementStatus(notification.status).toLowerCase()} your project collaboration invitation for: Project {notification.title}</div>
+														) : (
+															/* Receiver viewing their response (status 2 or 3) */
+															<div>You have {mapEndorsementStatus(notification.status).toLowerCase()} {notification.owner_name}'s project {notification.title} collaboration.</div>
+														)
 													) : (
-														<div>You have {mapEndorsementStatus(notification.status)} their {mapEndorsementType(notification.endorsement_type).toLowerCase()}: Project {notification.title}</div>
+														/* Type 2: Endorsement */
+														notification.status === 1 ? (
+															<div>
+																{notification.owner_name} has requested you to endorse their {mapEndorsementType(notification.endorsement_type).toLowerCase()}: {mapEndorsementType(notification.endorsement_type)} {notification.title}
+																<div className="flex space-x-2 mt-2">
+																	<button
+																		onClick={() => handleAccept(notification.id)}
+																		className="px-4 py-1 bg-[#5086ed] text-white rounded-md cursor-pointer"
+																	>
+																		Accept
+																	</button>
+																	<button
+																		onClick={() => handleDecline(notification.id)}
+																		className="px-4 py-1 bg-white text-black rounded-md border border-2 border-[#5086ed] cursor-pointer hover:bg-gray-200"
+																	>
+																		Decline
+																	</button>
+																</div>
+															</div>
+														) : session.googleId === notification.owner_google_id ? (
+															/* Owner viewing endorsement response (status 2 or 3) */
+															<div>{notification.receiver_name} has {mapEndorsementStatus(notification.status).toLowerCase()} your endorsement request for your {mapEndorsementType(notification.endorsement_type).toLowerCase()}: {notification.title}</div>
+														) : (
+															/* Receiver viewing their endorsement response (status 2 or 3) */
+															<div>You have {mapEndorsementStatus(notification.status).toLowerCase()} their {mapEndorsementType(notification.endorsement_type).toLowerCase()}: {mapEndorsementType(notification.endorsement_type)} {notification.title}</div>
+														)
 													)}
 												</div>
 											))
