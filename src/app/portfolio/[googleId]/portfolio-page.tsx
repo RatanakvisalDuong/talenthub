@@ -80,7 +80,6 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
     };
 
     const handleOpenAchivementDialog = (achievement: Achievement) => {
-        console.log(achievement);
         setSingleAchievementData(achievement);
         setOpenAchivementDialog(!openAchivementDialog);
     };
