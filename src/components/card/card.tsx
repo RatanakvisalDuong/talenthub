@@ -27,11 +27,7 @@ export default function Card({ portfolio }: { portfolio: Portfolio }) {
                     portfolio.working_status != null ? (
                         <WorkingStatusBar status={portfolio.working_status} />
                     ) : (
-                        <div
-                            className="h-6 flex justify-center items-center text-white text-xs rounded-md bg-[#0277B6] w-20 sm:w-24"
-                        >
-                            No Status
-                        </div>
+                        <WorkingStatusBar status={2} />
                     )
                 ) : (
                     <div className="h-6 flex justify-center items-center text-white text-xs rounded-md bg-[#5086ed] w-20 sm:w-24">

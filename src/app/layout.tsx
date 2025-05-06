@@ -20,8 +20,6 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
-
   return (
     <html lang="en">
       <head>

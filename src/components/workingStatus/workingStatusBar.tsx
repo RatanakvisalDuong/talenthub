@@ -1,6 +1,6 @@
 export default function WorkingStatusBar({ status }: { status: number | null }) {
     if (status === null) {
-        return null;
+        return 2;
     }
 
     return (

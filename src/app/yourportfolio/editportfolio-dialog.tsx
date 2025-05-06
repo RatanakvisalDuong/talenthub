@@ -62,7 +62,6 @@ const EditPortfolioDialog = ({
         const files = event.target.files;
         if (!files) return;
 
-        // Only use the first file and replace existing files
         const newFile = files[0];
         if (newFile) {
             setImageFiles([newFile]);
@@ -192,7 +191,7 @@ const EditPortfolioDialog = ({
                         {session?.roleId === 1 ? (
                             <div className="mb-2">
                                 <label htmlFor="workingStatus" className="block text-sm font-medium text-black">
-                                    Working Status<span className="text-red-400 ml-2">*</span>
+                                    <span className="text-red-400 ml-2">*</span>
                                 </label>
                                 <select
                                     id="workingStatus"

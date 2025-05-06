@@ -13,7 +13,7 @@ const SelectMonthInput: React.FC<SelectMonthInputProps> = ({
 	id,
 	required = false,
 	onChange,
-	value = null, // Default value is null
+	value = null, 
 }) => {
 	return (
 		<div className="mb-2">

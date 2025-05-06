@@ -14,8 +14,8 @@ export default function AchievementCard({ achievement, onClick }: { achievement:
 					<p className="text-sm text-gray-600">{achievement.title}</p>
 				</div>
 				{achievement.endorsers && achievement.endorsers.filter(endorser => endorser.status_id === 2).length > 0 && (
-					<div className="w-[30%] flex justify-end">
-						<Image src="/verified.png" alt="Verified" width={20} height={20} className="mr-2" />
+					<div className="w-[30%] h-auto flex justify-end">
+						<Image src="/verified.png" alt="Verified" width={30} height={30} className="w-[30px] h-[30px] mr-2" />
 					</div>
 				)}
 

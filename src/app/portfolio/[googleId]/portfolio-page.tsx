@@ -1,12 +1,8 @@
 "use client"
 
 import { Achievement } from "@/app/type/achievement";
-import { Education } from "@/app/type/education";
 import { Portfolio } from "@/app/type/portfolio";
-import { Skill } from "@/app/type/skill";
-import Appbar from "@/components/appbar/appbar";
 import AchievementCard from "@/components/achievementCard/achievementCard";
-import CertificateCard from "@/components/achievementCard/achievementCard";
 import EducationCard from "@/components/educationCard/educationCard";
 import ExperienceCard from "@/components/experienceCard/experienceCard";
 import ProjectCard from "@/components/projectCard/projectCard";
@@ -85,7 +81,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
     };
 
     return (
-        <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
+        <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
             <div className={`max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between ${openAchivementDialog ? 'blur-sm' : ''} `}>
                 {successMessage && (
                     <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
@@ -110,7 +106,6 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                                 project={project}
                                             />
                                         ))}
-
                                     {portfolio.projects.filter(project => project.project_visibility_status === 0).length > 2 && (
                                         <div className={`h-40px ${portfolio.projects.length > 2 ? 'block' : 'hidden'}`}>
                                             <button
