@@ -231,6 +231,19 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                     </div>
 
                     <div className="h-[88vh] w-[26%] overflow-y-auto">
+                    <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
+                            <div className="flex items-center justify-between">
+                                <p className="font-bold text-black ">
+                                    Proejct Owner
+                                </p>
+
+                            </div>
+                            <Link className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" href={`/portfolio/${projectData.google_id}`}>
+                                <Image src={projectData.owner_photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
+                                <p className="text-sm font-medium ml-2">{projectData.owner_name}</p>
+                            </Link>
+
+                        </div>
                         <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
                             <div className="flex items-center justify-between">
                                 <p className="font-bold text-black ">
@@ -248,6 +261,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                     .filter((endorser: any) => endorser.endorsement_status === 2)
                                     .map((endorser: any, index: number) => (
                                         <div key={index} className="bg-white text-black shadow-md rounded-lg justify-between px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group">
+                                            <Image src={endorser.photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
                                             <Link className="text-sm font-medium" href={`/portfolio/${endorser.google_id}`}>{endorser.name}</Link>
                                             {session?.googleId == projectData.google_id && (<XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveCollabDialog(endorser.google_id) }} />)}
                                         </div>
@@ -274,6 +288,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                     .filter((collaborator: any) => collaborator.collaboration_status === 2)
                                     .map((collaborator: any, index: number) => (
                                         <div className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex justify-between items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" key={index}>
+                                            <Image src={collaborator.photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
                                             <Link className="text-sm font-medium" href={`/portfolio/${collaborator.google_id}`}>{collaborator.name}</Link>
                                             {session?.googleId == projectData.google_id && (<XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveCollabDialog(collaborator.google_id) }} />)}
                                         </div>

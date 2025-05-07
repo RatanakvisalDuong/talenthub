@@ -224,7 +224,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
 
     const toggleSharePortfolio = () => {
         displaySuccessMessage("Portfolio link copied to clipboard!");
-        navigator.clipboard.writeText(`http://localhost:3000/portfolio/${portfolio.portfolio.id}`);
+        navigator.clipboard.writeText(`http://localhost:3000/portfolio/${portfolio.portfolio.google_id}`);
     }
 
     const displaySuccessMessage = (message: string) => {
@@ -234,7 +234,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
 
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
-            {}
+            { }
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
                 {successMessage && (
                     <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
@@ -303,7 +303,15 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                 <div className="flex items-center justify-start h-full">
                                     <div className="w-[40%] relative flex items-center justify-center">
                                         <div className="absolute top-0 right-0 z-10 -translate-y-1/2">
-                                            <WorkingStatusBar status={portfolioData.portfolio.working_status} />
+                                            {portfolio.portfolio.role_id === 1 ? (
+                                                <WorkingStatusBar status={portfolio.portfolio.working_status} />
+                                            ) :
+                                                <div
+                                                    className="h-6 flex justify-center items-center text-white text-[12px] rounded-md bg-[#5086ed] p-2"
+                                                >
+                                                    Endorser
+                                                </div>
+                                            }
                                         </div>
                                         <div className="h-[90%] w-[90%] rounded-md overflow-hidden mx-auto flex items-center justify-center">
                                             <Image
@@ -324,7 +332,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                             <p className="text-gray-600 truncate"> {portfolio.portfolio.email}</p>
                                         </div>
                                         <div className="text-black mt-2 text-sm flex">
-                                            <span className="font-bold mr-2">Contact:</span> 
+                                            <span className="font-bold mr-2">Contact:</span>
                                             <p className="text-gray-600 truncate"> {portfolioData.portfolio.phone_number ? portfolioData.portfolio.phone_number : 'N/A'}</p>
                                         </div>
                                         {portfolio.portfolio.role_id === 1 ?

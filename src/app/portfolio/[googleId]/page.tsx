@@ -1,7 +1,6 @@
 import axios from "axios";
 import PortfolioPageComponent from "./portfolio-page";
 import { Portfolio } from "../../type/portfolio";
-import BanPage from "@/components/banPage/page";
 import PageNotFound from "@/components/pagenotfound/page";
 
 

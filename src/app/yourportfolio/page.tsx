@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/option";
 import { Portfolio } from "../type/portfolio";
 import YourPortfolioPageComponent from "./yourportfolio-page";
-import Layout from "@/components/layout/layout";
 import { redirect } from 'next/navigation';
 import BanPage from "@/components/banPage/page";
 
@@ -19,9 +18,9 @@ export default async function YourPortfolioPage() {
   );
 
   const portfolioData: Portfolio = response.data;
+  console.log(portfolioData);
 
   return (
-    // <Layout>
     <div>
       {portfolioData.portfolio.status === 1 ? (
         <YourPortfolioPageComponent portfolio={portfolioData} />
@@ -29,6 +28,5 @@ export default async function YourPortfolioPage() {
         <BanPage />
       )}
     </div>
-    // </Layout>
   );
 }

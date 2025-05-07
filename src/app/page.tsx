@@ -6,7 +6,6 @@ import { authOptions } from "./api/auth/[...nextauth]/option";
 export default async function Home() {
 	const session = await getServerSession(authOptions);
 
-	// Fetch first page of portfolios
 	const page = 1; 
 	const response = await axios.get(`${process.env.API_URL}view_all_portfolio?page=${page}`);
 	

@@ -24,6 +24,8 @@ const Appbar = React.memo(() => {
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const notificationRef = useRef<HTMLDivElement>(null);
 	const [notification, setNotification] = useState<Notification[]>([]);
+	const [page, setPage] = useState(1);
+	const [hasMoreNotifications, setHasMoreNotifications] = useState(true);
 
 	useEffect(() => {
 		if (isAuthenticated) {
@@ -50,17 +52,29 @@ const Appbar = React.memo(() => {
 				`${process.env.NEXT_PUBLIC_API_URL}view_notification`, {
 				params: {
 					user_google_id: session?.googleId,
-					limit: 10
+					page: page
 				},
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${session?.accessToken}`
 				}
-
-
 			});
-			setNotification(response.data || []);
+			
+			const newNotifications = response.data || [];
+			
+			// Check if we received any new notifications
+			if (newNotifications.length === 0) {
+				setHasMoreNotifications(false);
+			}
+			
+			if (page === 1) {
+				setNotification(newNotifications);
+			} else {
+				setNotification(prev => [...prev, ...newNotifications]);
+			}
 		} catch (error) {
+			console.error("Failed to fetch notifications:", error);
+			setHasMoreNotifications(false);
 		}
 	}
 
@@ -73,6 +87,9 @@ const Appbar = React.memo(() => {
 	};
 
 	const handleNotificationClick = () => {
+		// Reset to page 1 and hasMoreNotifications when opening notification dropdown
+		setPage(1);
+		setHasMoreNotifications(true);
 		getNotification();
 		setNotificationDropdownOpen(!notificationDropdownOpen);
 	};
@@ -124,6 +141,9 @@ const Appbar = React.memo(() => {
 				},
 			)
 			if(response.status === 200) {
+				// Reset to page 1 and fetch fresh notifications after status change
+				setPage(1);
+				setHasMoreNotifications(true);
 				getNotification();
 			}
 		}
@@ -132,9 +152,15 @@ const Appbar = React.memo(() => {
 		}
 	};
 
-	const handleDecline = (id: number) => {
-		console.log(`Declined endorsement with ID: ${id}`);
+	const loadMoreNotifications = () => {
+		setPage(prevPage => prevPage + 1);
 	};
+
+	useEffect(() => {
+		if (isAuthenticated && notificationDropdownOpen && page > 1) {
+			getNotification();
+		}
+	}, [page]);
 
 	const goBackHome = async () => {
 		axios.post(
@@ -187,7 +213,7 @@ const Appbar = React.memo(() => {
 										{notification.length > 0 ? (
 											notification.map((notification) => (
 												<div
-													key={`${notification.id - notification.type}`}
+													key={`${notification.id} - ${notification.status} - ${notification.type}}`}
 													className={`px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${notification.status === 1 ? "bg-gray-100" : ""}`}
 												>
 													{notification.type === 1 ? (
@@ -266,16 +292,16 @@ const Appbar = React.memo(() => {
 												No notifications
 											</div>
 										)}
-										<div className="w-full px-4 h-[30px] mt-2">
-											<button
-												className="w-full h-full bg-[#5086ed] text-white rounded-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group"
-												onClick={() => {
-													getNotification();
-												}}
-											>
-												Load More
-											</button>
-										</div>
+										{hasMoreNotifications && notification.length > 0 && (
+											<div className="w-full px-4 h-[30px] mt-2">
+												<button
+													className="w-full h-full bg-[#5086ed] text-white rounded-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-103 transition-all duration-300 ease-in-out cursor-pointer group"
+													onClick={loadMoreNotifications}
+												>
+													Load More
+												</button>
+											</div>
+										)}
 									</div>
 								)}
 							</div>

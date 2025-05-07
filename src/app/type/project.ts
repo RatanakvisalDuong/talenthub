@@ -10,8 +10,10 @@ export interface Project {
     link: string,
     file: string,
     images: Image[],
-    programming_languages: ProgrammingLanguage[]
+    programming_languages: ProgrammingLanguage[],
     project_visibility_status: number,
+    owner_name: string,
+    owner_photo: string,
     created_at: string,
     updated_at: string
 }
