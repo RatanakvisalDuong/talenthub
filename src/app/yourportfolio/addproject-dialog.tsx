@@ -133,6 +133,8 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                     description: description,
                     instruction: projectInstruction,
                     link: projectLink,
+                    owner_name: session?.user?.name || "",
+                    owner_photo: session?.user?.image || "",
                     images: images,
                     file: projectFiles[0].name,
                     programming_languages: selectedLanguages.map((lang) => ({
