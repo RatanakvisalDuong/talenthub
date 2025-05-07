@@ -212,7 +212,7 @@ export default function HomeComponent(
 							</>
 						) : (
 							<p className="text-black text-center">
-								{searchTerm ? `No portfolios found for "${searchTerm}"` : 'No portfolios found'}
+								No portfolios found
 							</p>
 						)}
 					</div>
