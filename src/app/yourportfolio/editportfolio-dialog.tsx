@@ -191,7 +191,7 @@ const EditPortfolioDialog = ({
                         {session?.roleId === 1 ? (
                             <div className="mb-2">
                                 <label htmlFor="workingStatus" className="block text-sm font-medium text-black">
-                                    <span className="text-red-400 ml-2">*</span>
+                                    Employment Status<span className="text-red-400 ml-2">*</span>
                                 </label>
                                 <select
                                     id="workingStatus"
@@ -200,7 +200,7 @@ const EditPortfolioDialog = ({
                                     value={selectedWorkingStatus || ""}
                                     onChange={(e) => setSelectedWorkingStatus(Number(e.target.value) || null)}
                                 >
-                                    <option value="" disabled>Select Working Status</option>
+                                    <option value="" disabled>Select Employment Status</option>
                                     <option value="1">Working</option>
                                     <option value="2">Open for Work</option>
                                 </select>

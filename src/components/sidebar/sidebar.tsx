@@ -93,7 +93,7 @@ export default function Sidebar({
                             <span className='font-bold'>Major: </span>
                             <span className="ml-1">
                                 {
-                                    getMajorName(major ?? 0)  || 'N/A'
+                                    getMajorName(major ?? 0) || 'N/A'
                                 }
                             </span>
                         </p>
@@ -136,7 +136,7 @@ export default function Sidebar({
                 ))}
 
                 <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4 mt-4">
-                    <p className="text-md text-black ml-4">Working Status:</p>
+                    <p className="text-md text-black ml-4">Employment Status:</p>
                 </div>
 
                 {workingStatus.map((workingStatus) => (

@@ -260,7 +260,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 projectData.endorsers
                                     .filter((endorser: any) => endorser.endorsement_status === 2)
                                     .map((endorser: any, index: number) => (
-                                        <div key={index} className="bg-white text-black shadow-md rounded-lg justify-between px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group">
+                                        <div key={index} className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group">
                                             <Image src={endorser.photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
                                             <Link className="text-sm font-medium" href={`/portfolio/${endorser.google_id}`}>{endorser.name}</Link>
                                             {session?.googleId == projectData.google_id && (<XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveCollabDialog(endorser.google_id) }} />)}
@@ -287,7 +287,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 projectData.collaborators
                                     .filter((collaborator: any) => collaborator.collaboration_status === 2)
                                     .map((collaborator: any, index: number) => (
-                                        <div className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex justify-between items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" key={index}>
+                                        <div className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex  items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" key={index}>
                                             <Image src={collaborator.photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
                                             <Link className="text-sm font-medium" href={`/portfolio/${collaborator.google_id}`}>{collaborator.name}</Link>
                                             {session?.googleId == projectData.google_id && (<XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveCollabDialog(collaborator.google_id) }} />)}
