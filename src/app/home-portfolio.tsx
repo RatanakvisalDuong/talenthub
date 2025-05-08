@@ -169,7 +169,7 @@ export default function HomeComponent(
 
 	return (
 		<div className="bg-[#E8E8E8] w-full h-screen overflow-hidden fixed">
-			<div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between h-full">
+			<div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex justify-between h-full">
 				<div className="w-[23%]">
 					<Sidebar
 						photo={photo || 'https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*'}
@@ -180,9 +180,9 @@ export default function HomeComponent(
 						onWorkingStatusSelect={handleWorkingStatusSelect}
 					/>
 				</div>
-				<div className="h-[87vh] w-[78%] px-4 flex flex-col ">
+				<div className="h-[87vh] w-[78%] flex flex-col ">
 					<SearchBar onSearch={handleSearch} />
-					<div className="flex-grow overflow-y-auto mt-4 px-2 pt-2 pb-16">
+					<div className="flex-grow overflow-y-auto mt-4 pt-2 pb-16 pr-4">
 						{isLoading && displayPortfolios.length === 0 ? (
 							<p className="text-black text-center">Loading portfolios...</p>
 						) : displayPortfolios.length > 0 ? (

@@ -31,7 +31,7 @@ export default async function RootLayout({
         <title>TalentHub</title>
       </head>
       <body className={`${ubuntuFont.className} bg-[#E8E8E8]`}>
-        
+
         {/* <ClientSessionWrapper session={session}>{children}</ClientSessionWrapper> */}
         <SessionProvider><Appbar />{children}</SessionProvider>
       </body>
