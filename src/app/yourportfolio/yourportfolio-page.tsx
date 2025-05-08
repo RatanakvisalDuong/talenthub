@@ -242,7 +242,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                     </div>
                 )}
                 <div className="flex justify-between w-full">
-                    <div className="h-[87vh] w-[30%] flex flex-col justify-between overflow-y-auto">
+                    <div className="h-[87vh] w-[28%] flex flex-col justify-between overflow-y-auto">
                         <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'} bg-white rounded-lg shadow-md p-4 relative`}>
                             <div className="flex justify-between items-center">
                                 <p className="text-black font-bold text-lg">Projects</p>
@@ -297,7 +297,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             )}
                         </div>
                     </div>
-                    <div className="h-[87vh] w-[68%] overflow-y-auto pr-6 overflow-x-hidden">
+                    <div className="h-[87vh] w-[70%] overflow-y-auto pr-6 overflow-x-hidden">
                         <div className="flex justify-between h-[35%]">
                             <div className="w-[68%] bg-white rounded-lg shadow-md py-4 overflow-y-auto">
                                 <div className="flex items-center justify-start h-full">
