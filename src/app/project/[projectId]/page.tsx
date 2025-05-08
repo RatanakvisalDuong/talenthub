@@ -14,7 +14,6 @@ export default async function ProjectPageContainer({ params }: { params: Promise
             `${process.env.NEXT_PUBLIC_API_URL}view_project_detail/${projectId}`,
         );
         projectData = response.data;
-        console.log(projectData);
         if (response.data.user_status === 0) {
             return <PageNotFound />;
         }
@@ -28,7 +27,6 @@ export default async function ProjectPageContainer({ params }: { params: Promise
                     }
                 );
                 projectData = retryResponse.data;
-                console.log(projectData);
             }
             catch (retryError) {
                 return (

@@ -38,7 +38,7 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                                 </div>
 
                                 {dropdownOpen[skill.id] && (
-                                    <div className="absolute left-0 mt-2 p-2 w-48 bg-white border rounded-md shadow-lg z-10">
+                                    <div className="absolute left-0 mt-2 p-2 w-64 bg-white border rounded-md shadow-lg z-10">
                                         <ul>
                                             {skill.endorsers
                                                 .filter((endorser) => endorser.status_id === 2) // Only show endorsers with status_id === 2
@@ -50,7 +50,10 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                                                             window.location.href = `/portfolio/${endorser.id}`;
                                                         }}
                                                     >
-                                                        {endorser.name}
+                                                        <div className='flex items-center'>
+                                                            <Image src={endorser.photo || 'https://example.com/default-avatar.png'} alt="Endorser" width={20} height={20} className="mr-2 rounded-full w-8 h-8" />
+                                                            <p>{endorser.name}</p>
+                                                        </div>
                                                     </li>
                                                 ))}
                                         </ul>

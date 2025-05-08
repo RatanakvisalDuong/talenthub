@@ -14,6 +14,7 @@ import AddEndorserDialog from "./addendorser-dialog";
 import { Endorser } from "@/app/type/endorser";
 import RemoveCollaboratorDialog from "./removecollaborator-dialog";
 import RemoveEndorserDialog from "./removeendorser-dialog";
+import axios from "axios";
 
 interface ProjectPageComponentProps {
     projectData: any;
@@ -95,6 +96,39 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
         setTimeout(() => setSuccessMessage(""), 4000);
     };
 
+    const handleVisibilityToggle = async (isChecked: boolean) => {
+        try {
+            setIsPublic(isChecked);
+
+            const response = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}update_project_visibility/${projectData.project_id}`,
+                {
+                    visibility_status: isChecked ? "1" : "0",
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${session?.accessToken}`,
+                    },
+                }
+            );
+
+            console.log("Visibility response:", response);
+
+            if (response.status === 200) {
+                displaySuccessMessage(`Project visibility changed to ${isChecked ? 'private' : 'public'}`);
+            } else {
+                // Revert state if there was an error
+                setIsPublic(!isChecked);
+                displaySuccessMessage("Failed to update project visibility");
+            }
+        } catch (error) {
+            console.error("Error updating project visibility:", error);
+            // Revert state if there was an error
+            setIsPublic(!isChecked);
+            displaySuccessMessage("Failed to update project visibility");
+        }
+    };
+
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
             <div className={`max-w-7xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between ${updateProjectDialog || addCollaboratorDialog || addEndorserDialog || confirmRemoveCollaboratorDialog || confirmRemoveEndorserDialog ? "blur-md" : ""}`}>
@@ -118,7 +152,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                                 <input
                                                     type="checkbox"
                                                     checked={isPublic}
-                                                    onChange={(e) => setIsPublic(e.target.checked)}
+                                                    onChange={(e) => handleVisibilityToggle(e.target.checked)}
                                                     className="sr-only peer"
                                                 />
                                                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#5086ed]"></div>
@@ -231,10 +265,10 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                     </div>
 
                     <div className="h-[88vh] w-[26%] overflow-y-auto">
-                    <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
+                        <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
                             <div className="flex items-center justify-between">
                                 <p className="font-bold text-black ">
-                                    Proejct Owner
+                                    Project Owner
                                 </p>
 
                             </div>
@@ -260,10 +294,12 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 projectData.endorsers
                                     .filter((endorser: any) => endorser.endorsement_status === 2)
                                     .map((endorser: any, index: number) => (
-                                        <div key={index} className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group">
-                                            <Image src={endorser.photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
-                                            <Link className="text-sm font-medium" href={`/portfolio/${endorser.google_id}`}>{endorser.name}</Link>
-                                            {session?.googleId == projectData.google_id && (<XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveCollabDialog(endorser.google_id) }} />)}
+                                        <div key={index} className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group justify-between">
+                                            <Link className="flex items-center" href={`/portfolio/${endorser.google_id}`}>
+                                                <Image src={endorser.photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
+                                                <div className="text-sm font-medium ml-1">{endorser.name}</div>
+                                            </Link>
+                                            {session?.googleId == projectData.google_id && (<XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveEndorserDialog(endorser.google_id) }} />)}
                                         </div>
                                     ))
                             ) : <div className="text-gray-700 w-full flex justify-center items-center mt-4">
@@ -287,9 +323,11 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 projectData.collaborators
                                     .filter((collaborator: any) => collaborator.collaboration_status === 2)
                                     .map((collaborator: any, index: number) => (
-                                        <div className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex  items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" key={index}>
-                                            <Image src={collaborator.photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
-                                            <Link className="text-sm font-medium" href={`/portfolio/${collaborator.google_id}`}>{collaborator.name}</Link>
+                                        <div className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex  items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group justify-between" key={index}>
+                                            <Link className="flex items-center" href={`/portfolio/${collaborator.google_id}`} >
+                                                <Image src={collaborator.photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
+                                                <div className="text-sm font-medium ml-1">{collaborator.name}</div>
+                                            </Link>
                                             {session?.googleId == projectData.google_id && (<XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveCollabDialog(collaborator.google_id) }} />)}
                                         </div>
                                     ))

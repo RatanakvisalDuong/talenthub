@@ -57,14 +57,17 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
                                 </div>
 
                                 {dropdownOpen && (
-                                    <div className="absolute p-2 w-48 bg-white border rounded-md shadow-lg ml-4 z-10 font-bold">
+                                    <div className="absolute p-2 w-64 bg-white border rounded-md shadow-lg ml-4 z-10 font-bold">
                                         <ul>
                                             {achievement.endorsers.filter(endorser => endorser.status_id === 2).map((endorser, idx) => (
                                                 <li
                                                     key={idx}
                                                     className="py-1 px-2 text-sm text-gray-800 hover:bg-gray-100 rounded cursor-pointer"
                                                 >
-                                                    {endorser.name}
+                                                    <div className='flex items-center'>
+                                                        <Image src={endorser.photo || 'https://example.com/default-avatar.png'} alt="Endorser" width={20} height={20} className="mr-2 rounded-full w-8 h-8" />
+                                                        <p>{endorser.name}</p>
+                                                    </div>
                                                 </li>
                                             ))}
                                         </ul>

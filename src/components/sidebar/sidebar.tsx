@@ -89,19 +89,19 @@ export default function Sidebar({
                                 {session.user.email || 'N/A'}
                             </span>
                         </p>
-                        <p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
+                        {session.roleId === 1 && (<p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
                             <span className='font-bold'>Major: </span>
                             <span className="ml-1">
                                 {
                                     getMajorName(major ?? 0) || 'N/A'
                                 }
                             </span>
-                        </p>
+                        </p>)
+                        }
                     </Link>
 
                 </div>
             )}
-
             <div className="bg-white w-64 h-100 rounded-sm shadow-md p-4 overflow-y-auto">
                 <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4">
                     <p className="text-md text-black ml-4">Majors:</p>
