@@ -187,22 +187,18 @@ export default function HomeComponent(
 							<p className="text-black text-center">Loading portfolios...</p>
 						) : displayPortfolios.length > 0 ? (
 							<>
-								<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-4 gap-4 auto-rows-auto">
+								<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-4 gap-4 auto-rows-auto px-2">
 									{displayPortfolios
 										.filter((portfolio) => {
-											// If search results are active, show all results
 											if (searchResults !== null) return true;
 
-											// Check if any major or working status filters are applied
 											const hasMajorFilters = selectedMajors.length > 0;
 											const hasStatusFilters = selectedWorkingStatuses.length > 0;
 
-											// If filters are applied, hide role 2 portfolios
 											if ((hasMajorFilters || hasStatusFilters) && portfolio.role === 2) {
 												return false;
 											}
 
-											// Otherwise, proceed with normal filtering
 											const matchesRole =
 												selectedRoles.length === 0 || selectedRoles.includes(portfolio.role);
 											const matchesMajor =
