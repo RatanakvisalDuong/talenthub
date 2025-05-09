@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Sidebar from "@/components/sidebar/sidebar";
 import SearchBar from "@/components/search/search_bar";
 import axios from "axios";
+import ParticlesBackground from "@/components/background/background";
 
 export interface PortfolioProfile {
 	id: number;
@@ -168,7 +169,8 @@ export default function HomeComponent(
 	const displayPortfolios = searchResults !== null ? searchResults : portfolios;
 
 	return (
-		<div className="bg-[#E8E8E8] w-full h-screen overflow-hidden fixed">
+		<div className=" w-full h-screen overflow-hidden fixed">
+			<ParticlesBackground />
 			<div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex justify-between h-full">
 				<div className="w-[23%]">
 					<Sidebar

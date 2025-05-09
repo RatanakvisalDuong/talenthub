@@ -14,13 +14,16 @@ type Props = {
 const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown, owner, openEditSkillDialog }) => {
     return (
         <div
-            className={`mt-4 text-black ml-4 flex items-start transition-all duration-300 ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
-                } p-4 rounded-lg shadow-md hover:shadow-lg hover:transform hover:scale-105 hover:cursor-pointer`}
+            // className={`mt-4 text-black ml-4 flex items-start transition-all duration-300 ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
+            //     } p-4 rounded-lg shadow-md hover:shadow-lg hover:transform hover:scale-105 hover:cursor-pointer`}
+            className={`mt-4 text-black ml-4 flex items-start transition-all duration-300 bg-indigo-500/20 border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent
+                 p-4 rounded-lg shadow-md hover:shadow-lg hover:transform hover:scale-105 hover:cursor-pointer`}
+                
         >
             <div className="bg-[#5086ed] w-5 h-5 rounded-full mr-6 mt-1 animate-pulse"></div>
 
             <div className='w-full'>
-                <div className="flex justify-between items-start font-semibold text-lg text-gray-800">
+                <div className="flex justify-between items-start font-semibold text-lg text-white">
                     <div className="flex w-[70%] items-center gap-4 flex-wrap">
                         <p className="text-md">
                             <span>{skill.title}</span>
@@ -30,11 +33,11 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                         {skill.endorsers && skill.endorsers.filter(endorser => endorser.status_id === 2).length > 0 && (
                             <div className="relative">
                                 <div
-                                    className="py-2 px-4 bg-[#C0DDEC] rounded-full flex items-center cursor-pointer"
+                                    className="py-2 px-4 rounded-full flex items-center cursor-pointer border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                                     onClick={() => toggleDropdown(skill.id)}
                                 >
                                     <Image src="/verified.png" alt="Verified" width={20} height={20} className="mr-2" />
-                                    <span className="text-sm text-black">Endorsed</span>
+                                    <span className="text-sm text-white">Endorsed</span>
                                 </div>
 
                                 {dropdownOpen[skill.id] && (
@@ -45,14 +48,14 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                                                 .map((endorser, idx) => (
                                                     <li
                                                         key={endorser.email}
-                                                        className="py-1 px-2 text-sm text-gray-800 hover:bg-gray-100 rounded cursor-pointer"
+                                                        className="py-1 px-2 text-sm text-black hover:bg-gray-100 rounded cursor-pointer"
                                                         onClick={() => {
                                                             window.location.href = `/portfolio/${endorser.id}`;
                                                         }}
                                                     >
                                                         <div className='flex items-center'>
                                                             <Image src={endorser.photo || 'https://example.com/default-avatar.png'} alt="Endorser" width={20} height={20} className="mr-2 rounded-full w-8 h-8" />
-                                                            <p>{endorser.name}</p>
+                                                            <p className='text-white'>{endorser.name}</p>
                                                         </div>
                                                     </li>
                                                 ))}
@@ -74,7 +77,7 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                     )}
                 </div>
 
-                <p className='text-black text-sm mt-2'>
+                <p className='text-white text-sm mt-2'>
                     {skill.description}
                 </p>
                 <div className="h-[2px] bg-gray-300 w-full mt-4"></div>

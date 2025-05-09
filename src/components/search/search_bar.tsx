@@ -9,7 +9,7 @@ export default function SearchBar({ onSearch }: { onSearch: (term: string) => vo
         if (searchTerm === '') {
             onSearch('');
         }
-        
+
         const timer = setTimeout(() => {
             if (searchTerm) {
                 setIsSearching(true);
@@ -22,7 +22,7 @@ export default function SearchBar({ onSearch }: { onSearch: (term: string) => vo
                 }
             }
         }, 300)
-        
+
         return () => clearTimeout(timer);
     }, [searchTerm, onSearch]);
 
@@ -46,21 +46,21 @@ export default function SearchBar({ onSearch }: { onSearch: (term: string) => vo
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit} className="flex justify-center">
-                <div className="relative w-full">
+        <div className='text-white'>
+            <form onSubmit={handleSubmit} className="flex justify-center text-white">
+                <div className="relative w-full text-white">
                     <input
                         type="text"
                         placeholder="Search Portfolio..."
-                        className="w-full h-10 rounded-lg pl-4 pr-10 text-gray-500 bg-white shadow-sm"
+                        className="w-full h-10 rounded-lg pl-4 pr-10 text-white placeholder-white bg-indigo-500/20 shadow-sm border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                         value={searchTerm}
                         onChange={handleChange}
                     />
-                    <button 
+                    <button
                         type="submit"
                         className="absolute top-1/2 right-3 transform -translate-y-1/2"
                     >
-                        <MagnifyingGlassIcon className={`w-6 h-6 text-gray-500 ${isSearching ? 'animate-pulse' : ''}`} />
+                        <MagnifyingGlassIcon className={`w-6 h-6 text-white ${isSearching ? 'animate-pulse' : ''}`} />
                     </button>
                 </div>
             </form>

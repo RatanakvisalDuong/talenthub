@@ -14,13 +14,16 @@ type Props = {
 const ExperienceCard: React.FC<Props> = ({ experience, index, dropdownOpen, toggleDropdown, owner, openEditExperienceDialog }) => {
 	return (
 		<div
-			className={`mt-4 text-black ml-4 flex items-start transition-all duration-300 ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
-				} p-4 rounded-lg shadow-md hover:shadow-lg hover:transform hover:scale-105 cursor-pointer`}
+			// className={`mt-4 text-black ml-4 flex items-start transition-all duration-300 ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
+			// 	} p-4 rounded-lg shadow-md hover:shadow-lg hover:transform hover:scale-105 cursor-pointer`}
+			className={`mt-4 text-white ml-4 flex items-start transition-all duration-300 bg-indigo-500/20 border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent
+				 p-4 rounded-lg shadow-md hover:shadow-lg hover:transform hover:scale-105 cursor-pointer`}
+				
 		>
 			<div className="bg-[#5086ed] w-5 h-5 rounded-full mr-6 mt-1 animate-pulse"></div>
 
 			<div className='w-full'>
-				<div className="flex justify-between items-start font-semibold text-lg text-gray-800">
+				<div className="flex justify-between items-start font-semibold text-lg text-white">
 					<div className="flex w-[70%] items-center gap-4 flex-wrap">
 						<p className="text-md">
 							<span>{experience.work_title}</span>
@@ -30,11 +33,11 @@ const ExperienceCard: React.FC<Props> = ({ experience, index, dropdownOpen, togg
 						{experience.endorsers && experience.endorsers.filter(endorser => endorser.status_id === 2).length > 0 && (
 							<div className="relative">
 								<div
-									className="py-2 px-4 bg-[#C0DDEC] rounded-full flex items-center cursor-pointer"
+									className="py-2 px-4 rounded-full flex items-center cursor-pointer border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
 									onClick={() => toggleDropdown(experience.id)}
 								>
 									<Image src="/verified.png" alt="Verified" width={20} height={20} className="mr-2" />
-									<span className="text-sm text-black">Endorsed</span>
+									<span className="text-sm text-white">Endorsed</span>
 								</div>
 
 								{dropdownOpen[experience.id] && (
@@ -45,14 +48,14 @@ const ExperienceCard: React.FC<Props> = ({ experience, index, dropdownOpen, togg
 												.map((endorser, idx) => (
 													<li
 														key={endorser.email}
-														className="py-1 px-2 text-sm text-gray-800 hover:bg-gray-100 rounded cursor-pointer"
+														className="py-1 px-2 text-sm text-white hover:bg-gray-100 rounded cursor-pointer"
 														onClick={() => {
 															window.location.href = `/portfolio/${endorser.id}`;
 														}}
 													>
 														<div className='flex items-center'>
 															<Image src={endorser.photo || 'https://example.com/default-avatar.png'} alt="Endorser" width={20} height={20} className="mr-2 rounded-full w-8 h-8" />
-															<p>{endorser.name}</p>
+															<p className='text-black'>{endorser.name}</p>
 														</div>
 													</li>
 												))}
@@ -71,13 +74,13 @@ const ExperienceCard: React.FC<Props> = ({ experience, index, dropdownOpen, togg
 						</button>
 					)}
 				</div>
-				<p className="text-sm text-gray-600 mt-1">
+				<p className="text-sm text-white mt-1">
 					{experience.employment_type}
 				</p>
-				<p className="text-sm text-gray-600 mt-1">
+				<p className="text-sm text-white mt-1">
 					{experience.start_month} {experience.start_year} - {experience.end_year ? `${experience.end_month} ${experience.end_year}` : 'Present'}
 				</p>
-				<p className="text-sm text-gray-600 mt-1">{experience.description}</p>
+				<p className="text-sm text-white mt-1">{experience.description}</p>
 				<div className="h-[2px] bg-gray-300 w-full mt-4"></div>
 			</div>
 		</div>

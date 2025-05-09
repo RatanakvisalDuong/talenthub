@@ -13,6 +13,7 @@ import { ShareIcon } from '@heroicons/react/24/outline';
 import Image from "next/image";
 import { useState } from 'react';
 import CertificateDialog from "@/components/achievementDialog/achievementDialog";
+import ParticlesBackground from "@/components/background/background";
 
 
 
@@ -81,7 +82,8 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
     };
 
     return (
-        <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
+        <div className=" w-screen h-screen overflow-hidden fixed">
+            <ParticlesBackground />
             <div className={`max-w-8xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between ${openAchivementDialog ? 'blur-sm' : ''} `}>
                 {successMessage && (
                     <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
@@ -90,8 +92,8 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                 )}
                 <div className="flex justify-between w-full">
                     <div className="h-[87vh] w-[28%] flex flex-col justify-between overflow-y-auto">
-                        <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'} bg-white rounded-lg shadow-md p-4 relative`}>
-                            <p className="text-black font-bold text-lg">Projects</p>
+                        <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'}  bg-indigo-500/20 border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent rounded-lg shadow-md p-4 relative`}>
+                            <p className="text-white font-bold text-lg">Projects</p>
                             <div className="w-25 bg-[#dfdfdf] h-[2px] mt-1"></div>
                             {portfolio.projects.filter(project => project.project_visibility_status === 0).length === 0 ? (
                                 <p className="text-[#808080] text-md mt-4 justify-center items-center flex">No project available</p>
@@ -119,8 +121,8 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                 </>
                             )}
                         </div>
-                        <div className={`h-[65%] bg-white rounded-lg shadow-md p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto`}>
-                            <p className="text-black font-bold text-lg">Achievements & Certifications</p>
+                        <div className={`h-[65%]  bg-indigo-500/20 border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent rounded-lg shadow-md p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto`}>
+                            <p className="text-white font-bold text-lg">Achievements & Certifications</p>
                             <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
                             {portfolio.achievements.length === 0 ? (
                                 <p className="text-[#808080] text-md mt-4 justify-center items-center flex">No achievement & certificate available</p>
@@ -133,7 +135,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                     </div>
                     <div className="h-[87vh] w-[70%] overflow-y-auto pr-6 overflow-x-hidden">
                         <div className="flex justify-between h-[35%]">
-                            <div className="w-[68%] bg-white rounded-lg shadow-md p-4 overflow-y-auto">
+                            <div className="w-[68%]  bg-indigo-500/20 border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent rounded-lg shadow-md p-4 overflow-y-auto">
                                 <div className="flex items-center justify-start h-full">
                                     <div className="w-[40%] relative flex items-center justify-center">
                                         <div className="absolute top-0 right-0 z-10 -translate-y-1/2">
@@ -159,35 +161,35 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                         </div>
                                     </div>
                                     <div className="justify-start w-[60%] h-full items-start ml-4 mt-4">
-                                        <p className="text-black font-bold text-lg ">{portfolio.portfolio.user_name}</p>
+                                        <p className="text-white font-bold text-lg ">{portfolio.portfolio.user_name}</p>
                                         <div className="w-20 bg-[#dfdfdf] h-[2px] mt-1">
                                         </div>
-                                        <div className="text-black mt-2 text-sm flex">
-                                            <span className="font-bold mr-2">Email:</span> <p className="text-gray-600">{portfolio.portfolio.email}</p>
+                                        <div className="text-white mt-2 text-sm flex">
+                                            <span className="font-bold mr-2">Email:</span> <p className="text-white">{portfolio.portfolio.email}</p>
                                         </div>
-                                        <div className="text-black mt-2 text-sm flex">
-                                            <span className="font-bold mr-2">Contact:</span>  <p className="text-gray-600">{portfolio.portfolio.phone_number ? portfolio.portfolio.phone_number : 'N/A'}</p>
+                                        <div className="text-white mt-2 text-sm flex">
+                                            <span className="font-bold mr-2">Contact:</span>  <p className="text-white">{portfolio.portfolio.phone_number ? portfolio.portfolio.phone_number : 'N/A'}</p>
                                         </div>
                                         {portfolio.portfolio.role_id === 1 ?
-                                            (<div className="text-black mt-2 text-sm flex">
-                                                <span className="font-bold mr-2">Major:</span><p className="text-gray-600">{getMajorName()}</p>
+                                            (<div className="text-white mt-2 text-sm flex">
+                                                <span className="font-bold mr-2">Major:</span><p className="text-white">{getMajorName()}</p>
                                             </div>)
                                             : <div></div>}
-                                        <button className="mt-4 rounded-sm text-black px-4 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:transform hover:scale-105" onClick={toggleSharePortfolio}><ShareIcon className="w-5 h-5 mr-2" /> Share Portfolio</button>
+                                        <button className="mt-4 rounded-sm text-white px-4 py-2 bg-blue-800 flex items-center font-bold cursor-pointer hover:transform hover:scale-105" onClick={toggleSharePortfolio}><ShareIcon className="w-5 h-5 mr-2" /> Share Portfolio</button>
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-[30%] bg-gradient-to-br from-white to-gray-100 rounded-2xl shadow-lg p-6 overflow-y-auto hover:shadow-2xl transition-all duration-300">
-                                <p className="text-gray-800 font-semibold text-xl mb-4 border-b pb-2 border-gray-300">
+                            <div className="w-[30%]  rounded-2xl shadow-lg p-6 overflow-y-auto  bg-indigo-500/20 border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                <p className="text-white font-semibold text-xl mb-4 border-b pb-2 border-gray-300">
                                     About Me
                                 </p>
-                                <p className="text-gray-600 mt-2 text-sm leading-relaxed text-justify">
+                                <p className="text-white mt-2 text-sm leading-relaxed text-justify">
                                     {portfolio.portfolio.about ? portfolio.portfolio.about : 'No description available'}
                                 </p>
                             </div>
                         </div>
-                        <div className={`w-full ${expandedExperience ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
-                            <p className="text-black font-bold text-xl mb-2">Experience</p>
+                        <div className={`w-full ${expandedExperience ? 'h-auto' : 'h-max'}  bg-indigo-500/20 border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent rounded-lg shadow-lg p-6 mt-8 mr-3`}>
+                            <p className="text-white font-bold text-xl mb-2">Experience</p>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
                             {portfolio.experiences.length === 0 ? (
@@ -216,8 +218,8 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
 
                         </div>
 
-                        <div className={`w-full ${expandedSkill ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
-                            <p className="text-black font-bold text-xl mb-2">Skill</p>
+                        <div className={`w-full ${expandedSkill ? 'h-auto' : 'h-max'}  bg-indigo-500/20 border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent rounded-lg shadow-lg p-6 mt-8 mr-3`}>
+                            <p className="text-white font-bold text-xl mb-2">Skill</p>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
                             {portfolio.skills.length === 0 ? (
@@ -244,8 +246,8 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                 </button>
                             </div>
                         </div>
-                        <div className={`w-full ${expandedEducation ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
-                            <p className="text-black font-bold text-xl mb-2">Education</p>
+                        <div className={`w-full ${expandedEducation ? 'h-auto' : 'h-max'}  bg-indigo-500/20 border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent rounded-lg shadow-lg p-6 mt-8 mr-3`}>
+                            <p className="text-white font-bold text-xl mb-2">Education</p>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
                             {portfolio.education.length === 0 ? (

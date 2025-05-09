@@ -3,12 +3,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
 import axios from "axios";
-import { BellIcon } from "@heroicons/react/20/solid";
+import { BellIcon, UserGroupIcon } from "@heroicons/react/20/solid";
 import { UserCircleIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import LoginDialog from "@/dialogs/login_dialog/login_dialog";
 import { Ubuntu } from "next/font/google";
 import { Notification } from "@/app/type/notification";
+import { ArrowDown01Icon, BadgeCheckIcon, CheckCircleIcon, ChevronUpIcon } from "lucide-react";
 
 const ubuntuFont = Ubuntu({
 	subsets: ["latin"],
@@ -59,14 +60,14 @@ const Appbar = React.memo(() => {
 					Authorization: `Bearer ${session?.accessToken}`
 				}
 			});
-			
+
 			const newNotifications = response.data || [];
-			
+
 			// Check if we received any new notifications
 			if (newNotifications.length === 0) {
 				setHasMoreNotifications(false);
 			}
-			
+
 			if (page === 1) {
 				setNotification(newNotifications);
 			} else {
@@ -140,7 +141,7 @@ const Appbar = React.memo(() => {
 					},
 				},
 			)
-			if(response.status === 200) {
+			if (response.status === 200) {
 				// Reset to page 1 and fetch fresh notifications after status change
 				setPage(1);
 				setHasMoreNotifications(true);
@@ -175,51 +176,62 @@ const Appbar = React.memo(() => {
 	};
 
 	return (
-		<nav className={`${ubuntuFont.className} bg-white shadow-md w-full fixed top-0 left-0 right-0 z-50`}>
+		<nav className={`${ubuntuFont.className} bg-transparent w-full fixed top-0 left-0 right-0 z-50`}>
 			<div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex justify-between items-center h-16">
-					<Link className="flex" href="/">
-						<h1 className="text-2xl font-bold text-black cursor-pointer">
-							Talent
-						</h1>
-						<h1 className="text-[#5086ed] text-2xl font-bold cursor-pointer">Hub</h1>
-						<div className="ml-16">
-							{isAuthenticated ? (
-								<div className="bg-[#5086ed] text-white px-2 py-1 rounded-md cursor-pointer">
-									<p className="text-white">{session.roleId === 1 ? "Student" : "Endorser"}</p>
-								</div>
-							) : (
-								<div></div>
-							)}
+					<Link className="flex items-center group" href="/">
+						<div className="flex items-center">
+							<h1 className="text-2xl font-bold text-white">
+								Talent
+							</h1>
+							<h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">Hub</h1>
 						</div>
+						{isAuthenticated && (
+							<div className="ml-6 bg-blue-500 bg-opacity-20 border border-blue-400 text-blue-100 px-3 py-1 rounded-full text-sm font-medium">
+								{session.roleId === 1 ? "Student" : "Endorser"}
+							</div>
+						)}
 					</Link>
 
 					<div className="flex items-center space-x-6">
 						{isAuthenticated && (
-							<div className="relative mr-4" ref={notificationRef}>
-								<BellIcon
-									className="w-8 h-8 text-black cursor-pointer mr-4"
-									onClick={handleNotificationClick}
-								/>
+							<div className="relative mr-2" ref={notificationRef}>
+								<div className="p-2 rounded-full hover:bg-blue-800 transition-colors duration-200">
+									<BellIcon
+										className="w-6 h-6 text-blue-100 cursor-pointer"
+										onClick={handleNotificationClick}
+									/>
 
-								{notification.filter((notification) => notification.status === 1).length > 0 && (
-									<span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center mr-4">
-										{notification.filter((notification) => notification.status === 1).length}
-									</span>
-								)}
+									{notification.filter((notification) => notification.status === 1).length > 0 && (
+										<span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+											{notification.filter((notification) => notification.status === 1).length}
+										</span>
+									)}
+								</div>
 
 								{notificationDropdownOpen && (
-									<div className="absolute right-0 mt-2 w-130 bg-white rounded-md shadow-lg py-1 z-10 max-h-[400px] overflow-y-auto">
+									<div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl py-2 z-10 max-h-[400px] overflow-y-auto border border-gray-200">
+										<div className="px-4 py-2 border-b border-gray-100">
+											<h3 className="font-semibold text-gray-700">Notifications</h3>
+										</div>
+
 										{notification.length > 0 ? (
 											notification.map((notification) => (
 												<div
 													key={`${notification.id} - ${notification.status} - ${notification.type}}`}
-													className={`px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${notification.status === 1 ? "bg-gray-100" : ""}`}
+													className={`px-4 py-3 text-sm border-b border-gray-100 hover:bg-gray-50 transition-colors ${notification.status === 1 ? "bg-blue-50" : ""}`}
 												>
 													{notification.type === 1 ? (
 														notification.status === 1 ? (
 															<div>
-																{notification.owner_name} has invited you to be a collaborator to their project: Project {notification.title}
+																<div className="flex items-start mb-2">
+																	<div className="bg-blue-100 p-2 rounded-full mr-3">
+																		<UserGroupIcon className="h-4 w-4 text-blue-600" />
+																	</div>
+																	<p className="text-gray-700">
+																		<span className="font-medium">{notification.owner_name}</span> has invited you to collaborate on: <span className="font-medium">Project {notification.title}</span>
+																	</p>
+																</div>
 																<div className="flex space-x-2 mt-2">
 																	<button
 																		onClick={() => handleSetChangesToNotificationStatus({
@@ -228,7 +240,7 @@ const Appbar = React.memo(() => {
 																			type: notification.type,
 																			endorsementType: notification.endorsement_type || null
 																		})}
-																		className="px-4 py-1 bg-[#5086ed] text-white rounded-md cursor-pointer"
+																		className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md cursor-pointer text-xs font-medium hover:from-blue-600 hover:to-blue-700 transition-all"
 																	>
 																		Accept
 																	</button>
@@ -239,21 +251,42 @@ const Appbar = React.memo(() => {
 																			type: notification.type,
 																			endorsementType: notification.endorsement_type || null
 																		})}
-																		className="px-4 py-1 bg-white text-black rounded-md border border-2 border-[#5086ed] cursor-pointer hover:bg-gray-200"
+																		className="px-4 py-1.5 bg-white text-gray-700 rounded-md border border-gray-300 cursor-pointer text-xs font-medium hover:bg-gray-100 transition-all"
 																	>
 																		Decline
 																	</button>
 																</div>
 															</div>
 														) : session.googleId === notification.owner_google_id ? (
-															<div>{notification.receiver_name} has {mapEndorsementStatus(notification.status).toLowerCase()} your project collaboration invitation for: Project {notification.title}</div>
+															<div className="flex items-start">
+																<div className="bg-gray-100 p-2 rounded-full mr-3">
+																	<CheckCircleIcon className="h-4 w-4 text-gray-600" />
+																</div>
+																<p className="text-gray-700">
+																	<span className="font-medium">{notification.receiver_name}</span> has {mapEndorsementStatus(notification.status).toLowerCase()} your project collaboration invitation for: <span className="font-medium">Project {notification.title}</span>
+																</p>
+															</div>
 														) : (
-															<div>You have {mapEndorsementStatus(notification.status).toLowerCase()} {notification.owner_name}'s project {notification.title} collaboration.</div>
+															<div className="flex items-start">
+																<div className="bg-gray-100 p-2 rounded-full mr-3">
+																	<CheckCircleIcon className="h-4 w-4 text-gray-600" />
+																</div>
+																<p className="text-gray-700">
+																	You have {mapEndorsementStatus(notification.status).toLowerCase()} <span className="font-medium">{notification.owner_name}</span>'s project collaboration for: <span className="font-medium">Project {notification.title}</span>
+																</p>
+															</div>
 														)
 													) : (
 														notification.status === 1 ? (
 															<div>
-																{notification.owner_name} has requested you to endorse their {mapEndorsementType(notification.endorsement_type).toLowerCase()}: {mapEndorsementType(notification.endorsement_type)} {notification.title}
+																<div className="flex items-start mb-2">
+																	<div className="bg-indigo-100 p-2 rounded-full mr-3">
+																		<BadgeCheckIcon className="h-4 w-4 text-indigo-600" />
+																	</div>
+																	<p className="text-gray-700">
+																		<span className="font-medium">{notification.owner_name}</span> has requested you to endorse their {mapEndorsementType(notification.endorsement_type).toLowerCase()}: <span className="font-medium">{notification.title}</span>
+																	</p>
+																</div>
 																<div className="flex space-x-2 mt-2">
 																	<button
 																		onClick={() => handleSetChangesToNotificationStatus({
@@ -262,7 +295,7 @@ const Appbar = React.memo(() => {
 																			type: notification.type,
 																			endorsementType: notification.endorsement_type || null
 																		})}
-																		className="px-4 py-1 bg-[#5086ed] text-white rounded-md cursor-pointer"
+																		className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md cursor-pointer text-xs font-medium hover:from-blue-600 hover:to-blue-700 transition-all"
 																	>
 																		Accept
 																	</button>
@@ -273,31 +306,48 @@ const Appbar = React.memo(() => {
 																			type: notification.type,
 																			endorsementType: notification.endorsement_type || null
 																		})}
-																		className="px-4 py-1 bg-white text-black rounded-md border border-2 border-[#5086ed] cursor-pointer hover:bg-gray-200"
+																		className="px-4 py-1.5 bg-white text-gray-700 rounded-md border border-gray-300 cursor-pointer text-xs font-medium hover:bg-gray-100 transition-all"
 																	>
 																		Decline
 																	</button>
 																</div>
 															</div>
 														) : session.googleId === notification.owner_google_id ? (
-															<div>{notification.receiver_name} has {mapEndorsementStatus(notification.status).toLowerCase()} your endorsement request for your {mapEndorsementType(notification.endorsement_type).toLowerCase()}: {notification.title}</div>
+															<div className="flex items-start">
+																<div className="bg-gray-100 p-2 rounded-full mr-3">
+																	<BadgeCheckIcon className="h-4 w-4 text-gray-600" />
+																</div>
+																<p className="text-gray-700">
+																	<span className="font-medium">{notification.receiver_name}</span> has {mapEndorsementStatus(notification.status).toLowerCase()} your endorsement request for: <span className="font-medium">{notification.title}</span>
+																</p>
+															</div>
 														) : (
-															<div>You have {mapEndorsementStatus(notification.status).toLowerCase()} their {mapEndorsementType(notification.endorsement_type).toLowerCase()}: {mapEndorsementType(notification.endorsement_type)} {notification.title}</div>
+															<div className="flex items-start">
+																<div className="bg-gray-100 p-2 rounded-full mr-3">
+																	<BadgeCheckIcon className="h-4 w-4 text-gray-600" />
+																</div>
+																<p className="text-gray-700">
+																	You have {mapEndorsementStatus(notification.status).toLowerCase()} endorsement for <span className="font-medium">{mapEndorsementType(notification.endorsement_type)} {notification.title}</span>
+																</p>
+															</div>
 														)
 													)}
 												</div>
 											))
 										) : (
-											<div className="px-4 py-2 text-sm text-gray-700 h-20 flex items-center justify-center">
+											<div className="px-4 py-6 text-sm text-gray-500 flex flex-col items-center justify-center">
+												<BellIcon className="h-8 w-8 text-gray-300 mb-2" />
 												No notifications
 											</div>
 										)}
+
 										{hasMoreNotifications && notification.length > 0 && (
-											<div className="w-full px-4 h-[30px] mt-2">
+											<div className="px-4 py-2">
 												<button
-													className="w-full h-full bg-[#5086ed] text-white rounded-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-103 transition-all duration-300 ease-in-out cursor-pointer group"
+													className="w-full py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-all text-xs font-medium flex items-center justify-center"
 													onClick={loadMoreNotifications}
 												>
+													<ArrowDown01Icon className="h-3 w-3 mr-1" />
 													Load More
 												</button>
 											</div>
@@ -310,28 +360,33 @@ const Appbar = React.memo(() => {
 						{isAuthenticated ? (
 							<div className="relative" ref={dropdownRef}>
 								<div
-									className="flex items-center space-x-2 cursor-pointer"
+									className="flex items-center space-x-2 cursor-pointer bg-blue-800 bg-opacity-40 px-3 py-1.5 rounded-full hover:bg-blue-700 transition-colors"
 									onClick={() => setDropdownOpen(!dropdownOpen)}
 								>
-									<span className="text-black font-medium">{session.user?.name || "User"}</span>
+									<UserCircleIcon className="h-5 w-5 text-blue-200" />
+									<span className="text-blue-100 font-medium text-sm">{session.user?.name || "User"}</span>
+									<ChevronUpIcon className="h-4 w-4 text-blue-300" />
 								</div>
 
 								{dropdownOpen && (
-									<div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+									<div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-10 border border-gray-200 overflow-hidden">
+										<div className="px-4 py-2 bg-gray-50 border-b border-gray-100">
+											<p className="text-xs text-gray-500 font-medium">ACCOUNT</p>
+										</div>
 										<Link
 											href="/yourportfolio"
-											className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+											className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 transition-colors"
 										>
-											<UserCircleIcon className="h-5 w-5 mr-2 text-gray-500" />
+											<UserCircleIcon className="h-5 w-5 mr-2 text-blue-500" />
 											Your Portfolio
 										</Link>
 										<button
 											onClick={() => {
 												goBackHome();
 											}}
-											className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+											className="flex items-center w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 transition-colors"
 										>
-											<ArrowRightOnRectangleIcon className="h-5 w-5 mr-2 text-gray-500" />
+											<ArrowRightOnRectangleIcon className="h-5 w-5 mr-2 text-blue-500" />
 											Logout
 										</button>
 									</div>
@@ -339,7 +394,7 @@ const Appbar = React.memo(() => {
 							</div>
 						) : (
 							<button
-								className="px-4 py-2 bg-[#5086ed] text-white rounded-md cursor-pointer"
+								className="px-5 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md cursor-pointer hover:from-blue-600 hover:to-blue-700 transition-all shadow-sm font-medium"
 								onClick={handleLogin}
 							>
 								Login

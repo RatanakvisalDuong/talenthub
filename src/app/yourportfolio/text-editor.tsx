@@ -80,7 +80,7 @@ export default function TextEditor({
                     <div className="ql-container ql-snow" style={{ border: "none" }}>
                         <div
                             id={id}
-                            className="ql-editor text-gray-700"
+                            className="ql-editor text-white"
                             style={{
                                 fontFamily: "Ubuntu, sans-serif",
                                 padding: 0,

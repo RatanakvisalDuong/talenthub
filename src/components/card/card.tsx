@@ -19,7 +19,7 @@ interface Portfolio {
 export default function Card({ portfolio }: { portfolio: Portfolio }) {
     return (
         <Link
-            className="w-full flex flex-col rounded-sm shadow-md p-3 sm:p-4 bg-white text-black transform transition-transform duration-200 hover:scale-105 hover:cursor-pointer"
+            className="w-full flex flex-col rounded-sm shadow-md p-3 sm:p-4 bg-indigo-500/20 transform transition-transform duration-200 hover:scale-105 hover:cursor-pointer border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white"
             href={`/portfolio/${portfolio.user_id}`}
         >
             <div className="flex justify-end items-center w-full">

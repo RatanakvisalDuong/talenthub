@@ -65,9 +65,9 @@ export default function Sidebar({
     }, [selectedMajors, selectedRoles, selectedWorkingStatuses, onMajorSelect, onRoleSelect, onWorkingStatusSelect]);
 
     return (
-        <div className="w-max h-[100vh] overflow-y-auto px-2">
+        <div className="w-max h-[100vh] overflow-y-auto px-2 text-white">
             {session?.user?.name && (
-                <div className="bg-white w-64 h-max rounded-sm shadow-md p-4 items-center justify-center text-black mb-4 transform transition-transform hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group">
+                <div className="bg-indigo-500/20 w-64 h-max rounded-sm shadow-md p-4 items-center justify-center  mb-4 ease-in-out cursor-pointer group border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                     <Link href={`/yourportfolio`}>
                         <p className="w-max m-auto font-bold">{session.user.name || 'N/A'}</p>
                         <div className="rounded-full m-auto mt-4 items-center justify-center flex">
@@ -102,13 +102,13 @@ export default function Sidebar({
 
                 </div>
             )}
-            <div className="bg-white w-64 h-100 rounded-sm shadow-md p-4 overflow-y-auto">
-                <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4">
-                    <p className="text-md text-black ml-4">Majors:</p>
+            <div className="w-64 h-100 rounded-sm shadow-md p-4 overflow-y-auto bg-indigo-500/20 border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                <div className=" bg-blue-800 w-full h-8 justify-start items-center flex text-left mb-4">
+                    <p className="text-md ml-4">Majors:</p>
                 </div>
 
                 {majors.map((major) => (
-                    <label key={major.id} className="flex items-center text-black text-sm mt-1">
+                    <label key={major.id} className="flex items-center  text-sm mt-1">
                         <input
                             type="checkbox"
                             className="mr-2 h-3 w-3"
@@ -119,12 +119,12 @@ export default function Sidebar({
                     </label>
                 ))}
 
-                <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4 mt-4">
-                    <p className="text-md text-black ml-4">Portfolio:</p>
+                <div className=" bg-blue-800 w-full h-8 justify-start items-center flex text-left mb-4 mt-4">
+                    <p className="text-md  ml-4">Portfolio:</p>
                 </div>
 
                 {role.map((role) => (
-                    <label key={role.id} className="flex items-center text-black text-sm mt-1">
+                    <label key={role.id} className="flex items-center  text-sm mt-1">
                         <input
                             type="checkbox"
                             className="mr-2 h-3 w-3"
@@ -135,12 +135,12 @@ export default function Sidebar({
                     </label>
                 ))}
 
-                <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4 mt-4">
-                    <p className="text-md text-black ml-4">Employment Status:</p>
+                <div className=" bg-blue-800 w-full h-8 justify-start items-center flex text-left mb-4 mt-4">
+                    <p className="text-md  ml-4">Employment Status:</p>
                 </div>
 
                 {workingStatus.map((workingStatus) => (
-                    <label key={workingStatus.id} className="flex items-center text-black text-sm mt-1">
+                    <label key={workingStatus.id} className="flex items-center  text-sm mt-1">
                         <input
                             type="checkbox"
                             className="mr-2 h-3 w-3"
