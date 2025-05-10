@@ -245,7 +245,10 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                     <div className="h-[87vh] w-[28%] flex flex-col justify-between overflow-y-auto">
                         <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'} bg-white rounded-lg shadow-md p-4 relative`}>
                             <div className="flex justify-between items-center">
-                                <p className="text-black font-bold text-lg">Projects</p>
+                                <div className="flex items-center">
+                                    <i className="fas fa-folder text-[#5086ed] mr-2"></i>
+                                    <p className="font-bold text-lg text-black">Projects</p>
+                                </div>
                                 <button
                                     className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-md cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group"
                                     onClick={() => toggleAddProjectDialog()}
@@ -279,7 +282,10 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                         </div>
                         <div className={`h-[65%] bg-white rounded-lg shadow-md p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto`}>
                             <div className="flex justify-between items-center">
-                                <p className="text-black font-bold text-lg">Achievements & Certificate</p>
+                                <div className="flex items-center">
+                                    <i className="fas fa-trophy text-[#5086ed] mr-2"></i>
+                                    <p className="text-black font-bold text-lg">Achievements & Certificate</p>
+                                </div>
                                 <button className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-md cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={toggleAddCertificateDialog}>
                                     <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
                                 </button>
@@ -345,7 +351,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                         }
                                         <div className="flex justify-between">
                                             <button
-                                                className="mt-4 rounded-sm text-black px-2 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:scale-105 hover:brightness-105 transition-all duration-200 ease-in-out"
+                                                className="mt-4 rounded-sm text-black px-2 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:bg-blue-600 hover:scale-105 transition-all duration-200 ease-in-out shadow-sm hover:text-white"
                                                 onClick={toggleSharePortfolio}
                                             >
                                                 <ShareIcon className="w-5 h-5 mr-2" />
@@ -363,21 +369,26 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-[30%] bg-white rounded-2xl shadow-lg p-6 overflow-y-auto">
-                                <p className="text-gray-800 font-semibold text-lg pb-1">
-                                    About Me
-                                </p>
-                                <div className="w-20 bg-[#dfdfdf] h-[2px] ">
+                            <div className="w-[30%] bg-gradient-to-br from-white to-gray-100 rounded-2xl shadow-lg p-6 overflow-y-auto hover:shadow-2xl transition-all duration-300">
+                                <div className="flex items-center">
+                                    <i className="fas fa-user text-[#5086ed] mr-2"></i>
+                                    <p className="text-gray-800 font-semibold text-lg">
+                                        About Me
+                                    </p>
                                 </div>
+                                <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
                                 <p className="text-gray-600 mt-2 text-sm leading-relaxed text-justify">
-                                    {portfolioData.portfolio.about ? portfolioData.portfolio.about : 'No description available'}
+                                    {portfolio.portfolio.about ? portfolio.portfolio.about : 'No description available'}
                                 </p>
                             </div>
 
                         </div>
                         <div className={`w-full ${expandedExperience ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
                             <div className="flex justify-between items-center">
-                                <p className="text-black font-bold text-lg">Experience</p>
+                                <div className="flex items-center">
+                                    <i className="fas fa-briefcase text-[#5086ed] mr-2"></i>
+                                    <p className="text-black font-bold text-lg">Experience</p>
+                                </div>
                                 <button className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-md cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={toggleAddExperienceDialog}>
                                     <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
                                 </button>
@@ -413,7 +424,10 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
 
                         <div className={`w-full ${expandedSkill ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
                             <div className="flex justify-between items-center">
-                                <p className="text-black font-bold text-lg">Skill</p>
+                                <div className="flex items-center">
+                                    <i className="fas fa-cogs text-[#5086ed] mr-2"></i>
+                                    <p className="text-black font-bold text-lg">Skill</p>
+                                </div>
                                 <button className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-md cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={toggleAddSkillDialog}>
                                     <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
                                 </button>
@@ -452,7 +466,10 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                         </div>
                         <div className={`w-full ${expandedEducation ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
                             <div className="flex justify-between items-center">
-                                <p className="text-black font-bold text-lg">Education</p>
+                                <div className="flex items-center">
+                                    <i className="fas fa-graduation-cap text-[#5086ed] mr-2"></i>
+                                    <p className="text-black font-bold text-lg">Education</p>
+                                </div>
                                 <button
                                     className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-md cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group"
                                     onClick={() => toggleAddEducationDialog()}

@@ -91,7 +91,10 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                 <div className="flex justify-between w-full">
                     <div className="h-[87vh] w-[28%] flex flex-col justify-between overflow-y-auto">
                         <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'} bg-white rounded-lg shadow-md p-4 relative`}>
-                            <p className="text-black font-bold text-lg">Projects</p>
+                            <div className="flex items-center">
+                                <i className="fas fa-folder text-[#5086ed] mr-2"></i>
+                                <p className="font-bold text-lg text-black">Projects</p>
+                            </div>
                             <div className="w-25 bg-[#dfdfdf] h-[2px] mt-1"></div>
                             {portfolio.projects.filter(project => project.project_visibility_status === 0).length === 0 ? (
                                 <p className="text-[#808080] text-md mt-4 justify-center items-center flex">No project available</p>
@@ -120,7 +123,10 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             )}
                         </div>
                         <div className={`h-[65%] bg-white rounded-lg shadow-md p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto`}>
-                            <p className="text-black font-bold text-lg">Achievements & Certifications</p>
+                            <div className="flex items-center">
+                                <i className="fas fa-trophy text-[#5086ed] mr-2"></i>
+                                <p className="text-black font-bold text-lg">Achievements & Certificate</p>
+                            </div>
                             <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
                             {portfolio.achievements.length === 0 ? (
                                 <p className="text-[#808080] text-md mt-4 justify-center items-center flex">No achievement & certificate available</p>
@@ -173,21 +179,34 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                                 <span className="font-bold mr-2">Major:</span><p className="text-gray-600">{getMajorName()}</p>
                                             </div>)
                                             : <div></div>}
-                                        <button className="mt-4 rounded-sm text-black px-4 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:transform hover:scale-105" onClick={toggleSharePortfolio}><ShareIcon className="w-5 h-5 mr-2" /> Share Portfolio</button>
+                                        <button
+                                            className="mt-4 rounded-sm text-black px-2 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:bg-blue-600 hover:scale-105 transition-all duration-200 ease-in-out shadow-sm hover:text-white"
+                                            onClick={toggleSharePortfolio}
+                                        >
+                                            <ShareIcon className="w-5 h-5 mr-2" />
+                                            Share Portfolio
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                             <div className="w-[30%] bg-gradient-to-br from-white to-gray-100 rounded-2xl shadow-lg p-6 overflow-y-auto hover:shadow-2xl transition-all duration-300">
-                                <p className="text-gray-800 font-semibold text-xl mb-4 border-b pb-2 border-gray-300">
-                                    About Me
-                                </p>
+                                <div className="flex items-center">
+                                    <i className="fas fa-user text-[#5086ed] mr-2"></i>
+                                    <p className="text-gray-800 font-semibold text-lg">
+                                        About Me
+                                    </p>
+                                </div>
+                                <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
                                 <p className="text-gray-600 mt-2 text-sm leading-relaxed text-justify">
                                     {portfolio.portfolio.about ? portfolio.portfolio.about : 'No description available'}
                                 </p>
                             </div>
                         </div>
                         <div className={`w-full ${expandedExperience ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
-                            <p className="text-black font-bold text-xl mb-2">Experience</p>
+                            <div className="flex items-center">
+                                <i className="fas fa-briefcase text-[#5086ed] mr-2"></i>
+                                <p className="text-black font-bold text-lg">Experience</p>
+                            </div>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
                             {portfolio.experiences.length === 0 ? (
@@ -217,7 +236,10 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                         </div>
 
                         <div className={`w-full ${expandedSkill ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
-                            <p className="text-black font-bold text-xl mb-2">Skill</p>
+                            <div className="flex items-center">
+                                <i className="fas fa-cogs text-[#5086ed] mr-2"></i>
+                                <p className="text-black font-bold text-lg">Skill</p>
+                            </div>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
                             {portfolio.skills.length === 0 ? (
@@ -245,7 +267,10 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             </div>
                         </div>
                         <div className={`w-full ${expandedEducation ? 'h-auto' : 'h-max'} bg-white rounded-lg shadow-lg p-6 mt-8 mr-3`}>
-                            <p className="text-black font-bold text-xl mb-2">Education</p>
+                            <div className="flex items-center">
+                                <i className="fas fa-graduation-cap text-[#5086ed] mr-2"></i>
+                                <p className="text-black font-bold text-lg">Education</p>
+                            </div>
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
                             {portfolio.education.length === 0 ? (
