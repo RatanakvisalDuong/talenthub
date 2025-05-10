@@ -18,7 +18,6 @@ export default async function YourPortfolioPage() {
   );
 
   const portfolioData: Portfolio = response.data;
-  console.log(portfolioData);
 
   return (
     <div>
