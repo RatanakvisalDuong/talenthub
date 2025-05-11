@@ -5,6 +5,7 @@ import { role } from "@/dummydata/role";
 import { useSession } from 'next-auth/react';
 import { workingStatus } from '@/dummydata/workingStatus';
 import Link from 'next/link';
+import { convertPhoneNumberSpacing } from '@/utils';
 
 export default function Sidebar({
     photo,
@@ -67,7 +68,7 @@ export default function Sidebar({
     return (
         <div className="w-max h-[100vh] overflow-y-auto px-2">
             {session?.user?.name && (
-                <div className="bg-white w-64 h-max rounded-sm shadow-md p-4 items-center justify-center text-black mb-4 cursor-pointer">
+                <div className="bg-white w-64 h-max rounded-xl p-4 items-center justify-center text-black mb-4 cursor-pointer shadow-sm border border-gray-200">
                     <Link href={`/yourportfolio`}>
                         <p className="w-max m-auto font-bold">{session.user.name || 'N/A'}</p>
                         <div className="rounded-full m-auto mt-4 items-center justify-center flex">
@@ -81,7 +82,7 @@ export default function Sidebar({
                         </div>
                         <p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
                             <span className='font-bold'>Contact: </span>
-                            <span className='ml-1'>{phoneNumber || 'N/A'}</span>
+                            <span className='ml-1'>{convertPhoneNumberSpacing(phoneNumber || '') || 'N/A'}</span>
                         </p>
                         <p className="m-auto text-sm mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
                             <span className='font-bold'>Email: </span>
@@ -102,7 +103,7 @@ export default function Sidebar({
 
                 </div>
             )}
-            <div className="bg-white w-64 h-100 rounded-sm shadow-md p-4 overflow-y-auto">
+            <div className="bg-white w-64 h-100 rounded-xl shadow-md p-4 overflow-y-auto shadow-sm border border-gray-200">
                 <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4">
                     <p className="text-md text-black ml-4">Majors:</p>
                 </div>

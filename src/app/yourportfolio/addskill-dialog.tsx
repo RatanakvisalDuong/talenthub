@@ -94,7 +94,7 @@ const AddSkillDialog = ({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg overflow-y-auto z-50 relative">
+            <div className="bg-white rounded-xl p-6 w-[500px] max-w-full shadow-lg overflow-y-auto z-50 relative">
                 {/* Loading overlay - positioned relative to the dialog */}
                 {loading && (
                     <div className="absolute inset-0 bg-white backdrop-blur-sm z-10 flex items-center justify-center">
@@ -155,7 +155,7 @@ const AddSkillDialog = ({
                 <div className="flex justify-end mt-2">
                     <button
                         type="submit"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer" 
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-xl hover:bg-green-600 hover:cursor-pointer" 
                         onClick={handleAddSkill}
                         disabled={loading}
                     >

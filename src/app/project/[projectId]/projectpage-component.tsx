@@ -133,13 +133,13 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
             <div className={`max-w-8xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between ${updateProjectDialog || addCollaboratorDialog || addEndorserDialog || confirmRemoveCollaboratorDialog || confirmRemoveEndorserDialog ? "blur-md" : ""}`}>
                 {successMessage && (
-                    <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-md z-50 mt-18">
+                    <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-xl shadow-md z-50 mt-18">
                         {successMessage}
                     </div>
                 )}
                 <div className="flex justify-between w-full">
                     <div className="h-[88vh] w-[73%]">
-                        <div className="h-full w-full bg-white p-4 overflow-y-auto rounded-lg shadow-md">
+                        <div className="h-full w-full bg-white p-4 overflow-y-auto rounded-xl shadow-md">
                             {/* Header section with title and controls */}
                             <div className="w-full flex justify-between items-center mb-4">
                                 <p className="text-xl font-bold text-black">{projectData.title}</p>
@@ -164,7 +164,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
 
                                         {/* Update button */}
                                         <button
-                                            className="flex text-sm text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-md items-center justify-center transition-all duration-200"
+                                            className="flex text-sm text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-xl items-center justify-center transition-all duration-200"
                                             onClick={toggleUpdateProject}
                                         >
                                             <PencilSquareIcon className="w-5 h-5 mr-2" />
@@ -175,7 +175,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                             </div>
 
                             {/* Image slideshow */}
-                            <div className="w-full h-60 bg-white rounded-lg mx-auto flex justify-center items-center shadow-md">
+                            <div className="w-full h-60 bg-white rounded-xl mx-auto flex justify-center items-center shadow-md">
                                 {/* Previous slide control */}
                                 <button
                                     onClick={prevSlide}
@@ -235,7 +235,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                                     key={index}
                                                     onClick={() => goToSlide(index)}
                                                     className={`h-2 transition-all ${currentSlide === index
-                                                        ? 'bg-[#5086ed] w-4 rounded-md'
+                                                        ? 'bg-[#5086ed] w-4 rounded-xl'
                                                         : 'bg-white bg-opacity-50 w-2 rounded-full'
                                                         }`}
                                                 />
@@ -256,7 +256,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                             <div className="w-full mt-4 flex justify-end">
                                 {projectData?.link && (
                                     <Link
-                                        className="h-10 w-max bg-white rounded-md flex items-center justify-center text-black px-4 shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group mr-4"
+                                        className="h-10 w-max bg-white rounded-xl flex items-center justify-center text-black px-4 shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group mr-4 border border-gray-200"
                                         href={projectData.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -267,7 +267,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
 
                                 {projectData.file && (
                                     <Link
-                                        className="h-10 w-max bg-white rounded-md flex items-center justify-center text-black px-4 shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group"
+                                        className="h-10 w-max bg-white rounded-xl flex items-center justify-center text-black px-4 shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group border border-gray-200"
                                         href={projectData.file}
                                     >
                                         <ArrowDownTrayIcon className="h-5 w-5 mr-1" /> Download
@@ -275,7 +275,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 )}
                             </div>
 
-                            <div className="w-full bg-white h-max mt-4 mb-4 rounded-lg shadow-md p-6">
+                            <div className="w-full bg-white h-max mt-4 mb-4 rounded-xl shadow-md p-6 border border-gray-200">
                                 <div className="flex items-center">
                                     <i className="fa-solid fa-file-lines w-4 h-4 mr-2 text-[#5086ed]" />
                                     <h1 className="text-black text-[16px]">Project Description</h1>
@@ -288,7 +288,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 </div>
                             </div>
 
-                            <div className="w-full bg-white h-max mt-4 mb-4 rounded-lg shadow-md p-6">
+                            <div className="w-full bg-white h-max mt-4 mb-4 rounded-xl shadow-md p-6 border border-gray-200">
                                 <div className="flex items-center">
                                     <i className="fa-solid fa-clipboard-list w-4 h-4 mr-2 text-[#5086ed]" />
                                     <h1 className="text-black text-[16px]">Project Instruction</h1>
@@ -311,21 +311,21 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                         </div>
                     </div>
 
-                    <div className="h-[88vh] w-[26%] overflow-y-auto">
-                        <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
+                    <div className="h-[88vh] w-[26%] overflow-y-auto pl-1 pr-1">
+                        <div className="h-max w-full bg-white rounded-xl shadow-md p-4 mb-4 border border-gray-200">
                             <div className="flex items-center">
                                 <i className="fa-solid fa-user w-4 h-4 mr-2 text-[#5086ed]" />
                                 <p className="text-black">
                                     Project Owner
                                 </p>
                             </div>
-                            <Link className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" href={`/portfolio/${projectData.google_id}`}>
+                            <Link className="bg-white text-black shadow-md rounded-xl px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group border border-gray-200" href={`/portfolio/${projectData.google_id}`}>
                                 <Image src={projectData.owner_photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
                                 <p className="text-sm font-medium ml-2">{projectData.owner_name}</p>
                             </Link>
 
                         </div>
-                        <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
+                        <div className="h-max w-full bg-white rounded-xl shadow-md p-4 mb-4 border border-gray-200">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center">
                                     <Image src="/verified.png" alt="Verified" width={30} height={30} className="w-[15px] h-[15px] mr-2" />
@@ -333,7 +333,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                         Endorsers
                                     </p>
                                 </div>
-                                {isOwner && <div className="bg-white text-black shadow-md rounded-lg p-2 flex items-center space-x-2 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={() => { toggleAddEndorser() }}>
+                                {isOwner && <div className="bg-white text-black shadow-md rounded-xl p-2 flex items-center space-x-2 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group border border-gray-200" onClick={() => { toggleAddEndorser() }}>
                                     <UserPlus className="w-4 h-4" />
                                     <p className="text-sm">Add Endorser</p>
                                 </div>
@@ -343,7 +343,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 projectData.endorsers
                                     .filter((endorser: any) => endorser.endorsement_status === 2)
                                     .map((endorser: any, index: number) => (
-                                        <div key={index} className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group justify-between">
+                                        <div key={index} className="bg-white text-black shadow-md rounded-xl px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group justify-between border border-gray-200">
                                             <Link className="flex items-center" href={`/portfolio/${endorser.google_id}`}>
                                                 <Image src={endorser.photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
                                                 <div className="text-sm font-medium ml-1">{endorser.name}</div>
@@ -357,7 +357,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                             }
 
                         </div>
-                        <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
+                        <div className="h-max w-full bg-white rounded-xl shadow-md p-4 mb-4 border border-gray-200">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center">
                                     <i className="fa-solid fa-users w-4 h-4 mr-2 text-[#5086ed]" />
@@ -365,7 +365,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                         Collaborators
                                     </p>
                                 </div>
-                                {isOwner && <div className="bg-white text-black shadow-md rounded-lg p-2 flex items-center space-x-2 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={() => { toggleAddCollaborator() }}>
+                                {isOwner && <div className="bg-white border border-gray-200 text-black shadow-md rounded-xl p-2 flex items-center space-x-2 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={() => { toggleAddCollaborator() }}>
                                     <UserPlus className="w-4 h-4" />
                                     <p className="text-sm">Add Collaborator</p>
                                 </div>
@@ -375,7 +375,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 projectData.collaborators
                                     .filter((collaborator: any) => collaborator.collaboration_status === 2)
                                     .map((collaborator: any, index: number) => (
-                                        <div className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex  items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group justify-between" key={index}>
+                                        <div className="bg-white border border-gray-200 text-black shadow-md rounded-xl px-4 py-3 flex  items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group justify-between" key={index}>
                                             <Link className="flex items-center" href={`/portfolio/${collaborator.google_id}`} >
                                                 <Image src={collaborator.photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
                                                 <div className="text-sm font-medium ml-1">{collaborator.name}</div>
@@ -389,7 +389,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 </div>
                             }
                         </div>
-                        <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
+                        <div className="h-max w-full bg-white rounded-xl shadow-md p-4 mb-4 border border-gray-200">
                             <div className="flex items-center">
                                 <Code className="w-4 h-4 text-blue-600 mr-2" />
                                 <p className="text-black ">
@@ -398,7 +398,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                             </div>
                             {projectData?.programming_languages?.length > 0 ? (
                                 projectData.programming_languages.map((language: any, index: number) => (
-                                    <div key={index} className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out group">
+                                    <div key={index} className="bg-white border border-gray-200 text-black shadow-md rounded-xl px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out group">
                                         <div className="w-2 h-2 bg-[#5086ed] rounded-xl"></div>
                                         <p className="text-sm font-medium">{language.name}</p>
                                     </div>

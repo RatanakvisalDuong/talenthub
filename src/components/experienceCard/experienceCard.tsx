@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Experience } from '@/app/type/experience';
+import { PencilSquareIcon } from '@heroicons/react/20/solid';
 
 type Props = {
 	experience: Experience;
@@ -15,7 +16,7 @@ const ExperienceCard: React.FC<Props> = ({ experience, index, dropdownOpen, togg
 	return (
 		<div
 			className={`mt-4 text-black ml-4 flex items-start transition-all duration-300 ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
-				} p-4 rounded-lg shadow-md hover:shadow-lg hover:transform hover:scale-105 cursor-pointer`}
+				} p-4 rounded-xl shadow-md hover:shadow-lg hover:transform hover:scale-105 cursor-pointer`}
 		>
 			<div className="bg-[#5086ed] w-5 h-5 rounded-full mr-6 mt-1 animate-pulse"></div>
 
@@ -38,7 +39,7 @@ const ExperienceCard: React.FC<Props> = ({ experience, index, dropdownOpen, togg
 								</div>
 
 								{dropdownOpen[experience.id] && (
-									<div className="absolute left-0 mt-2 p-2 w-64 bg-white border rounded-md shadow-lg z-10">
+									<div className="absolute left-0 mt-2 p-2 w-64 bg-white border rounded-xl shadow-lg z-10">
 										<ul>
 											{experience.endorsers
 												.filter((endorser) => endorser.status_id === 2) // Only show endorsers with status_id === 2
@@ -64,9 +65,10 @@ const ExperienceCard: React.FC<Props> = ({ experience, index, dropdownOpen, togg
 					</div>
 					{owner && (
 						<button
-							className="text-sm text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-md items-center justify-center transition-all duration-200"
+							className="text-sm flex text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-xl items-center justify-center transition-all duration-200"
 							onClick={() => openEditExperienceDialog(experience)}
 						>
+							<PencilSquareIcon className="w-5 h-5 mr-2" />
 							Update
 						</button>
 					)}

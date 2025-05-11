@@ -123,7 +123,7 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-max overflow-y-auto z-50 relative">
+            <div className="bg-white rounded-xl p-6 w-[850px] max-w-full shadow-lg h-max overflow-y-auto z-50 relative">
                 {loading && (
                     <div className="absolute inset-0 bg-white backdrop-blur-sm z-10 flex items-center justify-center">
                         <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
@@ -258,7 +258,7 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
                 <div className="flex justify-end mt-2">
                     <button
                         type="submit"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer"
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-xl hover:bg-green-600 hover:cursor-pointer"
                         onClick={handleAddAchievement}
                     >
                         Create Achievement or Certificate

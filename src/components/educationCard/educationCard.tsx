@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Education } from '@/app/type/education';
+import { PencilSquareIcon } from '@heroicons/react/20/solid';
 
 type Props = {
     education: Education;
@@ -30,9 +31,10 @@ const EducationCard: React.FC<Props> = ({ education, index, owner, openEditSkill
 
                     {owner && (
                         <button
-                            className="text-sm text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-md items-center justify-center transition-all duration-200"
+                            className="text-sm flex text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-xl items-center justify-center transition-all duration-200"
                             onClick={() => openEditSkillDialog(education)}
                         >
+                            <PencilSquareIcon className="w-5 h-5 mr-2" />
                             Update
                         </button>
                     )}

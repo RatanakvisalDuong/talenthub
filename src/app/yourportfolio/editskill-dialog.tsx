@@ -129,7 +129,7 @@ const EditSkillDialog = ({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             {/* Main Dialog */}
-            <div className={`bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg overflow-y-auto z-50 relative ${showDeleteConfirmation ? "blur-sm" : ""}`}>
+            <div className={`bg-white rounded-xl p-6 w-[500px] max-w-full shadow-lg overflow-y-auto z-50 relative ${showDeleteConfirmation ? "blur-sm" : ""}`}>
                 {loading && (
                     <div className="absolute inset-0 bg-white bg-opacity-60 backdrop-blur-sm z-10 flex items-center justify-center">
                         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -172,7 +172,7 @@ const EditSkillDialog = ({
                 <div className="flex justify-between items-center mt-6">
                     <button
                         type="button"
-                        className="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600 hover:cursor-pointer"
+                        className="text-white bg-red-500 px-4 py-2 rounded-xl hover:bg-red-600 hover:cursor-pointer"
                         onClick={() => setShowDeleteConfirmation(true)}
                         disabled={loading}
                     >
@@ -180,7 +180,7 @@ const EditSkillDialog = ({
                     </button>
                     <button
                         type="button"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer"
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-xl hover:bg-green-600 hover:cursor-pointer"
                         onClick={handleEditSkill}
                         disabled={loading}
                     >
@@ -192,19 +192,19 @@ const EditSkillDialog = ({
             {/* Delete Confirmation Popup */}
             {showDeleteConfirmation && (
                 <div className="fixed inset-0 z-60 flex items-center justify-center">
-                    <div className="bg-white rounded-md shadow-lg p-6 w-[400px] text-center">
+                    <div className="bg-white rounded-xl shadow-lg p-6 w-[400px] text-center">
                         <p className="text-lg font-semibold mb-4 text-red-600">Confirm Delete</p>
                         <p className="text-gray-700 mb-6">Are you sure you want to delete this skill? This action cannot be undone.</p>
                         <div className="flex justify-center gap-4">
                             <button
-                                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 hover:cursor-pointer"
+                                className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 hover:cursor-pointer"
                                 onClick={handleDeleteSkill}
                                 disabled={loading}
                             >
                                 {loading ? "Deleting..." : "Yes, Delete"}
                             </button>
                             <button
-                                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 hover:cursor-pointer" 
+                                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-xl hover:bg-gray-300 hover:cursor-pointer" 
                                 onClick={() => setShowDeleteConfirmation(false)}
                                 disabled={loading}
                             >

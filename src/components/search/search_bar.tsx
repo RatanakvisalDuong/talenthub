@@ -47,7 +47,7 @@ export default function SearchBar({ onSearch }: { onSearch: (term: string) => vo
 
     return (
         <div>
-            <form onSubmit={handleSubmit} className="flex justify-center">
+            <form onSubmit={handleSubmit} className="flex justify-center shadow-sm border border-gray-200 rounded-xl">
                 <div className="relative w-full">
                     <input
                         type="text"

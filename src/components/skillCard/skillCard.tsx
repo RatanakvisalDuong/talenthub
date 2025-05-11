@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Skill } from '@/app/type/skill';
+import { PencilSquareIcon } from '@heroicons/react/20/solid';
 
 type Props = {
     skill: Skill;
@@ -15,7 +16,7 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
     return (
         <div
             className={`mt-4 text-black ml-4 flex items-start transition-all duration-300 ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
-                } p-4 rounded-lg shadow-md hover:shadow-lg hover:transform hover:scale-105 hover:cursor-pointer`}
+                } p-4 rounded-xl shadow-md hover:shadow-lg hover:transform hover:scale-105 hover:cursor-pointer`}
         >
             <div className="bg-[#5086ed] w-5 h-5 rounded-full mr-6 mt-1 animate-pulse"></div>
 
@@ -26,7 +27,6 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                             <span>{skill.title}</span>
                         </p>
 
-                        {/* Endorsements Dropdown */}
                         {skill.endorsers && skill.endorsers.filter(endorser => endorser.status_id === 2).length > 0 && (
                             <div className="relative">
                                 <div
@@ -38,7 +38,7 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                                 </div>
 
                                 {dropdownOpen[skill.id] && (
-                                    <div className="absolute left-0 mt-2 p-2 w-64 bg-white border rounded-md shadow-lg z-10">
+                                    <div className="absolute left-0 mt-2 p-2 w-64 bg-white border rounded-xl shadow-lg z-10">
                                         <ul>
                                             {skill.endorsers
                                                 .filter((endorser) => endorser.status_id === 2) // Only show endorsers with status_id === 2
@@ -66,9 +66,10 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
 
                     {owner && (
                         <button
-                            className="text-sm text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-md items-center justify-center transition-all duration-200"
+                            className="text-sm flex text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-xl items-center justify-center transition-all duration-200"
                             onClick={() => openEditSkillDialog(skill)}
                         >
+                            <PencilSquareIcon className="w-5 h-5 mr-2" />
                             Update
                         </button>
                     )}

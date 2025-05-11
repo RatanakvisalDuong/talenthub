@@ -19,7 +19,7 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
     };
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="relative bg-white rounded-md p-6 w-max h-max max-w-full shadow-lg flex items-start gap-4">
+            <div className="relative bg-white rounded-xl p-6 w-max h-max max-w-full shadow-lg flex items-start gap-4">
                 <button
                     onClick={onClose}
                     className="absolute top-4 right-4 text-black hover:text-red-500 cursor-pointer"
@@ -57,7 +57,7 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
                                 </div>
 
                                 {dropdownOpen && (
-                                    <div className="absolute p-2 w-64 bg-white border rounded-md shadow-lg ml-4 z-10 font-bold">
+                                    <div className="absolute p-2 w-64 bg-white border rounded-xl shadow-lg ml-4 z-10 font-bold">
                                         <ul>
                                             {achievement.endorsers.filter(endorser => endorser.status_id === 2).map((endorser, idx) => (
                                                 <li
@@ -77,7 +77,7 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
                         )}
                         {owner && ableToUpdate && (
                             <div
-                                className="text-sm h-[40px] text-white hover:underline cursor-pointer px-4 bg-[#ffc107] rounded-md flex items-center justify-center font-bold"
+                                className="text-sm h-[40px] text-white hover:underline cursor-pointer px-4 bg-[#ffc107] rounded-xl flex items-center justify-center font-bold"
                                 onClick={() => {
                                     onEdit(achievement!);
                                 }}

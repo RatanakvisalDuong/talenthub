@@ -6,7 +6,7 @@ import { Achievement } from '@/app/type/achievement';
 export default function AchievementCard({ achievement, onClick }: { achievement: Achievement; onClick: () => void }) {
 	return (
 		<div
-			className="bg-white w-full h-55 shadow-md mt-4 px-4 py-2 rounded-md cursor-pointer hover:transform hover:scale-105"
+			className="bg-white w-full h-55 shadow-md mt-4 px-4 py-2 rounded-xl cursor-pointer hover:transform hover:scale-105"
 			onClick={onClick}
 		>
 			<div className="flex w-full justify-between">

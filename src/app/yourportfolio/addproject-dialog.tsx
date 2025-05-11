@@ -166,10 +166,10 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             {loading ? (
-                <div className={`bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto flex justify-center items-center`}>
+                <div className={`bg-white rounded-xl p-6 w-[850px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto flex justify-center items-center`}>
                     <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-blue-500"></div>
                 </div>
-            ) : <div className={`bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto`}>
+            ) : <div className={`bg-white rounded-xl p-6 w-[850px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto`}>
                 <div className="flex justify-between items-start mb-2">
                     <h2 className="text-xl font-bold text-black">Create New Project</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
@@ -246,7 +246,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                                     {selectedLanguages.map((lang, index) => (
                                         <span
                                             key={index}
-                                            className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs flex items-center gap-1"
+                                            className="bg-green-100 text-green-800 px-2 py-1 rounded-md text-xs flex items-center gap-1"
                                         >
                                             {lang}
                                             <button
@@ -342,7 +342,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                 <div className="flex justify-end mt-2">
                     <button
                         type="submit"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer "
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-xl hover:bg-green-600 hover:cursor-pointer "
                         onClick={handleAddProject}
                     >
                         Create Project

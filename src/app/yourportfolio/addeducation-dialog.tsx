@@ -73,8 +73,6 @@ const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessM
                 }
             );
 
-            console.log(response)
-
             if (response.status === 200) {
                 const education: Education = {
                     id: response.data.education.id,
@@ -228,7 +226,7 @@ const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessM
                 <div className="flex justify-end mt-2">
                     <button
                         type="submit"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer"
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-xl hover:bg-green-600 hover:cursor-pointer"
                         onClick={handleAddEducation}
                         disabled={loading}
                     >
