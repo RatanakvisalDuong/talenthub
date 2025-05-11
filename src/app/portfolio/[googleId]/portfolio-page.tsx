@@ -144,7 +144,11 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                     <div className="w-[40%] relative flex items-center justify-center">
                                         <div className="absolute top-0 right-0 z-10 -translate-y-1/2">
                                             {portfolio.portfolio.role_id === 1 ? (
-                                                <WorkingStatusBar status={portfolio.portfolio.working_status} />
+                                                portfolio.portfolio.working_status != null ? (
+                                                    <WorkingStatusBar status={portfolio.portfolio.working_status} />
+                                                ) : (
+                                                    <WorkingStatusBar status={2} />
+                                                )
                                             ) :
                                                 <div
                                                     className="h-6 flex justify-center items-center text-white text-[12px] rounded-md bg-[#5086ed] p-2"
@@ -179,13 +183,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                                 <span className="font-bold mr-2">Major:</span><p className="text-gray-600">{getMajorName()}</p>
                                             </div>)
                                             : <div></div>}
-                                        <button
-                                            className="mt-4 rounded-sm text-black px-2 py-2 bg-[#C0DDEC] flex items-center font-bold cursor-pointer hover:bg-blue-600 hover:scale-105 transition-all duration-200 ease-in-out shadow-sm hover:text-white"
-                                            onClick={toggleSharePortfolio}
-                                        >
-                                            <ShareIcon className="w-5 h-5 mr-2" />
-                                            Share Portfolio
-                                        </button>
+                                        <button className="mt-4 rounded-sm text-white px-4 py-2 bg-blue-600 flex items-center font-bold cursor-pointer hover:transform hover:scale-105 border-2 border-blue-400" onClick={toggleSharePortfolio}><ShareIcon className="w-5 h-5 mr-2" /> Share Portfolio</button>
                                     </div>
                                 </div>
                             </div>

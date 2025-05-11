@@ -15,6 +15,7 @@ import { Endorser } from "@/app/type/endorser";
 import RemoveCollaboratorDialog from "./removecollaborator-dialog";
 import RemoveEndorserDialog from "./removeendorser-dialog";
 import axios from "axios";
+import { PencilSquareIcon } from "@heroicons/react/20/solid";
 
 interface ProjectPageComponentProps {
     projectData: any;
@@ -23,6 +24,7 @@ interface ProjectPageComponentProps {
 export default function ProjectPageComponent({ projectData }: ProjectPageComponentProps) {
     const { data: session } = useSession();
     const userId = session?.googleId;
+    const isOwner = projectData.google_id === userId;
 
     const [isPublic, setIsPublic] = useState<boolean>(projectData?.project_visibility_status === 1);
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -138,10 +140,13 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                 <div className="flex justify-between w-full">
                     <div className="h-[88vh] w-[73%]">
                         <div className="h-full w-full bg-white p-4 overflow-y-auto rounded-lg shadow-md">
+                            {/* Header section with title and controls */}
                             <div className="w-full flex justify-between items-center mb-4">
                                 <p className="text-xl font-bold text-black">{projectData.title}</p>
-                                {projectData.google_id == userId ? (
+
+                                {isOwner && (
                                     <div className="flex items-center justify-center">
+                                        {/* Visibility toggle */}
                                         <div className="flex h-[30px] items-center justify-center mr-4">
                                             <p className="text-black font-bold text-md mr-2">
                                                 {!isPublic ? "Public" : "Private"}
@@ -156,41 +161,53 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#5086ed]"></div>
                                             </label>
                                         </div>
+
+                                        {/* Update button */}
                                         <button
-                                            className="text-sm text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-md items-center justify-center transition-all duration-200"
+                                            className="flex text-sm text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-md items-center justify-center transition-all duration-200"
                                             onClick={toggleUpdateProject}
                                         >
+                                            <PencilSquareIcon className="w-5 h-5 mr-2" />
                                             Update
                                         </button>
-
                                     </div>
-                                ) :
-                                    <div></div>
-                                }
+                                )}
                             </div>
 
+                            {/* Image slideshow */}
                             <div className="w-full h-60 bg-white rounded-lg mx-auto flex justify-center items-center shadow-md">
-                                <button onClick={prevSlide} className="text-gray-800 hover:bg-opacity-60 transition-all focus:outline-none hover:cursor-pointer">
+                                {/* Previous slide control */}
+                                <button
+                                    onClick={prevSlide}
+                                    className="text-gray-800 hover:bg-opacity-60 transition-all focus:outline-none hover:cursor-pointer"
+                                >
                                     <ArrowLeftCircleIcon className="h-10 w-10" />
                                 </button>
+
+                                {/* Slideshow container */}
                                 <div className="relative w-[85%] overflow-hidden shadow-md mx-auto">
-                                    <div className="flex transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+                                    <div
+                                        className="flex transition-transform duration-1000 ease-in-out"
+                                        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                                    >
                                         {slidePairs.map((pair, pairIndex) => (
                                             <div key={pairIndex} className="w-full flex-shrink-0 flex gap-2">
-                                                {pair.length === 2 ? pair.map(slide => (
-                                                    <div key={slide.id} className="w-1/2">
-                                                        <div className="relative aspect-[16/9] overflow-hidden">
-                                                            <Image
-                                                                src={slide.url}
-                                                                alt={`Project slide ${slide.id}`}
-                                                                fill
-                                                                sizes="(max-width: 768px) 100vw, 500px"
-                                                                className="object-cover"
-                                                                priority={pairIndex === currentSlide}
-                                                            />
+                                                {pair.length === 2 ? (
+                                                    pair.map(slide => (
+                                                        <div key={slide.id} className="w-1/2">
+                                                            <div className="relative aspect-[16/9] overflow-hidden">
+                                                                <Image
+                                                                    src={slide.url}
+                                                                    alt={`Project slide ${slide.id}`}
+                                                                    fill
+                                                                    sizes="(max-width: 768px) 100vw, 500px"
+                                                                    className="object-cover"
+                                                                    priority={pairIndex === currentSlide}
+                                                                />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                )) : (
+                                                    ))
+                                                ) : (
                                                     <div className="w-full flex justify-center">
                                                         <div className="w-1/2">
                                                             <div className="relative aspect-[16/9] overflow-hidden">
@@ -209,41 +226,73 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                             </div>
                                         ))}
                                     </div>
+
+                                    {/* Slide indicators */}
                                     <div className="absolute bottom-3 left-0 right-0 z-10">
                                         <div className="flex justify-center gap-1">
                                             {slidePairs.map((_, index) => (
-                                                <button key={index} onClick={() => goToSlide(index)} className={`h-2 transition-all ${currentSlide === index ? 'bg-[#5086ed] w-4 rounded-md' : 'bg-white bg-opacity-50 w-2 rounded-full'}`} />
+                                                <button
+                                                    key={index}
+                                                    onClick={() => goToSlide(index)}
+                                                    className={`h-2 transition-all ${currentSlide === index
+                                                        ? 'bg-[#5086ed] w-4 rounded-md'
+                                                        : 'bg-white bg-opacity-50 w-2 rounded-full'
+                                                        }`}
+                                                />
                                             ))}
                                         </div>
                                     </div>
                                 </div>
-                                <button onClick={nextSlide} className="text-gray-800 hover:bg-opacity-60 transition-all focus:outline-none hover:cursor-pointer">
+
+                                {/* Next slide control */}
+                                <button
+                                    onClick={nextSlide}
+                                    className="text-gray-800 hover:bg-opacity-60 transition-all focus:outline-none hover:cursor-pointer"
+                                >
                                     <ArrowRightCircleIcon className="h-10 w-10" />
                                 </button>
                             </div>
 
                             <div className="w-full mt-4 flex justify-end">
-                                <Link className="h-10 w-max bg-white rounded-md flex items-center justify-center text-black px-4 shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group mr-4" href={projectData?.link || "#"} target="_blank" rel="noopener noreferrer">
-                                    <LinkIcon className="h-5 w-5" /> Link
-                                </Link>
-                                {projectData.file && (
-                                    <Link className="h-10 w-max bg-white rounded-md flex items-center justify-center text-black px-4 shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" href={projectData.file}>
-                                        <ArrowDownTrayIcon className="h-5 w-5" /> Download
+                                {projectData?.link && (
+                                    <Link
+                                        className="h-10 w-max bg-white rounded-md flex items-center justify-center text-black px-4 shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group mr-4"
+                                        href={projectData.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <LinkIcon className="h-5 w-5 mr-1" /> Link
                                     </Link>
                                 )}
 
+                                {projectData.file && (
+                                    <Link
+                                        className="h-10 w-max bg-white rounded-md flex items-center justify-center text-black px-4 shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group"
+                                        href={projectData.file}
+                                    >
+                                        <ArrowDownTrayIcon className="h-5 w-5 mr-1" /> Download
+                                    </Link>
+                                )}
                             </div>
 
                             <div className="w-full bg-white h-max mt-4 mb-4 rounded-lg shadow-md p-6">
-                                <h1 className="text-black text-xl font-bold">Project Description</h1>
+                                <div className="flex items-center">
+                                    <i className="fa-solid fa-file-lines w-4 h-4 mr-2 text-[#5086ed]" />
+                                    <h1 className="text-black text-[16px]">Project Description</h1>
+                                </div>
                                 <div className="h-[2px] bg-gray-300 w-64 mt-2 mb-2"></div>
                                 <div className="space-y-4">
-                                    <p className="text-gray-700 mt-1 text-sm">{projectData?.description || "No description available."}</p>
+                                    <p className="text-gray-700 mt-1 text-[14px]">
+                                        {projectData?.description || "No description available."}
+                                    </p>
                                 </div>
                             </div>
 
                             <div className="w-full bg-white h-max mt-4 mb-4 rounded-lg shadow-md p-6">
-                                <h1 className="text-black text-xl font-bold">Project Instruction</h1>
+                                <div className="flex items-center">
+                                    <i className="fa-solid fa-clipboard-list w-4 h-4 mr-2 text-[#5086ed]" />
+                                    <h1 className="text-black text-[16px]">Project Instruction</h1>
+                                </div>
                                 <div className="h-[2px] bg-gray-300 w-64 mt-2 mb-2"></div>
                                 <div className="space-y-4">
                                     <div className="text-gray-700 text-sm">
@@ -264,11 +313,11 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
 
                     <div className="h-[88vh] w-[26%] overflow-y-auto">
                         <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
-                            <div className="flex items-center justify-between">
-                                <p className="font-bold text-black ">
+                            <div className="flex items-center">
+                                <i className="fa-solid fa-user w-4 h-4 mr-2 text-[#5086ed]" />
+                                <p className="text-black">
                                     Project Owner
                                 </p>
-
                             </div>
                             <Link className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" href={`/portfolio/${projectData.google_id}`}>
                                 <Image src={projectData.owner_photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
@@ -278,15 +327,17 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                         </div>
                         <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
                             <div className="flex items-center justify-between">
-                                <p className="font-bold text-black ">
-                                    Endorsers
-                                </p>
-                                {projectData.google_id == session?.googleId && <div className="bg-white text-black shadow-md rounded-lg p-2 flex items-center space-x-2 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={() => { toggleAddEndorser() }}>
+                                <div className="flex items-center">
+                                    <Image src="/verified.png" alt="Verified" width={30} height={30} className="w-[15px] h-[15px] mr-2" />
+                                    <p className="text-black ">
+                                        Endorsers
+                                    </p>
+                                </div>
+                                {isOwner && <div className="bg-white text-black shadow-md rounded-lg p-2 flex items-center space-x-2 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={() => { toggleAddEndorser() }}>
                                     <UserPlus className="w-4 h-4" />
                                     <p className="text-sm">Add Endorser</p>
                                 </div>
                                 }
-
                             </div>
                             {projectData.endorsers.filter((endorser: any) => endorser.endorsement_status === 2).length > 0 ? (
                                 projectData.endorsers
@@ -308,10 +359,13 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                         </div>
                         <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
                             <div className="flex items-center justify-between">
-                                <p className="font-bold text-black ">
-                                    Collaborators
-                                </p>
-                                {projectData.google_id == session?.googleId && <div className="bg-white text-black shadow-md rounded-lg p-2 flex items-center space-x-2 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={() => { toggleAddCollaborator() }}>
+                                <div className="flex items-center">
+                                    <i className="fa-solid fa-users w-4 h-4 mr-2 text-[#5086ed]" />
+                                    <p className="text-black ">
+                                        Collaborators
+                                    </p>
+                                </div>
+                                {isOwner && <div className="bg-white text-black shadow-md rounded-lg p-2 flex items-center space-x-2 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={() => { toggleAddCollaborator() }}>
                                     <UserPlus className="w-4 h-4" />
                                     <p className="text-sm">Add Collaborator</p>
                                 </div>
@@ -336,15 +390,16 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                             }
                         </div>
                         <div className="h-max w-full bg-white rounded-lg shadow-md p-4 mb-4">
-                            <div className="flex items-center justify-between">
-                                <p className="font-bold text-black ">
+                            <div className="flex items-center">
+                                <Code className="w-4 h-4 text-blue-600 mr-2" />
+                                <p className="text-black ">
                                     Programming Languages
                                 </p>
                             </div>
                             {projectData?.programming_languages?.length > 0 ? (
                                 projectData.programming_languages.map((language: any, index: number) => (
                                     <div key={index} className="bg-white text-black shadow-md rounded-lg px-4 py-3 flex items-center space-x-3 mt-3 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out group">
-                                        <Code className="w-4 h-4 text-blue-600 group-hover:text-white transition-colors duration-300" />
+                                        <div className="w-2 h-2 bg-[#5086ed] rounded-xl"></div>
                                         <p className="text-sm font-medium">{language.name}</p>
                                     </div>
                                 ))

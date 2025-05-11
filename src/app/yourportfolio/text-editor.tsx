@@ -68,7 +68,7 @@ export default function TextEditor({
     return (
         <div className="w-full space-y-2 mb-2 font-ubuntu">
             {(!readonly || label) && (
-                <label htmlFor={id} className="block text-sm font-medium text-black font-ubuntu">
+                <label htmlFor={id} className="block text-[14px] font-medium text-black font-ubuntu">
                     {label}
                     {required && !readonly && <span className="text-red-400 ml-2">*</span>}
                 </label>

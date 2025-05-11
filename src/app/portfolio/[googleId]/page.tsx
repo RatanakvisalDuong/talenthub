@@ -12,6 +12,7 @@ export default async function PortfolioPage({ params }: { params: Promise<{ goog
     );
 
     const portfolioData: Portfolio = response.data;
+    console.log(portfolioData);
     if (response.data.status === 0) {
       return <PageNotFound />;
     }

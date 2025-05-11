@@ -344,7 +344,7 @@ const Appbar = React.memo(() => {
 										{hasMoreNotifications && notification.length > 0 && (
 											<div className="px-4 py-2">
 												<button
-													className="w-full py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-all text-xs font-medium flex items-center justify-center"
+													className="w-full py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-all text-xs font-medium flex items-center justify-center cursor-pointer"
 													onClick={loadMoreNotifications}
 												>
 													<ArrowDown01Icon className="h-3 w-3 mr-1" />

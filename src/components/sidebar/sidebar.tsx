@@ -67,7 +67,7 @@ export default function Sidebar({
     return (
         <div className="w-max h-[100vh] overflow-y-auto px-2">
             {session?.user?.name && (
-                <div className="bg-white w-64 h-max rounded-sm shadow-md p-4 items-center justify-center text-black mb-4 transform transition-transform hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group">
+                <div className="bg-white w-64 h-max rounded-sm shadow-md p-4 items-center justify-center text-black mb-4 cursor-pointer">
                     <Link href={`/yourportfolio`}>
                         <p className="w-max m-auto font-bold">{session.user.name || 'N/A'}</p>
                         <div className="rounded-full m-auto mt-4 items-center justify-center flex">
