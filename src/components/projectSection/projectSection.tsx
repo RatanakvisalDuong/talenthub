@@ -11,7 +11,7 @@ export default function ProjectsSection({ portfolio, owner, addProject }: { port
   };
   
   return (
-    <div className={`${expandedProject ? 'h-auto mb-4' : 'h-[32%]'} bg-white rounded-xl shadow-sm p-4 relative border border-gray-200 shadow-sm`}>
+    <div className={`${expandedProject ? 'h-auto mb-4' : 'h-[33%]'} bg-white rounded-xl shadow-sm p-4 relative border border-gray-200 shadow-sm`}>
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <i className="fas fa-folder text-[#5086ed] mr-2"></i>
