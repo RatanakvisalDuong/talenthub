@@ -30,6 +30,10 @@ import { Achievement } from "../type/achievement";
 import AchievementCard from "@/components/achievementCard/achievementCard";
 import EditCertificateDialog from "./editachievement-dialog";
 import { convertPhoneNumberSpacing } from "@/utils";
+import ExperienceSection from "@/components/experienceSection/experienceSection";
+import ProfileSummarySection from "@/components/profileSection/profileSection";
+import ProjectsSection from "@/components/projectSection/projectSection";
+import AchievementsSection from "@/components/achievementSection/achievementSection";
 
 export default function YourPortfolioPageComponent({ portfolio }: { portfolio: Portfolio }) {
 
@@ -244,7 +248,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                 )}
                 <div className="flex justify-between w-full">
                     <div className="h-[87vh] w-[28%] flex flex-col justify-between overflow-y-auto">
-                        <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'} bg-white rounded-xl shadow-sm p-4 relative border border-gray-200 shadow-sm`}>
+                        {/* <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'} bg-white rounded-xl shadow-sm p-4 relative border border-gray-200 shadow-sm`}>
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center">
                                     <i className="fas fa-folder text-[#5086ed] mr-2"></i>
@@ -280,8 +284,9 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             ) : (
                                 <p className="justify-center items-center flex text-[#808080]">No projects available</p>
                             )}
-                        </div>
-                        <div className={`h-[65%] bg-white rounded-xl shadow-sm p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto border border-gray-200`}>
+                        </div> */}
+                        <ProjectsSection portfolio={portfolio} owner={true} addProject={toggleAddProjectDialog}/>
+                        {/* <div className={`h-[65%] bg-white rounded-xl shadow-sm p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto border border-gray-200`}>
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center">
                                     <i className="fas fa-trophy text-[#5086ed] mr-2"></i>
@@ -302,124 +307,33 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                     ))
                                 )
                             )}
-                        </div>
+                        </div> */}
+                        <AchievementsSection
+                            portfolio={portfolio}
+                            owner={true}
+                            handleOpenAchievementDialog={toggleCertificateDialog}
+                            addAchievementDialog={toggleAddCertificateDialog}
+                        />
                     </div>
                     <div className="h-[87vh] w-[70%] overflow-y-auto pr-6 overflow-x-hidden">
-                        <div className="flex justify-between h-[35%]">
-                            <div className="w-[68%] bg-white rounded-xl shadow-sm py-4 overflow-y-auto border border-gray-200 ">
-                                <div className="flex items-center justify-start h-full">
-                                    <div className="w-[40%] relative flex items-center justify-center">
-                                        <div className="absolute top-0 right-0 z-10 -translate-y-1/2">
-                                            {portfolio.portfolio.role_id === 1 ? (
-                                                portfolio.portfolio.working_status != null ? (
-                                                    <WorkingStatusBar status={portfolio.portfolio.working_status} />
-                                                ) : (
-                                                    <WorkingStatusBar status={2} />
-                                                )
-                                            ) :
-                                                <div
-                                                    className="h-6 flex justify-center items-center text-white text-[12px] rounded-xl bg-[#5086ed] p-2"
-                                                >
-                                                    Endorser
-                                                </div>
-                                            }
-                                        </div>
-                                        <div className="h-[90%] w-[90%] rounded-xl overflow-hidden mx-auto flex items-center justify-center">
-                                            <Image
-                                                src={portfolioData.portfolio.photo || "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*"}
-                                                alt="placeholder"
-                                                width={200}
-                                                height={200}
-                                                className="aspect-square object-cover"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="justify-start w-[50%] h-full items-start ml-4 mt-4">
-                                        <p className="text-black font-bold text-lg truncate">{portfolio.portfolio.user_name}</p>
-                                        <div className="w-20 bg-[#dfdfdf] h-[2px] mt-1">
-                                        </div>
-                                        <div className="text-black mt-2 text-sm flex">
-                                            <span className="font-bold mr-2">Email:</span>
-                                            <p className="text-gray-600 truncate"> {portfolio.portfolio.email}</p>
-                                        </div>
-                                        <div className="text-black mt-2 text-sm flex">
-                                            <span className="font-bold mr-2">Contact:</span>
-                                            <p className="text-gray-600"> {portfolioData.portfolio.phone_number  ? convertPhoneNumberSpacing(portfolioData.portfolio.phone_number || '' ) : 'N/A'}</p>
-                                        </div>
-                                        {portfolio.portfolio.role_id === 1 ?
-                                            (<div className="text-black mt-2 text-sm flex">
-                                                <span className="font-bold mr-2">Major:</span>
-                                                <p className="text-gray-600 truncate"> {portfolio.portfolio.major ? getMajorName(portfolio.portfolio.major) : 'N/A'}</p>
-                                            </div>
-                                            )
-                                            : <div></div>
-                                        }
-                                        <div className="flex justify-between">
-                                            <button className="mt-4 rounded-xl text-white px-4 py-2 bg-blue-600 flex items-center font-bold cursor-pointer hover:transform hover:scale-105 border-2 border-blue-400" onClick={toggleSharePortfolio}><ShareIcon className="w-5 h-5 mr-2" /> Share Portfolio</button>
-
-                                            <button
-                                                className="mt-4 rounded-xl text-white px-2 py-2 bg-[#ffc107] flex items-center font-bold cursor-pointer hover:scale-105 hover:brightness-105 transition-all duration-200 ease-in-out"
-                                                onClick={toggleEditPortfolioDialog}
-                                            >
-                                                <PencilSquareIcon className="w-5 h-5 mr-2" />
-                                                Update
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="w-[30%] bg-white rounded-xl  p-6 overflow-y-auto border border-gray-200 shadow-sm">
-                                <div className="flex items-center">
-                                    <i className="fas fa-user text-[#5086ed] mr-2"></i>
-                                    <p className="text-gray-800 font-semibold text-lg">
-                                        About Me
-                                    </p>
-                                </div>
-                                <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
-                                <p className="text-gray-600 mt-2 text-sm leading-relaxed text-justify">
-                                    {portfolio.portfolio.about ? portfolio.portfolio.about : 'No description available'}
-                                </p>
-                            </div>
-
-                        </div>
-                        <div className={`w-full ${expandedExperience ? 'h-auto' : 'h-max'} bg-white rounded-xl p-6 mt-8 mr-3 border border-gray-200 shadow-sm`}>
-                            <div className="flex justify-between items-center">
-                                <div className="flex items-center">
-                                    <i className="fas fa-briefcase text-[#5086ed] mr-2"></i>
-                                    <p className="text-black font-bold text-lg">Experience</p>
-                                </div>
-                                <button className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-xl cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={toggleAddExperienceDialog}>
-                                    <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
-                                </button>
-                            </div>
-                            <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
-                            {Array.isArray(experienceData) && experienceData.length === 0 ? (
-                                <p className="justify-center items-center flex text-[#808080]">No experience available</p>
-                            ) : (
-                                Array.isArray(experienceData) && experienceData.length > 0 && (
-                                    experienceData.slice(0, expandedExperience ? experienceData.length : 2).map((experience, index) => (
-                                        <ExperienceCard
-                                            key={experience.id}
-                                            experience={experience}
-                                            index={index}
-                                            dropdownOpen={dropdownOpen}
-                                            toggleDropdown={toggleDropdown}
-                                            owner={true}
-                                            openEditExperienceDialog={() => toggleEditExperienceDialog(experience)}
-                                        />
-                                    ))
-                                )
-                            )}
-
-                            <div className={`h-40px ${experienceData.length > 2 ? 'block' : 'hidden'}`}>
-                                <button
-                                    onClick={toggleExpandedExperience}
-                                    className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold cursor-pointer"
-                                >
-                                    {expandedExperience ? 'See Less' : 'See More'}
-                                </button>
-                            </div>
-                        </div>
+                        <ProfileSummarySection
+                            owner={true}
+                            portfolio={portfolioData}
+                            getMajorName={getMajorName(portfolioData.portfolio.major)}
+                            convertPhoneNumberSpacing={convertPhoneNumberSpacing}
+                            toggleSharePortfolio={toggleSharePortfolio}
+                            toggleEditPortfolioDialog={toggleEditPortfolioDialog}
+                        />
+                        <ExperienceSection
+                            owner={true}
+                            experienceData={experienceData}
+                            expandedExperience={expandedExperience}
+                            toggleExpandedExperience={toggleExpandedExperience}
+                            toggleAddExperienceDialog={toggleAddExperienceDialog}
+                            toggleEditExperienceDialog={toggleEditExperienceDialog}
+                            dropdownOpen={dropdownOpen}
+                            toggleDropdown={toggleDropdown}
+                        />
 
                         <div className={`w-full ${expandedSkill ? 'h-auto' : 'h-max'} bg-white rounded-xl p-6 mt-8 mr-3 border border-gray-200 shadow-sm`}>
                             <div className="flex justify-between items-center">
@@ -463,6 +377,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                 </button>
                             </div>
                         </div>
+
                         <div className={`w-full ${expandedEducation ? 'h-auto' : 'h-max'} bg-white rounded-xl  p-6 mt-8 mr-3 border border-gray-200 shadow-sm`}>
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center">
