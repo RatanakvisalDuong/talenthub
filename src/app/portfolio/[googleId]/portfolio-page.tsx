@@ -113,7 +113,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             toggleDropdown={toggleExperienceDropdown}
                         />
 
-                        <div className={`w-full ${expandedSkill ? 'h-auto' : 'h-max'} bg-white rounded-xl border border-gray-200 shadow-sm p-6 mt-8 mr-3`}>
+                        <div className={`w-full ${expandedSkill ? 'h-auto' : 'h-max'} bg-white rounded-xl border border-gray-200 shadow-sm p-6 mt-4 mr-3`}>
                             <div className="flex items-center">
                                 <i className="fas fa-cogs text-[#5086ed] mr-2"></i>
                                 <p className="text-black font-bold text-lg">Skill</p>
@@ -144,7 +144,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                 </button>
                             </div>
                         </div>
-                        <div className={`w-full ${expandedEducation ? 'h-auto' : 'h-max'} bg-white rounded-xl border border-gray-200 shadow-sm p-6 mt-8 mr-3`}>
+                        <div className={`w-full ${expandedEducation ? 'h-auto' : 'h-max'} bg-white rounded-xl border border-gray-200 shadow-sm p-6 mt-4 mr-3`}>
                             <div className="flex items-center">
                                 <i className="fas fa-graduation-cap text-[#5086ed] mr-2"></i>
                                 <p className="text-black font-bold text-lg">Education</p>

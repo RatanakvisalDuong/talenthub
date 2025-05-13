@@ -50,9 +50,9 @@ export default function Card({ portfolio }: { portfolio: Portfolio }) {
                     <p className="text-base font-semibold">{portfolio.name}</p>
 
                     <div className="text-sm text-gray-600">
-                        <p><span className="font-medium">Contact:</span> {convertPhoneNumberSpacing(portfolio.phone_number || '') || 'N/A'}</p>
+                        <p><span className="font-bold">Contact:</span> {convertPhoneNumberSpacing(portfolio.phone_number || '') || 'N/A'}</p>
                         {portfolio.role === 1 && (
-                            <p><span className="font-medium">Major:</span> {getMajorName(portfolio.major ?? 0) || 'N/A'}</p>
+                            <p><span className="font-bold">Major:</span> {getMajorName(portfolio.major ?? 0) || 'N/A'}</p>
                         )}
                     </div>
                 </div>

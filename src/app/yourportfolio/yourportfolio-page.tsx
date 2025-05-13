@@ -282,7 +282,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                     )}
                                 </>
                             ) : (
-                                <p className="justify-center items-center flex text-[#808080]">No projects available</p>
+                                <p className="justify-center items-center flex text-gray-400">No projects available</p>
                             )}
                         </div> */}
                         <ProjectsSection portfolio={portfolio} owner={true} addProject={toggleAddProjectDialog}/>
@@ -298,7 +298,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             </div>
                             <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
                             {Array.isArray(achievementData) && achievementData.length === 0 ? (
-                                <p className="text-[#808080] text-md mt-4 justify-center items-center flex">No achievement & certificate available</p>
+                                <p className="text-gray-400 text-md mt-4 justify-center items-center flex">No achievement & certificate available</p>
                             ) : (
                                 Array.isArray(achievementData) && achievementData.length > 0 && (
                                     achievementData.map((achievement) => (
@@ -335,7 +335,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             toggleDropdown={toggleDropdown}
                         />
 
-                        <div className={`w-full ${expandedSkill ? 'h-auto' : 'h-max'} bg-white rounded-xl p-6 mt-8 mr-3 border border-gray-200 shadow-sm`}>
+                        <div className={`w-full ${expandedSkill ? 'h-auto' : 'h-max'} bg-white rounded-xl p-6 mt-4 mr-3 border border-gray-200 shadow-sm`}>
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center">
                                     <i className="fas fa-cogs text-[#5086ed] mr-2"></i>
@@ -363,9 +363,9 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                                 }}
                                             />
                                         ))
-                                        : <p className="justify-center items-center flex text-[#808080]">No skill available</p>
+                                        : <p className="justify-center items-center flex text-gray-400">No skill available</p>
                                 )
-                                : <p className="justify-center items-center flex text-[#808080]">No skills available</p>
+                                : <p className="justify-center items-center flex text-gray-400">No skills available</p>
                             }
 
                             <div className={`h-40px ${skillData.length > 2 ? 'block' : 'hidden'}`} key="seeMoreButton">
@@ -378,7 +378,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             </div>
                         </div>
 
-                        <div className={`w-full ${expandedEducation ? 'h-auto' : 'h-max'} bg-white rounded-xl  p-6 mt-8 mr-3 border border-gray-200 shadow-sm`}>
+                        <div className={`w-full ${expandedEducation ? 'h-auto' : 'h-max'} bg-white rounded-xl  p-6 mt-4 mr-3 border border-gray-200 shadow-sm`}>
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center">
                                     <i className="fas fa-graduation-cap text-[#5086ed] mr-2"></i>
@@ -406,7 +406,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                     />
                                 ))
                             ) : (
-                                <p className="justify-center items-center flex text-[#808080]">No education available</p>
+                                <p className="justify-center items-center flex text-gray-400">No education available</p>
                             )}
                             <div className={`h-40px ${educationData.length > 2 ? 'block' : 'hidden'}`} key="seeMoreButton">
                                 <button

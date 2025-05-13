@@ -66,7 +66,7 @@ const EditPortfolioDialog = ({
         if (newFile) {
             setImageFiles([newFile]);
         }
-        
+
         event.target.value = "";
     };
 
@@ -83,19 +83,33 @@ const EditPortfolioDialog = ({
     }, [phoneNumber, major, workingStatus, aboutMe]);
 
     const handleOnEdit = async () => {
-        if (selectedMajor == null || selectedWorkingStatus == null || phone == null || about == null) {
-            setError("Please fill in all required fields.");
-            return;
+        if (session?.roleId == 2) {
+            console.log("Student");
+            if (phone == null || about == null) {
+                setError("Please fill in all required fields. xD");
+                return;
+            }
         }
+        else {
+            if (selectedMajor == null || selectedWorkingStatus == null || phone == null || about == null) {
+                setError("Please fill in all required fields.");
+                return;
+            }
+        }
+
         setLoading(true);
 
         try {
             const formData = new FormData();
 
-            formData.append('major_id', selectedMajor.toString());
-            formData.append('phone_number', phone);
-            formData.append('about', about);
-            formData.append('working_status', selectedWorkingStatus.toString());
+            if (selectedMajor !== null) {
+                formData.append('major_id', selectedMajor.toString());
+            }
+            formData.append('phone_number', phone || '');
+            formData.append('about', about || '');
+            if (selectedWorkingStatus !== null) {
+                formData.append('working_status', selectedWorkingStatus.toString());
+            }
             if (imageFiles.length > 0) {
                 formData.append('photo', imageFiles[0]);
             }

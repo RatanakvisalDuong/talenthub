@@ -26,7 +26,7 @@ const ExperienceSection: React.FC<Props> = ({
     toggleDropdown
 }) => {
     return (
-        <div className="w-full bg-white rounded-xl p-6 mt-8 mr-3 border border-gray-200 shadow-sm">
+        <div className="w-full bg-white rounded-xl p-6 mt-4 mr-3 border border-gray-200 shadow-sm">
             {/* Header */}
             <div className="flex justify-between items-center">
                 <div className="flex items-center">

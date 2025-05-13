@@ -31,7 +31,7 @@ export default function AchievementsSection({
             </div>
             <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
             {portfolio.achievements.length === 0 ? (
-                <p className="text-[#808080] text-md mt-4 justify-center items-center flex">No achievement & certificate available</p>
+                <p className="text-gray-400 text-md mt-4 justify-center items-center flex">No achievement & certificate available</p>
             ) : (
                 portfolio.achievements.map((achievement) => (
                     <AchievementCard

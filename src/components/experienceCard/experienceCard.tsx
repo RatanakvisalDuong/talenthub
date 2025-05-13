@@ -52,7 +52,7 @@ const ExperienceCard: React.FC<Props> = ({ experience, index, dropdownOpen, togg
 														}}
 													>
 														<div className='flex items-center'>
-															<Image src={endorser.photo || 'https://example.com/default-avatar.png'} alt="Endorser" width={20} height={20} className="mr-2 rounded-full w-8 h-8" />
+															<Image src={endorser.photo ||  "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg"} alt="Endorser" width={20} height={20} className="mr-2 rounded-full w-8 h-8" />
 															<p>{endorser.name}</p>
 														</div>
 													</li>

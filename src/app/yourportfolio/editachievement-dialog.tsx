@@ -253,7 +253,7 @@ const EditCertificateDialog: React.FC<Props> = ({ achievement, onClose, onSave, 
 
                     {/* Right side: Multiple Image Upload */}
                     <div className="w-2/5">
-                        <label className="block text-sm font-medium text-black mb-1">Upload Images</label>
+                        <label className="block text-sm font-medium text-black mb-1">Upload Images<span className="text-red-600 ml-2">*</span></label>
                         <button
                             type="button"
                             onClick={handleImageClick}

@@ -110,6 +110,8 @@ const EditExperienceDialog = ({
                 }
             );
 
+            console.log("Response from update experience:", response.data);
+
             if (response.status == 200) {
 
                 const updatedExperience: Experience = {

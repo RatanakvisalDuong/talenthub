@@ -103,7 +103,9 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
         formData.append("description", description);
         formData.append("link", projectLink);
         formData.append("instruction", projectInstruction.toString());
-        formData.append("file", projectFiles[0]);
+        if(projectFiles.length > 0) {
+            formData.append("file", projectFiles[0]);
+        }
 
         if (imageFiles.length > 0) {
             for (let i = 0; i < imageFiles.length; i++) {
@@ -120,10 +122,13 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                 formData,
                 {
                     headers: {
+                        "Content-Type": "multipart/form-data",
                         Authorization: `Bearer ${session?.accessToken}`,
                     },
                 },
             );
+
+            console.log("Response:", response.data);
 
             if (response.status === 200) {
                 const project: Project = {
@@ -136,7 +141,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                     owner_name: session?.user?.name || "",
                     owner_photo: session?.user?.image || "",
                     images: images,
-                    file: projectFiles[0].name,
+                    file: response.data.file_url || "",
                     programming_languages: selectedLanguages.map((lang) => ({
                         id: response.data.programming_language_id,
                         name: lang,
