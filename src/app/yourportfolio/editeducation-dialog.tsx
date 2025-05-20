@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from 'react';
 import BigTextInput from "../../components/bigtextinput/bigtextinput";
 import TextInput from "../../components/textinput/textInput";
@@ -72,9 +74,22 @@ const EditEducationDialog = ({
         setStartYear(exisitingSelectedStartYear);
         setSelectedEndMonth(exisitingSelectedEndMonth);
         setEndYear(exisitingSelectedEndYear);
-        setEducationId(educationId);
+        setEducationId(existingEducationId);
 
-    }, [existingEducationCenter, existingFieldOfStudy, existingEducationDescription, exisitingSelectedStartMonth, exisitingSelectedStartYear, exisitingSelectedEndMonth, exisitingSelectedEndYear, educationId]);
+        console.log("Existing Education Center:", existingEducationCenter);
+        console.log("Existing Field of Study:", existingFieldOfStudy);
+        console.log("Existing Education Description:", existingEducationDescription);
+        console.log("Existing Education ID:", existingEducationId);
+        console.log("Existing Start Month:", exisitingSelectedStartMonth);
+        console.log("Existing Start Year:", exisitingSelectedStartYear);
+        console.log("Existing End Month:", exisitingSelectedEndMonth);
+        console.log("Existing End Year:", exisitingSelectedEndYear);
+
+        if (exisitingSelectedEndMonth === '' && exisitingSelectedEndYear === '') {
+            setIsPresent(true);
+        }
+
+    }, [existingEducationCenter, existingFieldOfStudy, existingEducationDescription, exisitingSelectedStartMonth, exisitingSelectedStartYear, exisitingSelectedEndMonth, exisitingSelectedEndYear, existingEducationId]);
 
     const handleEditEducation = async () => {
         try {
@@ -115,7 +130,7 @@ const EditEducationDialog = ({
             );
             if (response.status === 200) {
                 const education: Education = {
-                    id: response.data.education_id,
+                    id: existingEducationId,
                     portfolio_id: portfolioId,
                     education_center: educationCenter,
                     field_of_study: fieldOfStudy,

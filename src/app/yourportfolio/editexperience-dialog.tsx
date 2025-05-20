@@ -110,8 +110,6 @@ const EditExperienceDialog = ({
                 }
             );
 
-            console.log("Response from update experience:", response.data);
-
             if (response.status == 200) {
 
                 const updatedExperience: Experience = {
@@ -172,6 +170,12 @@ const EditExperienceDialog = ({
             setError("Failed to delete experience. Please try again.");
         }
     };
+
+    useEffect(() => {
+        if (existingExperience?.end_month === null && existingExperience?.end_year === null) {
+            setIsPresent(true);
+        }
+    }, [existingExperience]);
 
     if (!isOpen) return null;
 
