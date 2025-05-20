@@ -185,7 +185,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 </button>
 
                                 {/* Slideshow container */}
-                                <div className="relative w-[85%] overflow-hidden shadow-md mx-auto">
+                                <div className="relative w-[85%] overflow-hidden shadow-md mx-auto h-58">
                                     <div
                                         className="flex transition-transform duration-1000 ease-in-out"
                                         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -200,8 +200,8 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                                                     src={slide.url}
                                                                     alt={`Project slide ${slide.id}`}
                                                                     fill
-                                                                    sizes="(max-width: 768px) 100vw, 500px"
-                                                                    className="object-cover"
+                                                                    sizes="(max-width: 700px) 100vw, 460px"
+                                                                    className="object-cover h-full w-full"
                                                                     priority={pairIndex === currentSlide}
                                                                 />
                                                             </div>
@@ -215,8 +215,8 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                                                     src={pair[0].url}
                                                                     alt={`Project slide ${pair[0].id}`}
                                                                     fill
-                                                                    sizes="(max-width: 768px) 100vw, 500px"
-                                                                    className="object-cover"
+                                                                    sizes="(max-width: 700px) 100vw, 460px"
+                                                                    className="object-cover h-full w-full"
                                                                     priority={pairIndex === currentSlide}
                                                                 />
                                                             </div>
