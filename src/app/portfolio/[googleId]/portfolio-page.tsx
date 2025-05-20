@@ -2,15 +2,10 @@
 
 import { Achievement } from "@/app/type/achievement";
 import { Portfolio } from "@/app/type/portfolio";
-import AchievementCard from "@/components/achievementCard/achievementCard";
 import EducationCard from "@/components/educationCard/educationCard";
-import ExperienceCard from "@/components/experienceCard/experienceCard";
-import ProjectCard from "@/components/projectCard/projectCard";
 import SkillCard from "@/components/skillCard/skillCard";
-import WorkingStatusBar from "@/components/workingStatus/workingStatusBar";
 import { getMajorName, majors } from "@/dummydata/major";
-import { ShareIcon } from '@heroicons/react/24/outline';
-import Image from "next/image";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useState } from 'react';
 import CertificateDialog from "@/components/achievementDialog/achievementDialog";
 import { convertPhoneNumberSpacing } from "@/utils";

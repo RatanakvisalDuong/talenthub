@@ -2,12 +2,7 @@
 
 "use client"
 
-import ExperienceCard from "@/components/experienceCard/experienceCard";
-import ProjectCard from "@/components/projectCard/projectCard";
-import WorkingStatusBar from "@/components/workingStatus/workingStatusBar";
 import { getMajorName, majors } from "@/dummydata/major";
-import { ShareIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
-import Image from "next/image";
 import { useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import AddProjectDialog from "./addproject-dialog";
@@ -27,7 +22,6 @@ import EditEducationDialog from "./editeducation-dialog";
 import { Experience } from "../type/experience";
 import EditExperienceDialog from "./editexperience-dialog";
 import { Achievement } from "../type/achievement";
-import AchievementCard from "@/components/achievementCard/achievementCard";
 import EditCertificateDialog from "./editachievement-dialog";
 import { convertPhoneNumberSpacing } from "@/utils";
 import ExperienceSection from "@/components/experienceSection/experienceSection";

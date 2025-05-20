@@ -24,8 +24,7 @@ const ProfileSummarySection: React.FC<Props> = ({
     toggleEditPortfolioDialog,
 }) => {
     return (
-        <div className="flex justify-between h-[35%]">
-            {/* Left section - Photo + Info */}
+        <div className="flex justify-between h-[240px]">
             <div className="w-[68%] bg-white rounded-xl border border-gray-200 shadow-sm p-4 overflow-y-auto">
                 <div className="flex items-center justify-start h-full">
                     {/* Profile Image and Status */}
@@ -50,8 +49,8 @@ const ProfileSummarySection: React.FC<Props> = ({
                                     'https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg'
                                 }
                                 alt="placeholder"
-                                width={200}
-                                height={200}
+                                width={190}
+                                height={190}
                                 className="aspect-square object-cover border border-gray-200 shadow-sm rounded-xl"
                             />
                         </div>
