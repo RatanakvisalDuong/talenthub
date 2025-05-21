@@ -183,10 +183,10 @@ const Appbar = React.memo(() => {
 						<h1 className="text-2xl font-bold text-black cursor-pointer">
 							Talent
 						</h1>
-						<h1 className="text-[#5086ed] text-2xl font-bold cursor-pointer">Hub</h1>
+						<h1 className="text-blue-500 text-2xl font-bold cursor-pointer">Hub</h1>
 						<div className="ml-16">
 							{isAuthenticated ? (
-								<div className="bg-[#5086ed] text-white px-2 py-1 rounded-md cursor-pointer">
+								<div className="bg-blue-500 text-white px-2 py-1 rounded-md cursor-pointer">
 									<p className="text-white">{session.roleId === 1 ? "Student" : "Endorser"}</p>
 								</div>
 							) : (

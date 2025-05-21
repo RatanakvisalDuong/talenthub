@@ -14,12 +14,12 @@ export default function ProjectsSection({ portfolio, owner, addProject }: { port
         <div className={`${expandedProject ? 'h-auto' : 'h-[225px]'} bg-white rounded-xl shadow-sm p-4 relative border border-gray-200 shadow-sm mb-4`}>
             <div className="flex justify-between items-center">
                 <div className="flex items-center">
-                    <i className="fas fa-folder text-[#5086ed] mr-2"></i>
+                    <i className="fas fa-folder text-blue-500 mr-2"></i>
                     <p className="font-bold text-lg text-black">Projects</p>
                 </div>
                 {owner && (
                     <button
-                        className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-xl cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out group"
+                        className="flex items-center bg-blue-500 font-semibold py-2 px-4 rounded-xl cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out group"
                         onClick={() => addProject()}
                     >
                         <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>

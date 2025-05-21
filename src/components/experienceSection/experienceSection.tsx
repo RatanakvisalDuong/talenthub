@@ -30,13 +30,13 @@ const ExperienceSection: React.FC<Props> = ({
             {/* Header */}
             <div className="flex justify-between items-center">
                 <div className="flex items-center">
-                    <i className="fas fa-briefcase text-[#5086ed] mr-2"></i>
+                    <i className="fas fa-briefcase text-blue-500 mr-2"></i>
                     <p className="text-black font-bold text-lg">Experience</p>
                 </div>
                 {owner && (
                     <button
                         onClick={toggleAddExperienceDialog}
-                        className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-xl hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 group cursor-pointer"
+                        className="flex items-center bg-blue-500 font-semibold py-2 px-4 rounded-xl hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 group cursor-pointer"
                     >
                         <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
                     </button>

@@ -94,7 +94,6 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                 ...updatedPortfolio,
             }
         });
-        // window.location.reload();
     };
 
     const toggleAddProjectDialog = () => {
@@ -241,15 +240,15 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                     </div>
                 )}
                 <div className="flex justify-between w-full">
-                    <div className="h-[87vh] w-[28%] flex flex-col justify-between overflow-y-auto">
+                    <div className="max-h-[87vh] w-[30%] flex flex-col justify-between overflow-y-auto">
                         {/* <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'} bg-white rounded-xl shadow-sm p-4 relative border border-gray-200 shadow-sm`}>
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center">
-                                    <i className="fas fa-folder text-[#5086ed] mr-2"></i>
+                                    <i className="fas fa-folder text-blue-500 mr-2"></i>
                                     <p className="font-bold text-lg text-black">Projects</p>
                                 </div>
                                 <button
-                                    className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-xl cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group"
+                                    className="flex items-center bg-blue-500 font-semibold py-2 px-4 rounded-xl cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group"
                                     onClick={() => toggleAddProjectDialog()}
                                 >
                                     <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
@@ -283,10 +282,10 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                         {/* <div className={`h-[65%] bg-white rounded-xl shadow-sm p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto border border-gray-200`}>
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center">
-                                    <i className="fas fa-trophy text-[#5086ed] mr-2"></i>
+                                    <i className="fas fa-trophy text-blue-500 mr-2"></i>
                                     <p className="text-black font-bold text-lg">Achievements & Certificate</p>
                                 </div>
-                                <button className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-xl cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={toggleAddCertificateDialog}>
+                                <button className="flex items-center bg-blue-500 font-semibold py-2 px-4 rounded-xl cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={toggleAddCertificateDialog}>
                                     <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
                                 </button>
                             </div>
@@ -309,7 +308,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                             addAchievementDialog={toggleAddCertificateDialog}
                         />
                     </div>
-                    <div className="h-[87vh] w-[70%] overflow-y-auto pr-6 overflow-x-hidden">
+                    <div className="h-[87vh] w-[69%] overflow-y-auto pr-6 overflow-x-hidden">
                         <ProfileSummarySection
                             owner={true}
                             portfolio={portfolioData}
@@ -332,10 +331,10 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                         <div className={`w-full ${expandedSkill ? 'h-auto' : 'h-max'} bg-white rounded-xl p-6 mt-4 mr-3 border border-gray-200 shadow-sm`}>
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center">
-                                    <i className="fas fa-cogs text-[#5086ed] mr-2"></i>
+                                    <i className="fas fa-cogs text-blue-500 mr-2"></i>
                                     <p className="text-black font-bold text-lg">Skill</p>
                                 </div>
-                                <button className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-xl cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={toggleAddSkillDialog}>
+                                <button className="flex items-center bg-blue-500 font-semibold py-2 px-4 rounded-xl cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={toggleAddSkillDialog}>
                                     <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
                                 </button>
                             </div>
@@ -375,11 +374,11 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                         <div className={`w-full ${expandedEducation ? 'h-auto' : 'h-max'} bg-white rounded-xl  p-6 mt-4 mr-3 border border-gray-200 shadow-sm`}>
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center">
-                                    <i className="fas fa-graduation-cap text-[#5086ed] mr-2"></i>
+                                    <i className="fas fa-graduation-cap text-blue-500 mr-2"></i>
                                     <p className="text-black font-bold text-lg">Education</p>
                                 </div>
                                 <button
-                                    className="flex items-center bg-[#5086ed] font-semibold py-2 px-4 rounded-xl cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group"
+                                    className="flex items-center bg-blue-500 font-semibold py-2 px-4 rounded-xl cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group"
                                     onClick={() => toggleAddEducationDialog()}
                                 >
                                     <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>

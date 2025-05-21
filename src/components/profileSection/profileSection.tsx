@@ -37,7 +37,7 @@ const ProfileSummarySection: React.FC<Props> = ({
                                     <WorkingStatusBar status={2} />
                                 )
                             ) : (
-                                <div className="h-6 flex justify-center items-center text-white text-[12px] rounded-xl bg-[#5086ed] p-2">
+                                <div className="h-6 flex justify-center items-center text-white text-[12px] rounded-xl bg-blue-500 p-2">
                                     Endorser
                                 </div>
                             )}
@@ -75,7 +75,7 @@ const ProfileSummarySection: React.FC<Props> = ({
                         {portfolio.portfolio.role_id === 1 && (
                             <div className="text-black mt-2 text-sm flex">
                                 <span className="font-bold mr-2">Major:</span>
-                                <p className="text-gray-600">{getMajorName}</p>
+                                <p className="text-gray-600">{getMajorName || 'N/A'}</p>
                             </div>
                         )}
                         <div className='flex items-center'>
@@ -104,7 +104,7 @@ const ProfileSummarySection: React.FC<Props> = ({
 
             <div className="w-[31%] rounded-xl shadow-sm p-6 overflow-y-auto border border-gray-200 bg-white">
                 <div className="flex items-center">
-                    <i className="fas fa-user text-[#5086ed] mr-2"></i>
+                    <i className="fas fa-user text-blue-500 mr-2"></i>
                     <p className="text-gray-800 font-semibold text-lg">About Me</p>
                 </div>
                 <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>

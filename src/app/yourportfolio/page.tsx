@@ -1,3 +1,4 @@
+// app/your-portfolio/page.tsx
 import axios from "axios";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/option";
@@ -5,8 +6,11 @@ import { Portfolio } from "../type/portfolio";
 import YourPortfolioPageComponent from "./yourportfolio-page";
 import { redirect } from 'next/navigation';
 import BanPage from "@/components/banPage/page";
+import { Suspense } from "react";
+import LoadingScreen from "../../components/loadingScreen/loadingScreen";
 
-export default async function YourPortfolioPage() {
+// Async component that fetches portfolio data
+async function PortfolioContent() {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.googleId) {
@@ -27,5 +31,13 @@ export default async function YourPortfolioPage() {
         <BanPage />
       )}
     </div>
+  );
+}
+
+export default function YourPortfolioPage() {
+  return (
+    <Suspense fallback={<LoadingScreen message="Loading your portfolio..." />}>
+      <PortfolioContent />
+    </Suspense>
   );
 }
