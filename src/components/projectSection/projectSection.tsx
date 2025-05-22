@@ -4,11 +4,11 @@ import ProjectCard from "../projectCard/projectCard";
 
 export default function ProjectsSection({ portfolio, owner, addProject }: { portfolio: Portfolio; owner: boolean, addProject: () => void }) {
     const [expandedProject, setExpandedProject] = useState(false);
-    const [addProjectDialog, setAddProjectDialog] = useState(false);
 
     const toggleDropdownProject = () => {
         setExpandedProject(!expandedProject);
     };
+    const visibleProjects = portfolio.projects.filter(project => owner || project.project_visibility_status !== 1);
 
     return (
         <div className={`${expandedProject ? 'h-auto' : 'h-[225px]'} bg-white rounded-xl shadow-sm p-4 relative border border-gray-200 shadow-sm mb-4`}>
@@ -29,19 +29,18 @@ export default function ProjectsSection({ portfolio, owner, addProject }: { port
 
             <div className="w-25 bg-[#dfdfdf] h-[2px] mt-1"></div>
 
-            {portfolio.projects.length > 0 ? (
+            {visibleProjects.length > 0 ? (
                 <>
-                    {portfolio.projects
-                        .slice(0, expandedProject ? portfolio.projects.length : 2)
+                    {visibleProjects
+                        .slice(0, expandedProject ? visibleProjects.length : 2)
                         .map((project) => (
                             <ProjectCard
                                 key={project.project_id}
                                 project={project}
                             />
                         ))}
-
-                    {portfolio.projects.length > 2 && (
-                        <div className={`h-10 ${portfolio.projects.length > 2 ? 'block' : 'hidden'}`}>
+                    {visibleProjects.length > 2 && (
+                        <div className="h-10">
                             <button
                                 onClick={toggleDropdownProject}
                                 className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold cursor-pointer"
