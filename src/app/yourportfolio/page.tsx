@@ -7,13 +7,19 @@ import { redirect } from 'next/navigation';
 import BanPage from "@/components/banPage/page";
 import { Suspense } from "react";
 import LoadingScreen from "../../components/loadingScreen/loadingScreen";
+import { signOut } from "next-auth/react";
+import PageNotFound from "@/components/pagenotfound/page";
+import { ErrorHandling } from "@/dummydata/error";
+import { getErrorById } from "@/utils";
 
 async function PortfolioContent() {
     const session = await getServerSession(authOptions);
 
     if (!session || !session.googleId) {
-        redirect('/');
+        return <PageNotFound customMessage={getErrorById(1)} />;
     }
+
+
 
     const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}view_portfolio_details/${session.googleId}`

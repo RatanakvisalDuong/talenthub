@@ -124,7 +124,6 @@ const Appbar = React.memo(() => {
 	};
 
 	const handleSetChangesToNotificationStatus = async ({ id, status, type, endorsementType }: { id: number; status: number; type: number; endorsementType: number | null }) => {
-		console.log(`Notification ID: ${id}, Status: ${status}, Type: ${type}, Endorsement Type: ${endorsementType}`);
 		try {
 			const response = await axios.post(
 				`${process.env.NEXT_PUBLIC_API_URL}change_endorsement_collaboration_request`,

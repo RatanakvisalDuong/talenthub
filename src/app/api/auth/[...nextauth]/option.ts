@@ -94,7 +94,7 @@ export const authOptions: NextAuthOptions = {
 				// Store expiry in localStorage
 				if (typeof window !== "undefined") {
 					const expiryDate = new Date();
-					expiryDate.setDate(expiryDate.getDate() + 14);
+					expiryDate.setDate(expiryDate.getSeconds() + 5);
 					localStorage.setItem("auth_expiry", expiryDate.getTime().toString());
 				}
 

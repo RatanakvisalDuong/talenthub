@@ -23,7 +23,6 @@ export default function Sidebar({
     }) {
 
     const { data: session } = useSession();
-    const [googleId, setGoogleId] = useState<string | null>(null);
     const [selectedMajors, setSelectedMajors] = useState<number[]>([]);
     const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
     const [selectedWorkingStatuses, setSelectedWorkingStatuses] = useState<number[]>([]);

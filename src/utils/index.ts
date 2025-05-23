@@ -14,3 +14,15 @@ export function convertPhoneNumberSpacing(phoneNumber: string): string {
   }
   return digits.replace(/(\d{3})(?=\d)/g, '$1 ').trim();
 }
+
+import { ErrorHandling } from '../dummydata/error';
+
+/**
+ * Gets an error message by its ID
+ * @param errorId The ID of the error to retrieve
+ * @returns The error message or undefined if not found
+ */
+export function getErrorById(errorId: number): string | undefined {
+    const errorEntry = ErrorHandling.find(error => error.id === errorId);
+    return errorEntry?.error;
+}

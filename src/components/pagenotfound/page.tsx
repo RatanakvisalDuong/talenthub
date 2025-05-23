@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 
-export default function PageNotFound() {
+interface PageNotFoundProps {
+    customMessage?: string | null;
+}
+
+export default function PageNotFound({ customMessage = null }: PageNotFoundProps) {
     return (
         <div className="w-full h-full">
             <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
@@ -13,8 +17,8 @@ export default function PageNotFound() {
                         <h1 className="text-2xl font-bold text-gray-800 mb-4">Page Not Found</h1>
                         <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-4">
                             <p className="text-gray-700">
-                                The page you are looking for doesn't exist or has been moved.
-                                Please check the URL or navigate back to the homepage.
+                                {customMessage || 
+                                    "The page you are looking for doesn't exist or has been moved. Please check the URL or navigate back to the homepage."}
                             </p>
                         </div>
 
