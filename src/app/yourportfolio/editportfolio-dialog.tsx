@@ -84,7 +84,6 @@ const EditPortfolioDialog = ({
 
     const handleOnEdit = async () => {
         if (session?.roleId == 2) {
-            console.log("Student");
             if (phone == null || about == null) {
                 setError("Please fill in all required fields. xD");
                 return;
@@ -95,6 +94,16 @@ const EditPortfolioDialog = ({
                 setError("Please fill in all required fields.");
                 return;
             }
+        }
+
+        if (phone && /[a-zA-Z]/.test(phone)) {
+            setError("Phone number should not contain any letters.");
+            return;
+        }
+        
+        if (phone && (phone.replace(/\D/g, '').length < 9 || phone.replace(/\D/g, '').length > 10)) {
+            setError("Phone number should be 9 to 10 digits long.");
+            return;
         }
 
         setLoading(true);
