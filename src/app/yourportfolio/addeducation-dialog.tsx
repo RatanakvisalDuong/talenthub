@@ -10,9 +10,9 @@ import { useSession } from 'next-auth/react';
 import { Education } from '../type/education';
 import { useRouter } from 'next/navigation';
 
-const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMessage, setEducationData }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number;setSuccessMessage: (message: string) => void; setEducationData: React.Dispatch<React.SetStateAction<Education[]>>;}) => {
+const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMessage, setEducationData }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number; setSuccessMessage: (message: string) => void; setEducationData: React.Dispatch<React.SetStateAction<Education[]>>; }) => {
 
-    const { data: session} = useSession();
+    const { data: session } = useSession();
     const router = useRouter();
 
     const [isPresent, setIsPresent] = useState(false);
@@ -51,6 +51,24 @@ const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessM
             }
             else {
                 setError(null);
+            }
+
+            const months = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+            const startMonthIndex = months.indexOf(selectedStartMonth);
+            const endMonthIndex = months.indexOf(selectedEndMonth);
+
+            if (!isPresent) {
+                if (parseInt(startYear) > parseInt(endYear)) {
+                    setError("Start year cannot be greater than end year.");
+                    setLoading(false);
+                    return;
+                }
+                if (parseInt(startYear) === parseInt(endYear) && startMonthIndex > endMonthIndex) {
+                    setError("Start month cannot be greater than end month in the same year.");
+                    setLoading(false);
+                    return;
+                }
             }
             setLoading(true);
             const response = await axios.post(
@@ -102,7 +120,7 @@ const AddEducationDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessM
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="bg-white rounded-md p-6 w-[700px] max-w-full shadow-lg overflow-y-auto z-50 relative">
-            {loading && (
+                {loading && (
                     <div className="absolute inset-0 bg-white backdrop-blur-sm z-10 flex items-center justify-center">
                         <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
                     </div>

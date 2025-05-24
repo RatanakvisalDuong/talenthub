@@ -76,15 +76,6 @@ const EditEducationDialog = ({
         setEndYear(exisitingSelectedEndYear);
         setEducationId(existingEducationId);
 
-        console.log("Existing Education Center:", existingEducationCenter);
-        console.log("Existing Field of Study:", existingFieldOfStudy);
-        console.log("Existing Education Description:", existingEducationDescription);
-        console.log("Existing Education ID:", existingEducationId);
-        console.log("Existing Start Month:", exisitingSelectedStartMonth);
-        console.log("Existing Start Year:", exisitingSelectedStartYear);
-        console.log("Existing End Month:", exisitingSelectedEndMonth);
-        console.log("Existing End Year:", exisitingSelectedEndYear);
-
         if (exisitingSelectedEndMonth === '' && exisitingSelectedEndYear === '') {
             setIsPresent(true);
         }
@@ -105,6 +96,24 @@ const EditEducationDialog = ({
                 return;
             } else {
                 setError(null);
+            }
+
+            const months = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+            const startMonthIndex = months.indexOf(selectedStartMonth);
+            const endMonthIndex = months.indexOf(selectedEndMonth);
+
+            if (!isPresent) {
+                if (parseInt(selectedStartYear) > parseInt(selectedEndYear)) {
+                    setError("Start year cannot be greater than end year.");
+                    setLoading(false);
+                    return;
+                }
+                if (parseInt(selectedStartYear) === parseInt(selectedEndYear) && startMonthIndex > endMonthIndex) {
+                    setError("Start month cannot be greater than end month in the same year.");
+                    setLoading(false);
+                    return;
+                }
             }
 
             setLoading(true);

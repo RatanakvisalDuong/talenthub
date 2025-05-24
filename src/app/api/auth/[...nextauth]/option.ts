@@ -49,14 +49,12 @@ export const authOptions: NextAuthOptions = {
 	pages: {
 		error: "/auth/error",
 	},
-	// Set session max age to 14 days
 	session: {
 		strategy: "jwt",
-		maxAge: 14 * 24 * 60 * 60, // 14 days in seconds
+		maxAge: 14 * 24 * 60 * 60,
 	},
-	// Set JWT max age to 14 days for consistency
 	jwt: {
-		maxAge: 14 * 24 * 60 * 60, // 14 days in seconds
+		maxAge: 14 * 24 * 60 * 60,
 	},
 	callbacks: {
 		async signIn({ user }) {
@@ -90,13 +88,6 @@ export const authOptions: NextAuthOptions = {
 				roleId = res.data.role_id;
 				googleId = res.data.google_id;
 				photo = res.data.photo;
-
-				// Store expiry in localStorage
-				if (typeof window !== "undefined") {
-					const expiryDate = new Date();
-					expiryDate.setDate(expiryDate.getSeconds() + 5);
-					localStorage.setItem("auth_expiry", expiryDate.getTime().toString());
-				}
 
 			} catch (error) {
 				console.error("Error:", error);

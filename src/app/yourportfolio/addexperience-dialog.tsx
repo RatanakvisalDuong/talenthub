@@ -60,6 +60,11 @@ const AddExperienceDialog = ({
   };
 
   const handleAddExperience = async () => {
+
+    const months = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"];
+    const startMonthIndex = months.indexOf(selectedStartMonth);
+    const endMonthIndex = months.indexOf(selectedEndMonth);
     setLoading(true);
 
     if (!jobTitle || !companyName || !jobDescription || !startYear || !selectedStartMonth || !employmentType || (!isPresent && (selectedEndMonth === "" || endYear === ""))) {
@@ -68,7 +73,19 @@ const AddExperienceDialog = ({
       return;
     }
 
-    console.log("Endorsers:", endorsers);
+
+    if (!isPresent) {
+      if (parseInt(startYear) > parseInt(endYear)) {
+        setError("Start year cannot be greater than end year.");
+        setLoading(false);
+        return;
+      }
+      if (parseInt(startYear) === parseInt(endYear) && startMonthIndex > endMonthIndex) {
+        setError("Start month cannot be greater than end month in the same year.");
+        setLoading(false);
+        return;
+      }
+    }
 
     try {
       const response = await axios.post(

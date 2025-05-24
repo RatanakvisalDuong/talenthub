@@ -86,6 +86,24 @@ const EditExperienceDialog = ({
             return;
         }
 
+        const months = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"];
+        const startMonthIndex = months.indexOf(selectedStartMonth);
+        const endMonthIndex = months.indexOf(selectedEndMonth);
+
+        if (!isPresent) {
+            if (parseInt(startYear) > parseInt(endYear)) {
+                setError("Start year cannot be greater than end year.");
+                setLoading(false);
+                return;
+            }
+            if (parseInt(startYear) === parseInt(endYear) && startMonthIndex > endMonthIndex) {
+                setError("Start month cannot be greater than end month in the same year.");
+                setLoading(false);
+                return;
+            }
+        }
+
         try {
             const response = await axios.put(
                 `${process.env.NEXT_PUBLIC_API_URL}update_experience/${existingExperience?.id}`,
