@@ -29,7 +29,7 @@ export default function AchievementsSection({
                     </button>
                 )}
             </div>
-            <div className="w-full bg-[#dfdfdf] h-[1px] sm:h-[2px] mt-1"></div>
+            <div className="w-72 bg-[#dfdfdf] h-[1px] sm:h-[2px] mt-1"></div>
             {portfolio.achievements.length === 0 ? (
                 <p className="text-gray-400 text-xs sm:text-sm md:text-base mt-3 sm:mt-4 justify-center items-center flex">No achievement & certificate available</p>
             ) : (
