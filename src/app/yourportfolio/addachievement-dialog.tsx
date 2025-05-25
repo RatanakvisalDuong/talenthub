@@ -4,7 +4,7 @@ import BigTextInput from "@/components/bigtextinput/bigtextinput";
 import TextInput from "@/components/textinput/textInput";
 import Image from "next/image";
 import axios from "axios";
-import { useRef, useState, useMemo, useEffect } from "react";
+import { useRef, useState, useMemo } from "react";
 import EndorserInput from "@/components/endorsementInput/endorsementInput";
 import SelectMonthInput from "@/components/selectMonthInput/selectMonthInput";
 import { useSession } from "next-auth/react";
@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpdatedAchievement, setSuccessMessage }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number; handleUpdatedAchievement: (updatedAchievement: any) => void; setSuccessMessage: (message: string) => void; }) => {
     const router = useRouter();
     const session = useSession();
-    const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [selectIssuedMonth, setSelectIssuedMonth] = useState<string>("");
     const [selectIssuedYear, setSelectIssuedYear] = useState<string>("");
@@ -28,10 +28,9 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
         setEndorsers(endorsers);
     };
 
-
-    const imagePreviews = useMemo(() => {
-        return imageFiles.map((file) => URL.createObjectURL(file));
-    }, [imageFiles]);
+    const imagePreview = useMemo(() => {
+        return imageFile ? URL.createObjectURL(imageFile) : null;
+    }, [imageFile]);
 
     if (!isOpen) return null;
 
@@ -41,16 +40,10 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
-        if (!files) return;
+        if (!files || files.length === 0) return;
 
-        const newFiles = Array.from(files);
-
-        setImageFiles((prevFiles) => [...prevFiles, ...newFiles]);
+        setImageFile(files[0]);
         event.target.value = "";
-    };
-
-    const handleRemoveImage = (index: number) => {
-        setImageFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
     };
 
     const handleSelectMonthMonthChange = (value: string | null) => {
@@ -58,8 +51,7 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
     };
 
     const handleAddAchievement = async () => {
-        console.log('test')
-        if (title === "" || organization === "" || description === "" || selectIssuedMonth === "" || selectIssuedYear === "" || imageFiles.length === 0) {
+        if (title === "" || organization === "" || description === "" || selectIssuedMonth === "" || selectIssuedYear === "" || !imageFile) {
             setError("Please fill in all required fields.");
             return;
         }
@@ -75,7 +67,7 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
         formData.append("description", description);
         formData.append("issue_month", selectIssuedMonth);
         formData.append("issue_year", selectIssuedYear);
-        formData.append('image', imageFiles[0]);
+        formData.append('image', imageFile);
 
         for (let i = 0; i < endorsers.length; i++) {
             formData.append(`endorsers[]`, endorsers[i]);
@@ -90,7 +82,6 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
                     },
                 },
             );
-            console.log(response)
             if (response.status === 200) {
                 const achievement = {
                     id: response.data.achievement_id,
@@ -117,9 +108,7 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
         finally {
             setLoading(false);
         }
-        // onClose();
     }
-
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -143,24 +132,22 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
                 <div className="flex gap-x-6">
                     <form className="w-3/5">
                         <TextInput
-                            id="link"
+                            id="title"
                             label="Title of Achievement or Certificate"
                             required
                             onChange={(e) => setTitle(e.target.value)}
                             value={title}
-                            placeholder="Eg.Certificate of Completion in Web Development"
+                            placeholder="Eg. Certificate of Completion in Web Development"
                         />
 
                         <TextInput
-                            id="link"
+                            id="organization"
                             label="Issued by Organization"
                             required
                             onChange={(e) => setOrganization(e.target.value)}
                             value={organization}
-                            placeholder="Eg.Coursera, Udemy, etc."
+                            placeholder="Eg. Coursera, Udemy, etc."
                         />
-
-
 
                         <div className="flex justify-between gap-2">
                             <div className="mb-2 w-1/2">
@@ -180,7 +167,6 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
                                     id="issuedYear"
                                     value={selectIssuedYear}
                                     onChange={(e) => setSelectIssuedYear(e.target.value)}
-                                    // defaultValue={''}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
                                 >
                                     <option value="" disabled>Select Year</option>
@@ -191,66 +177,52 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
                             </div>
                         </div>
 
-                        {/* <TextEditor id="instruction" required={true} label="Project Instruction" /> */}
-
                         <BigTextInput
                             id="description"
                             label="Description"
                             required
                             onChange={(e) => setDescription(e.target.value)}
                             value={description}
-                            placeholder="Eg.I completed a course on Web Development, covering HTML, CSS, and JavaScript."
+                            placeholder="Eg. I completed a course on Web Development, covering HTML, CSS, and JavaScript."
                         />
 
                         <EndorserInput onEndorserChange={handleEndorserChange} existingEndorsers={endorsers} />
                         {error && (
-                            <div className="text-red-500 text-sm ">
+                            <div className="text-red-500 text-sm">
                                 {error}
                             </div>
                         )}
                     </form>
 
-
-                    {/* Right side: Multiple Image Upload */}
+                    {/* Right side: Single Image Upload */}
                     <div className="w-2/5">
-                        <label className="block text-sm font-medium text-black mb-1">Upload Images<span className="text-red-600 ml-2">*</span></label>
+                        <label className="block text-sm font-medium text-black mb-1">Upload Certificate Image<span className="text-red-600 ml-2">*</span></label>
                         <button
                             type="button"
                             onClick={handleImageClick}
                             className="px-4 py-2 bg-[#EFEFEF] rounded hover:bg-black mb-2 text-black w-full hover:text-white"
                         >
-                            Upload Images
+                            {imageFile ? "Change Image" : "Upload Image"}
                         </button>
 
                         <input
                             type="file"
                             accept="image/*"
-                            multiple
                             ref={fileInputRef}
                             onChange={handleImageChange}
                             style={{ display: "none" }}
                         />
 
-                        {imagePreviews.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mt-2">
-                                {imagePreviews.map((src, index) => (
-                                    <div key={index} className="relative">
-                                        <Image
-                                            src={src}
-                                            alt={`Selected ${index + 1}`}
-                                            width={300}
-                                            height={300}
-                                            className="object-cover rounded shadow mx-auto"
-                                            unoptimized
-                                        />
-                                        <div
-                                            onClick={() => handleRemoveImage(index)}
-                                            className="absolute top-0 right-0 text-red-500 p-1 rounded-full"
-                                        >
-                                            <i className="fas fa-times"></i>
-                                        </div>
-                                    </div>
-                                ))}
+                        {imagePreview && (
+                            <div className="mt-2 relative">
+                                <Image
+                                    src={imagePreview}
+                                    alt="Certificate Image"
+                                    width={300}
+                                    height={300}
+                                    className="object-contain rounded shadow mx-auto"
+                                    unoptimized
+                                />
                             </div>
                         )}
                     </div>
