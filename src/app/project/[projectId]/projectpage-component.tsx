@@ -1,6 +1,6 @@
 'use client';
 
-import { UserPlus, Code, XIcon } from "lucide-react";
+import { UserPlus, Code, XIcon, ChevronRight, ChevronLeft, Globe, Lock } from "lucide-react";
 import { useState, useEffect } from "react";
 import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
@@ -139,10 +139,20 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                 )}
                 <div className="flex justify-between w-full">
                     <div className="h-[88vh] w-[73%]">
-                        <div className="h-full w-full bg-white p-4 overflow-y-auto rounded-xl shadow-md">
+                        <div className="h-full w-full bg-white p-4 overflow-y-auto rounded-xl shadow-md px-8">
                             {/* Header section with title and controls */}
                             <div className="w-full flex justify-between items-center mb-4">
-                                <p className="text-xl font-bold text-black">{projectData.title}</p>
+                                <p className="text-2xl font-bold text-black">{projectData.title}</p>
+                                <div className="flex items-center gap-3 text-sm text-slate-600">
+                                    <div className="flex items-center gap-1">
+                                        {!isPublic ? <Globe className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                                        <span className="font-medium">{!isPublic ? "Public" : "Private"}</span>
+                                    </div>
+                                    <div className="w-1 h-1 bg-slate-400 rounded-full"></div>
+                                    <span>{projectData.collaborators?.filter((e: any) => e.collaboration_status == 2).length || 0} collaborators</span>
+                                    <div className="w-1 h-1 bg-slate-400 rounded-full"></div>
+                                    <span>{projectData.endorsers?.filter((e: any) => e.endorsement_status === 2).length || 0} endorsers</span>
+                                </div>
 
                                 {isOwner && (
                                     <div className="flex items-center justify-center">
@@ -175,50 +185,46 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                             </div>
 
                             {/* Image slideshow */}
-                            <div className="w-full h-60 bg-white rounded-xl mx-auto flex justify-center items-center shadow-md">
+                            <div className="w-full h-64 bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl mx-auto flex justify-center items-center shadow-xl border border-white/20 backdrop-blur-sm">
                                 {/* Previous slide control */}
                                 <button
                                     onClick={prevSlide}
-                                    className="text-gray-800 hover:bg-opacity-60 transition-all focus:outline-none hover:cursor-pointer"
+                                    className="group text-slate-600 hover:text-slate-800 transition-all duration-300 focus:outline-none hover:scale-110 p-2 rounded-full hover:bg-white/50 backdrop-blur-sm"
                                 >
-                                    <ArrowLeftCircleIcon className="h-10 w-10" />
+                                    <ChevronLeft className="h-8 w-8 drop-shadow-sm" />
                                 </button>
 
                                 {/* Slideshow container */}
-                                <div className="relative w-[85%] overflow-hidden shadow-md mx-auto h-58">
+                                <div className="relative w-[85%] overflow-hidden rounded-xl mx-auto h-58 bg-white/30 backdrop-blur-sm border border-white/30 shadow-inner">
                                     <div
-                                        className="flex transition-transform duration-1000 ease-in-out"
+                                        className="flex transition-transform duration-700 ease-out h-full"
                                         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                                     >
                                         {slidePairs.map((pair, pairIndex) => (
-                                            <div key={pairIndex} className="w-full flex-shrink-0 flex gap-2">
+                                            <div key={pairIndex} className="w-full flex-shrink-0 flex gap-3 p-3 h-full">
                                                 {pair.length === 2 ? (
                                                     pair.map(slide => (
-                                                        <div key={slide.id} className="w-1/2">
-                                                            <div className="relative aspect-[16/9] overflow-hidden">
-                                                                <Image
+                                                        <div key={slide.id} className="w-1/2 group">
+                                                            <div className="relative aspect-[16/9] overflow-hidden rounded-lg shadow-lg border border-white/30 bg-gradient-to-br from-white/20 to-transparent backdrop-blur-sm hover:shadow-xl transition-all duration-500 hover:scale-[1.02]">
+                                                                <img
                                                                     src={slide.url}
                                                                     alt={`Project slide ${slide.id}`}
-                                                                    fill
-                                                                    sizes="(max-width: 700px) 100vw, 460px"
-                                                                    className="object-cover h-full w-full"
-                                                                    priority={pairIndex === currentSlide}
+                                                                    className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
                                                                 />
+                                                                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                                             </div>
                                                         </div>
                                                     ))
                                                 ) : (
                                                     <div className="w-full flex justify-center">
-                                                        <div className="w-1/2">
-                                                            <div className="relative aspect-[16/9] overflow-hidden">
-                                                                <Image
+                                                        <div className="w-1/2 group">
+                                                            <div className="relative aspect-[16/9] overflow-hidden rounded-lg shadow-lg border border-white/30 bg-gradient-to-br from-white/20 to-transparent backdrop-blur-sm hover:shadow-xl transition-all duration-500 hover:scale-[1.02]">
+                                                                <img
                                                                     src={pair[0].url}
                                                                     alt={`Project slide ${pair[0].id}`}
-                                                                    fill
-                                                                    sizes="(max-width: 700px) 100vw, 460px"
-                                                                    className="object-cover h-full w-full"
-                                                                    priority={pairIndex === currentSlide}
+                                                                    className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
                                                                 />
+                                                                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -228,15 +234,15 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                     </div>
 
                                     {/* Slide indicators */}
-                                    <div className="absolute bottom-3 left-0 right-0 z-10">
-                                        <div className="flex justify-center gap-1">
+                                    <div className="absolute bottom-4 left-0 right-0 z-10">
+                                        <div className="flex justify-center gap-2">
                                             {slidePairs.map((_, index) => (
                                                 <button
                                                     key={index}
                                                     onClick={() => goToSlide(index)}
-                                                    className={`h-2 transition-all ${currentSlide === index
-                                                        ? 'bg-[#5086ed] w-4 rounded-xl'
-                                                        : 'bg-white bg-opacity-50 w-2 rounded-full'
+                                                    className={`h-2.5 transition-all duration-300 ease-out hover:scale-110 ${currentSlide === index
+                                                        ? 'bg-gradient-to-r from-blue-500 to-blue-600 w-8 rounded-full shadow-lg shadow-blue-500/30'
+                                                        : 'bg-white/60 hover:bg-white/80 w-2.5 rounded-full backdrop-blur-sm border border-white/30 shadow-sm'
                                                         }`}
                                                 />
                                             ))}
@@ -247,9 +253,9 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                 {/* Next slide control */}
                                 <button
                                     onClick={nextSlide}
-                                    className="text-gray-800 hover:bg-opacity-60 transition-all focus:outline-none hover:cursor-pointer"
+                                    className="group text-slate-600 hover:text-slate-800 transition-all duration-300 focus:outline-none hover:scale-110 p-2 rounded-full hover:bg-white/50 backdrop-blur-sm"
                                 >
-                                    <ArrowRightCircleIcon className="h-10 w-10" />
+                                    <ChevronRight className="h-8 w-8 drop-shadow-sm" />
                                 </button>
                             </div>
 
@@ -261,7 +267,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        <LinkIcon className="h-5 w-5 mr-1" /> Link
+                                        <LinkIcon className="h-5 w-5 mr-1" /> Visit Project
                                     </Link>
                                 )}
 
@@ -277,8 +283,10 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
 
                             <div className="w-full bg-white h-max mt-4 mb-4 rounded-xl shadow-md p-6 border border-gray-200">
                                 <div className="flex items-center">
-                                    <i className="fa-solid fa-file-lines w-4 h-4 mr-2 text-[#5086ed]" />
-                                    <h1 className="text-black text-[16px]">Project Description</h1>
+                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                                        <i className="fa-solid fa-file-lines text-white text-sm" />
+                                    </div>
+                                    <h1 className="text-black text-[16px] ml-2">Project Description</h1>
                                 </div>
                                 <div className="h-[2px] bg-gray-300 w-64 mt-2 mb-2"></div>
                                 <div className="space-y-4">
@@ -290,8 +298,10 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
 
                             <div className="w-full bg-white h-max mt-4 mb-4 rounded-xl shadow-md p-6 border border-gray-200">
                                 <div className="flex items-center">
-                                    <i className="fa-solid fa-clipboard-list w-4 h-4 mr-2 text-[#5086ed]" />
-                                    <h1 className="text-black text-[16px]">Project Instruction</h1>
+                                    <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+                                        <i className="fa-solid fa-clipboard-list text-white text-sm" />
+                                    </div>
+                                    <h1 className="text-black text-[16px] ml-2">Project Instruction</h1>
                                 </div>
                                 <div className="h-[2px] bg-gray-300 w-64 mt-2 mb-2"></div>
                                 <div className="space-y-4">
@@ -314,8 +324,10 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                     <div className="h-[88vh] w-[26%] overflow-y-auto pl-1 pr-1">
                         <div className="h-max w-full bg-white rounded-xl shadow-md p-4 mb-4 border border-gray-200">
                             <div className="flex items-center">
-                                <i className="fa-solid fa-user w-4 h-4 mr-2 text-[#5086ed]" />
-                                <p className="text-black">
+                                <div className="h-8 w-8 flex items-center justify-center  bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl">
+                                    <i className="fa-solid fa-user w-4 h-4 text-white" />
+                                </div>
+                                <p className="text-black ml-2">
                                     Project Owner
                                 </p>
                             </div>
@@ -328,8 +340,10 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                         <div className="h-max w-full bg-white rounded-xl shadow-md p-4 mb-4 border border-gray-200">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center">
-                                    <Image src="/verified.png" alt="Verified" width={30} height={30} className="w-[15px] h-[15px] mr-2" />
-                                    <p className="text-black ">
+                                    <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center">
+                                        <Image src="/verified.png" alt="Verified" width={16} height={16} className="filter brightness-0 invert" />
+                                    </div>
+                                    <p className="text-black ml-2">
                                         Endorsers
                                     </p>
                                 </div>
@@ -351,8 +365,11 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                             {session?.googleId == projectData.google_id && (<XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveEndorserDialog(endorser.google_id) }} />)}
                                         </div>
                                     ))
-                            ) : <div className="text-gray-700 w-full flex justify-center items-center mt-4">
-                                <p className="text-sm font-medium">No endorsers available.</p>
+                            ) : <div className="text-center py-2 text-slate-500">
+                                <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl mx-auto mb-3 flex items-center justify-center">
+                                    <Image src="/verified.png" alt="No endorsers" width={24} height={24} className="opacity-50" />
+                                </div>
+                                <p className="text-sm">No endorsers yet</p>
                             </div>
                             }
 
@@ -360,8 +377,10 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                         <div className="h-max w-full bg-white rounded-xl shadow-md p-4 mb-4 border border-gray-200">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center">
-                                    <i className="fa-solid fa-users w-4 h-4 mr-2 text-[#5086ed]" />
-                                    <p className="text-black ">
+                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                                        <i className="fa-solid fa-users text-white text-sm" />
+                                    </div>
+                                    <p className="text-black  ml-2">
                                         Collaborators
                                     </p>
                                 </div>
@@ -384,16 +403,21 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                         </div>
                                     ))
                             ) :
-                                <div className="text-gray-700 w-full flex justify-center items-center mt-4">
-                                    <p className="text-sm font-medium">No collaborators available.</p>
+                                <div className="text-center py-4 text-slate-500">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl mx-auto mb-3 flex items-center justify-center">
+                                        <i className="fa-solid fa-users text-slate-400 text-xl" />
+                                    </div>
+                                    <p className="text-sm">No collaborators yet</p>
                                 </div>
                             }
                         </div>
                         <div className="h-max w-full bg-white rounded-xl shadow-md p-4 mb-4 border border-gray-200">
                             <div className="flex items-center">
-                                <Code className="w-4 h-4 text-blue-600 mr-2" />
-                                <p className="text-black ">
-                                    Programming Languages
+                                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+                                    <Code className="w-4 h-4 text-white" />
+                                </div>
+                                <p className="text-black ml-2">
+                                    Tools
                                 </p>
                             </div>
                             {projectData?.programming_languages?.length > 0 ? (
@@ -404,8 +428,11 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                     </div>
                                 ))
                             ) : (
-                                <div className="text-gray-700 w-full flex justify-center items-center mt-4">
-                                    <p className="text-sm font-medium">No programming languages available.</p>
+                                <div className="text-center py-4 text-slate-500">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl mx-auto mb-3 flex items-center justify-center">
+                                        <Code className="w-4 h-4 text-slate-400" />
+                                    </div>
+                                    <p className="text-sm">No tools yet</p>
                                 </div>
                             )}
                         </div>

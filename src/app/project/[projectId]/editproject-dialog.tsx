@@ -9,14 +9,12 @@ import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import TextEditor from "@/app/yourportfolio/text-editor";
-import { Project } from "@/app/type/project";
 import { useSession } from "next-auth/react";
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { Link } from "lucide-react";
 import RemoveImageDialog from "./removeimage-dialog";
 
 
-const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMessage }: { isOpen: boolean; onClose: () => void; onClick: () => void; projectData: any; setSuccessMessage: (message: string) => void;}) => {
+const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMessage }: { isOpen: boolean; onClose: () => void; onClick: () => void; projectData: any; setSuccessMessage: (message: string) => void; }) => {
     const router = useRouter();
     const { data: session } = useSession();
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -115,7 +113,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
             }
 
             if (projectData.programming_languages && Array.isArray(projectData.programming_languages)) {
-                const languages = projectData.programming_languages.map(( lang:any ) =>
+                const languages = projectData.programming_languages.map((lang: any) =>
                     typeof lang === 'object' && lang.name ? lang.name :
                         typeof lang === 'string' ? lang : ''
                 ).filter(Boolean);
@@ -186,7 +184,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
                 }
             }
 
-            if(isProjectFileDeleted) {
+            if (isProjectFileDeleted) {
                 try {
                     await axios.delete(
                         `${process.env.NEXT_PUBLIC_API_URL}remove_project_file/${projectData.project_id}`,
@@ -210,39 +208,21 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
             formData.append('instruction', editorContent || "");
             formData.append('link', link);
 
-            selectedLanguages.forEach((lang) => {
-                formData.append(`programming_languages[]`, lang);
-            });
+            if (selectedLanguages.length > 0) {
+                selectedLanguages.forEach((lang) => {
+                    formData.append(`programming_languages[]`, lang);
+                });
+            }
 
-            // if(isProjectFileDeleted) {
-            if(projectData.file == null){
+            if (projectData.file == null) {
                 formData.append('file', projectFiles[0]);
             }
 
-                // ** Check if file exisits for validation
-                // if(existingFilesUrl == ""){
-                    
-                // }
-            // }
-
-            if(imageFiles.length > 0) {
+            if (imageFiles.length > 0) {
                 imageFiles.forEach((image) => {
                     formData.append(`image[]`, image);
                 });
             }
-            
-
-            // if (projectFiles.length > 0) {
-            //     formData.append('file', projectFiles[0]);
-            // }
-
-            // selectedLanguages.forEach((lang) => {
-            //     formData.append(`programming_languages[]`, lang);
-            // });
-
-            // imageFiles.forEach((image) => {
-            //     formData.append(`image[]`, image);
-            // });
 
             const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_API_URL}update_project/${projectData.project_id}`,
@@ -265,53 +245,12 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
             console.error("Project update failed", error);
             setLoading(false);
         }
-        // try {
-        //     const formData = new FormData();
-        //     formData.append('title', title);
-        //     formData.append('description', description);
-        //     formData.append('instruction', editorContent || "");
-        //     formData.append('link', link);
-
-        //     formData.append('file', projectFiles[0]);
-
-        //     selectedLanguages.forEach((lang) => {
-        //         formData.append(`programming_languages[]`, lang);
-        //     });
-
-        //     imageFiles.forEach((image) => {
-        //         formData.append(`image[]`, image);
-        //     });
-
-
-
-        //     const response = await axios.post(
-        //         `${process.env.NEXT_PUBLIC_API_URL}update_project/${projectData.project_id}`,
-        //         formData,
-        //         {
-        //             headers: {
-        //                 'Content-Type': 'multipart/form-data',
-        //                 Authorization: `Bearer ${session?.accessToken}`,
-        //             },
-        //         }
-        //     );
-
-        //     if (response.status === 200) {
-        //         console.log("Project updated successfully");
-        //         setLoading(false);
-        //         onClose();
-        //         router.refresh();
-        //     }
-        // } catch (error) {
-        //     console.log("Project updated failed", error);
-        //     setLoading(false);
-        // }
-
     };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             {loading ? (
-                <div className={`bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto flex justify-center items-center`}>
+                <div className={`bg-white rounded-md p-6 w-[800px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto flex justify-center items-center`}>
                     <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-blue-500"></div>
                 </div>
             ) : <div className={`bg-white rounded-md p-6 w-[850px] max-w-full shadow-lg h-[650px] overflow-y-auto z-50 relative ${showDeleteConfirmation || removeImageDialog ? "blur-sm" : ""}`}>
@@ -356,7 +295,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
 
                         <div className="mb-2 relative">
                             <label htmlFor="language" className="block text-sm font-medium text-black">
-                                Programming Language / Tools
+                                Tools
                             </label>
                             <input
                                 type="text"
@@ -365,7 +304,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
                                 onChange={(e) => setLanguageInput(e.target.value)}
                                 onKeyDown={handleKeyDown}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                placeholder="Eg.Python, Javascript, C++, Press Enter to add new language"
+                                placeholder="Eg.Python, Javascript, C++, Godot, Press Enter to add new tool"
                                 autoComplete="off"
                             />
 
@@ -409,7 +348,6 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
                         <TextInput
                             id="link"
                             label="Project Link"
-                            required
                             value={link}
                             onChange={(e) => setLink(e.target.value)}
                             placeholder="Eg.https://github.com/RVisalD/TalentHub"

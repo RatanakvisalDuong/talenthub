@@ -44,18 +44,18 @@ export default function RemoveCollaboratorDialog({ projectId, collaboratorId, on
                 <p className="text-gray-700 mb-6">Are you sure you want to remove this collaborator from this project? This action cannot be undone.</p>
                 <div className="flex justify-center gap-4">
                     <button
-                        className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 hover:cursor-pointer"
-                        onClick={handleRemoveCollaborator}
-                        disabled={loading}
-                    >
-                        {loading ? "Removing..." : "Yes, Remove"}
-                    </button>
-                    <button
                         className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 hover:cursor-pointer"
                         onClick={onClose}
                         disabled={loading}
                     >
                         Cancel
+                    </button>
+                    <button
+                        className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 hover:cursor-pointer"
+                        onClick={handleRemoveCollaborator}
+                        disabled={loading}
+                    >
+                        {loading ? "Removing..." : "Yes, Remove"}
                     </button>
                 </div>
             </div>

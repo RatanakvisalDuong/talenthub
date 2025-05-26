@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Project } from "../type/project";
 
-const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMessage, setProjectdata }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number; setSuccessMessage: (message: string) => void; setProjectdata: React.Dispatch<React.SetStateAction<Project[]>>;}) => {
+const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMessage, setProjectdata }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number; setSuccessMessage: (message: string) => void; setProjectdata: React.Dispatch<React.SetStateAction<Project[]>>; }) => {
     const router = useRouter();
     const { data: session } = useSession();
     const [title, setTitle] = useState<string>("");
@@ -92,7 +92,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
 
     const handleAddProject = async () => {
         var images: any[] = [];
-        if (title === "" || description === "" || projectLink === "") {
+        if (title === "" || description === "") {
             setError("Please fill in all required fields.");
             return;
         }
@@ -103,7 +103,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
         formData.append("description", description);
         formData.append("link", projectLink);
         formData.append("instruction", projectInstruction.toString());
-        if(projectFiles.length > 0) {
+        if (projectFiles.length > 0) {
             formData.append("file", projectFiles[0]);
         }
 
@@ -127,8 +127,6 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                     },
                 },
             );
-
-            console.log("Response:", response.data);
 
             if (response.status === 200) {
                 const project: Project = {
@@ -171,7 +169,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             {loading ? (
-                <div className={`bg-white rounded-xl p-6 w-[850px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto flex justify-center items-center`}>
+                <div className={`bg-white rounded-xl p-6 w-[800px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto flex justify-center items-center`}>
                     <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-blue-500"></div>
                 </div>
             ) : <div className={`bg-white rounded-xl p-6 w-[850px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto`}>
@@ -216,7 +214,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
 
                         <div className="mb-2 relative">
                             <label htmlFor="language" className="block text-sm font-medium text-black">
-                                Programming Language / Tools
+                                Tools
                             </label>
                             <input
                                 type="text"
@@ -225,7 +223,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                                 onChange={(e) => setLanguageInput(e.target.value)}
                                 onKeyDown={handleKeyDown}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                placeholder="Eg.Python, Javascript, C++, Press Enter to add new language"
+                                placeholder="Eg.Python, Javascript, C++, Godot, Press Enter to add new tool"
                                 autoComplete="off"
                             />
 
@@ -270,7 +268,6 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                         <TextInput
                             id="link"
                             label="Project Link"
-                            required
                             value={projectLink}
                             onChange={(e) => setProjectLink(e.target.value)}
                             placeholder="Eg.https://github.com/RVisalD/TalentHub"

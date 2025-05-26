@@ -51,7 +51,14 @@ export default function ProjectsSection({ portfolio, owner, addProject }: { port
                     )}
                 </>
             ) : (
-                <p className="justify-center items-center flex text-gray-400">No projects available</p>
+                <div className="flex flex-col items-center justify-center h-full">
+
+                    <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl mx-auto mb-3 flex items-center justify-center">
+                        <i className="fa-solid fa-file text-slate-400 text-xl" />
+                    </div>
+                    <p className="text-gray-400 text-sm">No project available</p>
+                </div>
+
             )}
         </div>
     );

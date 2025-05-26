@@ -179,10 +179,10 @@ const Appbar = React.memo(() => {
 			<div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex justify-between items-center h-16">
 					<Link className="flex" href="/">
-						<h1 className="text-2xl font-bold text-black cursor-pointer">
+						<h1 className="text-3xl font-bold text-black cursor-pointer">
 							Talent
 						</h1>
-						<h1 className="text-blue-500 text-2xl font-bold cursor-pointer">Hub</h1>
+						<h1 className="text-blue-500 text-3xl font-bold cursor-pointer">Hub</h1>
 						<div className="ml-16">
 							{isAuthenticated ? (
 								<div className="bg-blue-500 text-white px-2 py-1 rounded-md cursor-pointer">

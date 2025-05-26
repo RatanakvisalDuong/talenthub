@@ -278,7 +278,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                 <p className="justify-center items-center flex text-gray-400">No projects available</p>
                             )}
                         </div> */}
-                        <ProjectsSection portfolio={portfolio} owner={true} addProject={toggleAddProjectDialog}/>
+                        <ProjectsSection portfolio={portfolio} owner={true} addProject={toggleAddProjectDialog} />
                         {/* <div className={`h-[65%] bg-white rounded-xl shadow-sm p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto border border-gray-200`}>
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center">
@@ -356,9 +356,21 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                                 }}
                                             />
                                         ))
-                                        : <p className="justify-center items-center flex text-gray-400">No skill available</p>
+                                        : <div className="flex flex-col items-center justify-center h-full">
+
+                                            <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl mx-auto mb-3 flex items-center justify-center">
+                                                <i className="fa-solid fa-cogs text-slate-400 text-xl" />
+                                            </div>
+                                            <p className="text-gray-400 text-sm">No skill available</p>
+                                        </div>
                                 )
-                                : <p className="justify-center items-center flex text-gray-400">No skills available</p>
+                                : <div className="flex flex-col items-center justify-center h-full">
+
+                                    <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl mx-auto mb-3 flex items-center justify-center">
+                                        <i className="fa-solid fa-cogs text-slate-400 text-xl" />
+                                    </div>
+                                    <p className="text-gray-400 text-sm">No skill available</p>
+                                </div>
                             }
 
                             <div className={`h-40px ${skillData.length > 2 ? 'block' : 'hidden'}`} key="seeMoreButton">
@@ -399,7 +411,13 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                     />
                                 ))
                             ) : (
-                                <p className="justify-center items-center flex text-gray-400">No education available</p>
+                                <div className="flex flex-col items-center justify-center h-full">
+
+                                    <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl mx-auto mb-3 flex items-center justify-center">
+                                        <i className="fa-solid fa-graduation-cap text-slate-400 text-xl" />
+                                    </div>
+                                    <p className="text-gray-400 text-sm">No education available</p>
+                                </div>
                             )}
                             <div className={`h-40px ${educationData.length > 2 ? 'block' : 'hidden'}`} key="seeMoreButton">
                                 <button

@@ -30,6 +30,7 @@ const AddEndorserDialog = ({ isOpen, onClose, onClick, projectId }: { isOpen: bo
             setLoading(false);
             return;
         }
+            
         try {
             await axios.post(
                 `${process.env.NEXT_PUBLIC_API_URL}add_endorser_to_project/${projectId}`,

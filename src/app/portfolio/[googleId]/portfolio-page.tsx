@@ -116,7 +116,13 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
                             {portfolio.skills.length === 0 ? (
-                                <p className="justify-center items-center flex text-gray-400">No skill available</p>
+                                <div className="flex flex-col items-center justify-center h-full">
+
+                                    <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl mx-auto mb-3 flex items-center justify-center">
+                                        <i className="fa-solid fa-cog text-slate-400 text-xl" />
+                                    </div>
+                                    <p className="text-gray-400 text-sm">No skill available</p>
+                                </div>
                             ) : (
                                 portfolio.skills.slice(0, expandedSkill ? portfolio.skills.length : 2).map((skill, index) => (
                                     <SkillCard
@@ -147,7 +153,13 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-2"></div>
 
                             {portfolio.education.length === 0 ? (
-                                <p className="justify-center items-center flex text-gray-400">No education available</p>
+                                <div className="flex flex-col items-center justify-center h-full">
+
+                                    <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl mx-auto mb-3 flex items-center justify-center">
+                                        <i className="fa-solid fa-graduation-cap text-slate-400 text-xl" />
+                                    </div>
+                                    <p className="text-gray-400 text-sm">No education available</p>
+                                </div>
                             ) : (
                                 portfolio.education.slice(0, expandedEducation ? portfolio.education.length : 2).map((education, index) => (
                                     <EducationCard

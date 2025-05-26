@@ -44,7 +44,13 @@ const ExperienceSection: React.FC<Props> = ({
             </div>
             <div className="h-[2px] bg-gray-300 w-40 mt-2 mb-4"></div>
             {experienceData.length === 0 ? (
-                <p className="text-center text-gray-400">No experience available</p>
+                <div className="flex flex-col items-center justify-center h-full">
+
+                    <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl mx-auto mb-3 flex items-center justify-center">
+                        <i className="fa-solid fa-briefcase text-slate-400 text-xl" />
+                    </div>
+                    <p className="text-gray-400 text-sm">No experience available</p>
+                </div>
             ) : (
                 experienceData
                     .slice(0, expandedExperience ? experienceData.length : 2)
