@@ -159,7 +159,7 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                         {/* Visibility toggle */}
                                         <div className="flex h-[30px] items-center justify-center mr-4">
                                             <p className="text-black font-bold text-md mr-2">
-                                                {!isPublic ? "Public" : "Private"}
+                                                Private
                                             </p>
                                             <label className="relative inline-flex cursor-pointer">
                                                 <input

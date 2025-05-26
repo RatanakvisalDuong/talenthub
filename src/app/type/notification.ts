@@ -8,5 +8,6 @@ export interface Notification {
     endorsement_type: number | null,
     status: number,
     title: string,
-    created_at: string;
+    created_at: string,
+    project_id: number | null,
 }

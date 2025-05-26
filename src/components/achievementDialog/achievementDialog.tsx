@@ -77,6 +77,9 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
                                                 <li
                                                     key={idx}
                                                     className="py-1 px-2 text-sm text-gray-800 hover:bg-gray-100 rounded cursor-pointer"
+                                                    onClick={() => {
+                                                        window.location.href = `/portfolio/${endorser.id}`;
+                                                    }}
                                                 >
                                                     <div className='flex items-center'>
                                                         <Image

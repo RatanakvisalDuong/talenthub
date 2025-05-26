@@ -60,14 +60,15 @@ const Appbar = React.memo(() => {
 					Authorization: `Bearer ${session?.accessToken}`
 				}
 			});
-			
+
 			const newNotifications = response.data || [];
-			
+
 			// Check if we received any new notifications
+			console.log("Fetched notifications:", newNotifications);
 			if (newNotifications.length === 0) {
 				setHasMoreNotifications(false);
 			}
-			
+
 			if (page === 1) {
 				setNotification(newNotifications);
 			} else {
@@ -88,7 +89,6 @@ const Appbar = React.memo(() => {
 	};
 
 	const handleNotificationClick = () => {
-		// Reset to page 1 and hasMoreNotifications when opening notification dropdown
 		setPage(1);
 		setHasMoreNotifications(true);
 		getNotification();
@@ -140,8 +140,7 @@ const Appbar = React.memo(() => {
 					},
 				},
 			)
-			if(response.status === 200) {
-				// Reset to page 1 and fetch fresh notifications after status change
+			if (response.status === 200) {
 				setPage(1);
 				setHasMoreNotifications(true);
 				getNotification();
@@ -198,9 +197,9 @@ const Appbar = React.memo(() => {
 						{isAuthenticated && (
 							<div className="relative mr-4" ref={notificationRef}>
 								<BellIcon
-										className="w-6 h-6 text-gray-700 cursor-pointer"
-										onClick={handleNotificationClick}
-									/>
+									className="w-6 h-6 text-gray-700 cursor-pointer"
+									onClick={handleNotificationClick}
+								/>
 
 								{notification.filter((notification) => notification.status === 1).length > 0 && (
 									<span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center mr-4">
@@ -218,7 +217,28 @@ const Appbar = React.memo(() => {
 											notification.map((notification) => (
 												<div
 													key={`${notification.id} - ${notification.status} - ${notification.type}}`}
-													className={`px-4 py-3 text-sm border-b border-gray-100 hover:bg-gray-50 transition-colors ${notification.status === 1 ? "bg-blue-50" : ""}`}
+													className={`px-4 py-3 text-sm border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors ${notification.status === 1 ? "bg-blue-50" : ""}`}
+													onClick={() => {
+														if(notification.type == 2){
+															if(notification.status === 1){
+																if(notification.endorsement_type == 2){
+																	window.location.href = `/project/${notification.project_id}`;
+																} else {
+																	window.location.href = `/portfolio/${notification.owner_google_id}`;
+																}
+															}
+															else{
+																if(notification.endorsement_type == 2){
+																	window.location.href = `/project/${notification.project_id}`;
+																} else {
+																	window.location.href = `/portfolio/${notification.owner_google_id}`;
+																}
+															}
+														}
+														else {
+																window.location.href = `/project/${notification.project_id}`;
+														}
+													}}
 												>
 													{notification.type === 1 ? (
 														notification.status === 1 ? (
@@ -233,23 +253,29 @@ const Appbar = React.memo(() => {
 																</div>
 																<div className="flex space-x-2 mt-2">
 																	<button
-																		onClick={() => handleSetChangesToNotificationStatus({
-																			id: notification.id,
-																			status: 2,
-																			type: notification.type,
-																			endorsementType: notification.endorsement_type || null
-																		})}
+																		onClick={(e) => {
+																			e.stopPropagation();
+																			handleSetChangesToNotificationStatus({
+																				id: notification.id,
+																				status: 2,
+																				type: notification.type,
+																				endorsementType: notification.endorsement_type || null
+																			});
+																		}}
 																		className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md cursor-pointer text-xs font-medium hover:from-blue-600 hover:to-blue-700 transition-all"
 																	>
 																		Approve
 																	</button>
 																	<button
-																		onClick={() => handleSetChangesToNotificationStatus({
-																			id: notification.id,
-																			status: 3,
-																			type: notification.type,
-																			endorsementType: notification.endorsement_type || null
-																		})}
+																		onClick={(e) => {
+																			e.stopPropagation(); // Prevent event bubbling
+																			handleSetChangesToNotificationStatus({
+																				id: notification.id,
+																				status: 3,
+																				type: notification.type,
+																				endorsementType: notification.endorsement_type || null
+																			});
+																		}}
 																		className="px-4 py-1.5 bg-white text-gray-700 rounded-md border border-gray-300 cursor-pointer text-xs font-medium hover:bg-gray-100 transition-all"
 																	>
 																		Decline
@@ -288,23 +314,29 @@ const Appbar = React.memo(() => {
 																</div>
 																<div className="flex space-x-2 mt-2">
 																	<button
-																		onClick={() => handleSetChangesToNotificationStatus({
-																			id: notification.id,
-																			status: 2,
-																			type: notification.type,
-																			endorsementType: notification.endorsement_type || null
-																		})}
+																		onClick={(e) => {
+																			e.stopPropagation(); // Prevent event bubbling
+																			handleSetChangesToNotificationStatus({
+																				id: notification.id,
+																				status: 2,
+																				type: notification.type,
+																				endorsementType: notification.endorsement_type || null
+																			});
+																		}}
 																		className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md cursor-pointer text-xs font-medium hover:from-blue-600 hover:to-blue-700 transition-all"
 																	>
 																		Accept
 																	</button>
 																	<button
-																		onClick={() => handleSetChangesToNotificationStatus({
-																			id: notification.id,
-																			status: 3,
-																			type: notification.type,
-																			endorsementType: notification.endorsement_type || null
-																		})}
+																		onClick={(e) => {
+																			e.stopPropagation(); // Prevent event bubbling
+																			handleSetChangesToNotificationStatus({
+																				id: notification.id,
+																				status: 3,
+																				type: notification.type,
+																				endorsementType: notification.endorsement_type || null
+																			});
+																		}}
 																		className="px-4 py-1.5 bg-white text-gray-700 rounded-md border border-gray-300 cursor-pointer text-xs font-medium hover:bg-gray-100 transition-all"
 																	>
 																		Decline

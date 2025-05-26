@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { PencilSquareIcon, ShareIcon } from '@heroicons/react/20/solid';
 import WorkingStatusBar from '../workingStatus/workingStatusBar';
 import { Portfolio } from '@/app/type/portfolio';
+import { signIn, useSession } from 'next-auth/react';
 
 interface Props {
     owner: boolean;
@@ -23,6 +24,10 @@ const ProfileSummarySection: React.FC<Props> = ({
     toggleSharePortfolio,
     toggleEditPortfolioDialog,
 }) => {
+    const session = useSession();
+    const handleSignIn = async () => {
+        const result = await signIn('google', { redirect: false });
+    };
     return (
         <div className="flex justify-between h-[240px]">
             <div className="w-[68%] bg-white rounded-xl border border-gray-200 shadow-sm p-4 overflow-y-auto">
@@ -62,15 +67,24 @@ const ProfileSummarySection: React.FC<Props> = ({
                         <div className="w-20 bg-[#dfdfdf] h-[2px] mt-1"></div>
                         <div className="text-black mt-2 text-sm flex">
                             <span className="font-bold mr-2">Email:</span>
-                            <p className="text-gray-600">{portfolio.portfolio.email}</p>
+                            {session.data == null ? <div className="blur-sm hover:blur-none transition-all duration-300 text-blue-500 underline cursor-pointer" onClick={handleSignIn}>
+                                Login to see
+                            </div> : <p className="text-gray-600">{portfolio.portfolio.email}</p>
+                            }
                         </div>
                         <div className="text-black mt-2 text-sm flex">
                             <span className="font-bold mr-2">Contact:</span>
-                            <p className="text-gray-600">
-                                {portfolio.portfolio.phone_number
-                                    ? convertPhoneNumberSpacing(portfolio.portfolio.phone_number || '')
-                                    : 'N/A'}
-                            </p>
+                            {session.data == null ? (
+                                <div className="blur-sm hover:blur-none transition-all duration-300 text-blue-500 underline cursor-pointer" onClick={handleSignIn}>
+                                    Login to see
+                                </div>
+                            ) : (
+                                <p className="text-gray-600">
+                                    {portfolio.portfolio.phone_number
+                                        ? convertPhoneNumberSpacing(portfolio.portfolio.phone_number || '')
+                                        : 'N/A'}
+                                </p>)}
+
                         </div>
                         {portfolio.portfolio.role_id === 1 && (
                             <div className="text-black mt-2 text-sm flex">
@@ -78,22 +92,22 @@ const ProfileSummarySection: React.FC<Props> = ({
                                 <p className="text-gray-600">{getMajorName || 'N/A'}</p>
                             </div>
                         )}
-                        <div className='flex items-center'>
-
+                        <div className='flex flex-col sm:flex-row items-start sm:items-center mt-4'>
                             <button
-                                className="mt-4 rounded-xl text-white px-4 py-2 bg-blue-600 flex items-center font-bold cursor-pointer hover:transform hover:scale-105 border-2 border-blue-400"
+                                className="w-full sm:w-auto rounded-xl text-white px-3 py-1.5 sm:px-4 sm:py-2 bg-blue-600 flex items-center justify-center font-bold cursor-pointer hover:scale-105 hover:brightness-105 transition-all duration-200 ease-in-out border-2 border-blue-400 text-xs sm:text-sm"
                                 onClick={toggleSharePortfolio}
                             >
-                                <ShareIcon className="w-5 h-5 mr-2" />
-                                Share Portfolio
+                                <ShareIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
+                                <span className="hidden xl:inline-block">Share Portfolio</span>
+                                <span className="xl:hidden">Share</span>
                             </button>
 
-                            {owner && (
+                            {owner && toggleEditPortfolioDialog && (
                                 <button
-                                    className="mt-4 ml-4 rounded-xl text-white px-4 py-2 bg-[#ffc107] flex items-center font-bold cursor-pointer hover:scale-105 hover:brightness-105 transition-all duration-200 ease-in-out border-2 border-[#ffc107]"
+                                    className="w-full sm:w-auto mt-2 sm:mt-0 sm:ml-3 rounded-xl text-white px-3 py-1.5 sm:px-4 sm:py-2 bg-[#ffc107] flex items-center justify-center font-bold cursor-pointer hover:scale-105 hover:brightness-105 transition-all duration-200 ease-in-out border-2 border-[#ffc107] text-xs sm:text-sm"
                                     onClick={toggleEditPortfolioDialog}
                                 >
-                                    <PencilSquareIcon className="w-5 h-5 mr-2" />
+                                    <PencilSquareIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
                                     Update
                                 </button>
                             )}
