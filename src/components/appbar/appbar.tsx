@@ -10,6 +10,7 @@ import LoginDialog from "@/dialogs/login_dialog/login_dialog";
 import { Ubuntu } from "next/font/google";
 import { Notification } from "@/app/type/notification";
 import { ArrowDown01Icon, BadgeCheckIcon, CheckCircleIcon, ChevronUpIcon } from "lucide-react";
+import { redirect } from "next/navigation";
 
 const ubuntuFont = Ubuntu({
 	subsets: ["latin"],
@@ -219,24 +220,24 @@ const Appbar = React.memo(() => {
 													key={`${notification.id} - ${notification.status} - ${notification.type}}`}
 													className={`px-4 py-3 text-sm border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors ${notification.status === 1 ? "bg-blue-50" : ""}`}
 													onClick={() => {
-														if(notification.type == 2){
-															if(notification.status === 1){
-																if(notification.endorsement_type == 2){
-																	window.location.href = `/project/${notification.project_id}`;
+														if (notification.type == 2) {
+															if (notification.status === 1) {
+																if (notification.endorsement_type == 2) {
+																	redirect(`/project/${notification.project_id}`);
 																} else {
-																	window.location.href = `/portfolio/${notification.owner_google_id}`;
+																	redirect(`/portfolio/${notification.owner_google_id}`);
 																}
 															}
-															else{
-																if(notification.endorsement_type == 2){
-																	window.location.href = `/project/${notification.project_id}`;
+															else {
+																if (notification.endorsement_type == 2) {
+																	redirect(`/project/${notification.project_id}`);
 																} else {
-																	window.location.href = `/portfolio/${notification.owner_google_id}`;
+																	redirect(`/portfolio/${notification.owner_google_id}`);
 																}
 															}
 														}
 														else {
-																window.location.href = `/project/${notification.project_id}`;
+															redirect(`/project/${notification.project_id}`);
 														}
 													}}
 												>

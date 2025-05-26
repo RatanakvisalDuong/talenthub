@@ -13,8 +13,17 @@ const ubuntuFont = Ubuntu({
 export const metadata: Metadata = {
     title: "TalentHub",
     icons: {
-        icon: "/talenthublogo-sm.png",
-    }
+        icon: [
+            {
+                url: "/talenthublogo-sm.png",
+                sizes: "52x52",
+                type: "image/png",
+            },
+        ],
+        shortcut: "/talenthublogo-sm.png",
+        apple: "/talenthublogo-sm.png",
+    },
+    viewport: "width=device-width, initial-scale=1",
 }
 
 
@@ -25,14 +34,14 @@ export default async function RootLayout({
 }) {
     return (
         <html lang="en">
-            {/* <head>
+            <head>
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/talenthublogo-sm.webp" />
                 <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <title>TalentHub</title>
-            </head> */}
+            </head>
             <body className={`${ubuntuFont.className} bg-[#E8E8E8]`}>
                 <SessionProvider>
                     {/* Desktop/Tablet View (>= 900px) */}

@@ -119,7 +119,6 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
                 ).filter(Boolean);
                 setSelectedLanguages(languages);
             }
-            console.log("Project data:", projectData);
             setLoading(false);
         }
     }, [projectData]);
@@ -214,7 +213,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
                 });
             }
 
-            if (projectData.file == null) {
+            if (projectFiles.length > 0) {
                 formData.append('file', projectFiles[0]);
             }
 
@@ -464,7 +463,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
                 <div className="flex justify-between items-center mt-6">
                     <button
                         type="button"
-                        className="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600 hover:cursor-pointer"
+                        className="text-white bg-red-500 px-4 py-2 rounded-xl hover:bg-red-600 hover:cursor-pointer"
                         onClick={() => setShowDeleteConfirmation(true)}
                         disabled={loading}
                     >
@@ -472,7 +471,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
                     </button>
                     <button
                         type="button"
-                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-md hover:bg-green-600 cursor-pointer"
+                        className="ml-auto text-white bg-green-500 px-4 py-2 rounded-xl hover:bg-green-600 cursor-pointer"
                         onClick={handleSaveChanges}
                         disabled={loading}
                     >
@@ -499,14 +498,14 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
                         <p className="text-gray-700 mb-6">Are you sure you want to delete this project? This action cannot be undone.</p>
                         <div className="flex justify-center gap-4">
                             <button
-                                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 hover:cursor-pointer"
+                                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-xl hover:bg-gray-300 hover:cursor-pointer"
                                 onClick={() => setShowDeleteConfirmation(false)}
                                 disabled={loading}
                             >
                                 Cancel
                             </button>
                             <button
-                                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 hover:cursor-pointer"
+                                className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 hover:cursor-pointer"
                                 onClick={handleDeleteProject}
                                 disabled={loading}
                             >
