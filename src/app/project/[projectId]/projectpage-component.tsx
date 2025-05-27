@@ -196,58 +196,73 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
 
                                 {/* Slideshow container */}
                                 <div className="relative w-[85%] overflow-hidden rounded-xl mx-auto h-58 bg-white/30 backdrop-blur-sm border border-white/30 shadow-inner">
-                                    <div
-                                        className="flex transition-transform duration-700 ease-out h-full"
-                                        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-                                    >
-                                        {slidePairs.map((pair, pairIndex) => (
-                                            <div key={pairIndex} className="w-full flex-shrink-0 flex gap-3 p-3 h-full">
-                                                {pair.length === 2 ? (
-                                                    pair.map(slide => (
-                                                        <div key={slide.id} className="w-1/2 group">
-                                                            <div className="relative aspect-[16/9] overflow-hidden rounded-lg shadow-lg border border-white/30 bg-gradient-to-br from-white/20 to-transparent backdrop-blur-sm hover:shadow-xl transition-all duration-500 hover:scale-[1.02]">
-                                                                <img
-                                                                    src={slide.url}
-                                                                    alt={`Project slide ${slide.id}`}
-                                                                    className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
-                                                                />
-                                                                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    {projectData.images && projectData.images.length > 0 ? (
+                                        <>
+                                            <div
+                                                className="flex transition-transform duration-700 ease-out h-full"
+                                                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                                            >
+                                                {slidePairs.map((pair, pairIndex) => (
+                                                    <div key={pairIndex} className="w-full flex-shrink-0 flex gap-3 p-3 h-full">
+                                                        {pair.length === 2 ? (
+                                                            pair.map(slide => (
+                                                                <div key={slide.id} className="w-1/2 group">
+                                                                    <div className="relative aspect-[16/9] overflow-hidden rounded-lg shadow-lg border border-white/30 bg-gradient-to-br from-white/20 to-transparent backdrop-blur-sm hover:shadow-xl transition-all duration-500 hover:scale-[1.02]">
+                                                                        <img
+                                                                            src={slide.url}
+                                                                            alt={`Project slide ${slide.id}`}
+                                                                            className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
+                                                                        />
+                                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                                                    </div>
+                                                                </div>
+                                                            ))
+                                                        ) : (
+                                                            <div className="w-full flex justify-center">
+                                                                <div className="w-1/2 group">
+                                                                    <div className="relative aspect-[16/9] overflow-hidden rounded-lg shadow-lg border border-white/30 bg-gradient-to-br from-white/20 to-transparent backdrop-blur-sm hover:shadow-xl transition-all duration-500 hover:scale-[1.02]">
+                                                                        <img
+                                                                            src={pair[0].url}
+                                                                            alt={`Project slide ${pair[0].id}`}
+                                                                            className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
+                                                                        />
+                                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    ))
-                                                ) : (
-                                                    <div className="w-full flex justify-center">
-                                                        <div className="w-1/2 group">
-                                                            <div className="relative aspect-[16/9] overflow-hidden rounded-lg shadow-lg border border-white/30 bg-gradient-to-br from-white/20 to-transparent backdrop-blur-sm hover:shadow-xl transition-all duration-500 hover:scale-[1.02]">
-                                                                <img
-                                                                    src={pair[0].url}
-                                                                    alt={`Project slide ${pair[0].id}`}
-                                                                    className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
-                                                                />
-                                                                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                                            </div>
-                                                        </div>
+                                                        )}
                                                     </div>
-                                                )}
+                                                ))}
                                             </div>
-                                        ))}
-                                    </div>
 
-                                    {/* Slide indicators */}
-                                    <div className="absolute bottom-4 left-0 right-0 z-10">
-                                        <div className="flex justify-center gap-2">
-                                            {slidePairs.map((_, index) => (
-                                                <button
-                                                    key={index}
-                                                    onClick={() => goToSlide(index)}
-                                                    className={`h-2.5 transition-all duration-300 ease-out hover:scale-110 ${currentSlide === index
-                                                        ? 'bg-gradient-to-r from-blue-500 to-blue-600 w-8 rounded-full shadow-lg shadow-blue-500/30'
-                                                        : 'bg-white/60 hover:bg-white/80 w-2.5 rounded-full backdrop-blur-sm border border-white/30 shadow-sm'
-                                                        }`}
-                                                />
-                                            ))}
+                                            {/* Slide indicators */}
+                                            <div className="absolute bottom-4 left-0 right-0 z-10">
+                                                <div className="flex justify-center gap-2">
+                                                    {slidePairs.map((_, index) => (
+                                                        <button
+                                                            key={index}
+                                                            onClick={() => goToSlide(index)}
+                                                            className={`h-2.5 transition-all duration-300 ease-out hover:scale-110 ${currentSlide === index
+                                                                ? 'bg-gradient-to-r from-blue-500 to-blue-600 w-8 rounded-full shadow-lg shadow-blue-500/30'
+                                                                : 'bg-white/60 hover:bg-white/80 w-2.5 rounded-full backdrop-blur-sm border border-white/30 shadow-sm'
+                                                                }`}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center">
+                                            <div className="text-center">
+                                                <div className="flex items-center justify-center mb-4">
+                                                    <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center mr-3">
+                                                        <i className="fa-regular fa-image text-3xl text-slate-400"></i>
+                                                    </div>
+                                                </div>
+                                                <p className="text-slate-500 font-medium">No images available</p>
+                                            </div>
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
 
                                 {/* Next slide control */}

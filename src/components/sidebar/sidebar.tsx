@@ -65,9 +65,9 @@ export default function Sidebar({
     }, [selectedMajors, selectedRoles, selectedWorkingStatuses, onMajorSelect, onRoleSelect, onWorkingStatusSelect]);
 
     return (
-        <div className="w-max h-screen overflow-y-auto px-2 flex flex-col">
+        <div className="h-screen overflow-y-auto px-4 flex flex-col">
             {session?.user?.name && (
-                <div className="bg-white w-64 rounded-xl p-4 items-center justify-center text-black mb-4 cursor-pointer shadow-sm border border-gray-200 flex-shrink-0">
+                <div className="bg-white w-full rounded-xl p-4 items-center justify-center text-black mb-4 cursor-pointer shadow-sm border border-gray-200 flex-shrink-0">
                     <Link href={`/yourportfolio`}>
                         <p className="w-max m-auto font-bold">{session.user.name || 'N/A'}</p>
                         <div className="rounded-full m-auto mt-4 items-center justify-center flex">
@@ -102,7 +102,7 @@ export default function Sidebar({
 
                 </div>
             )}
-            <div className="bg-white w-64 h-100 rounded-xl shadow-md p-4 overflow-y-auto shadow-sm border border-gray-200">
+            <div className="bg-white w-full h-100 rounded-xl shadow-md p-4 overflow-y-auto shadow-sm border border-gray-200">
                 <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4">
                     <p className="text-md text-black ml-4">Majors:</p>
                 </div>
@@ -120,7 +120,7 @@ export default function Sidebar({
                 ))}
 
                 <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4 mt-4">
-                    <p className="text-md text-black ml-4">Portfolio:</p>
+                    <p className="text-md text-black ml-4">Role:</p>
                 </div>
 
                 {role.map((role) => (
