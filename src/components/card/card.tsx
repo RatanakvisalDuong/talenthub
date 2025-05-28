@@ -57,10 +57,10 @@ export default function Card({ portfolio }: { portfolio: Portfolio }) {
                     </p>
 
                     <div className="text-sm text-gray-600">
-                        <p className="flex items-center justify-center gap-2">
+                        {/* <p className="flex items-center justify-center gap-2">
                             <i className="fas fa-phone text-blue-500"></i>
                             {convertPhoneNumberSpacing(portfolio.phone_number || '') || 'N/A'}
-                        </p>
+                        </p> */}
                         {portfolio.role === 1 && (
                             <p className="gap-2">
                                 <i className="fas fa-graduation-cap text-blue-500 mr-2"></i>

@@ -4,8 +4,8 @@ import React from 'react';
 import Image from 'next/image';
 import { PencilSquareIcon, ShareIcon } from '@heroicons/react/20/solid';
 import WorkingStatusBar from '../workingStatus/workingStatusBar';
-import { Portfolio } from '@/app/type/portfolio';
 import { signIn, useSession } from 'next-auth/react';
+import { Portfolio } from '@/app/type/portfolio';
 
 interface Props {
     owner: boolean;
@@ -68,15 +68,18 @@ const ProfileSummarySection: React.FC<Props> = ({
                         <div className="text-black mt-2 text-sm flex">
                             <span className="font-bold mr-2">Email:</span>
                             <p className="text-gray-600">
-
-                                {portfolio.portfolio.email && (
-                                    <span 
-                                        className="cursor-pointer text-blue-600 hover:underline" 
-                                        onClick={() => window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${portfolio.portfolio.email}`, '_blank')}
-                                    >
-                                        Send an email
-                                    </span>
-                                )}
+                                {session.data == null ? 
+                                    (portfolio.portfolio.email && (
+                                        <span 
+                                            className="cursor-pointer text-blue-600 hover:underline" 
+                                            onClick={() => window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${portfolio.portfolio.email}`, '_blank')}
+                                        >
+                                            Send an email
+                                        </span>
+                                    )) : (
+                                        portfolio.portfolio.email || 'N/A'
+                                    )
+                                }
                             </p>
                         </div>
                         <div className="text-black mt-2 text-sm flex">
