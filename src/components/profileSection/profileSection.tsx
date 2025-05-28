@@ -67,12 +67,16 @@ const ProfileSummarySection: React.FC<Props> = ({
                         <div className="w-20 bg-[#dfdfdf] h-[2px] mt-1"></div>
                         <div className="text-black mt-2 text-sm flex">
                             <span className="font-bold mr-2">Email:</span>
-                            <p
-                                className="text-gray-600 cursor-pointer hover:text-blue-600 hover:underline"
-                                onClick={() => window.location.href = `mailto:${portfolio.portfolio.email}`}
-                            >
-                                {/* {portfolio.portfolio.email} */}
-                                Send Email
+                            <p className="text-gray-600">
+
+                                {portfolio.portfolio.email && (
+                                    <span 
+                                        className="cursor-pointer text-blue-600 hover:underline" 
+                                        onClick={() => window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${portfolio.portfolio.email}`, '_blank')}
+                                    >
+                                        Send an email
+                                    </span>
+                                )}
                             </p>
                         </div>
                         <div className="text-black mt-2 text-sm flex">
