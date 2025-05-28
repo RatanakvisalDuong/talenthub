@@ -172,6 +172,7 @@ const Appbar = React.memo(() => {
 			}
 		);
 		signOut();
+		redirect("/");
 	};
 
 	return (
@@ -408,12 +409,14 @@ const Appbar = React.memo(() => {
 										<Link
 											href="/yourportfolio"
 											className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 transition-colors"
+											onClick={() => setDropdownOpen(false)}
 										>
 											<UserCircleIcon className="h-5 w-5 mr-2 text-blue-500" />
 											Your Portfolio
 										</Link>
 										<button
 											onClick={() => {
+												setDropdownOpen(false);
 												goBackHome();
 											}}
 											className="flex items-center w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 transition-colors"

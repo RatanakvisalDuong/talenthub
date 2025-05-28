@@ -65,7 +65,7 @@ export default function Sidebar({
     }, [selectedMajors, selectedRoles, selectedWorkingStatuses, onMajorSelect, onRoleSelect, onWorkingStatusSelect]);
 
     return (
-        <div className="h-screen overflow-y-auto px-4 flex flex-col">
+        <div className={`flex flex-col px-4 h-full min-h-0 ${session?.user == null ? 'h-max' : 'h-full'}`}>
             {session?.user?.name && (
                 <div className="bg-white w-full rounded-xl p-4 items-center justify-center text-black mb-4 cursor-pointer shadow-sm border border-gray-200 flex-shrink-0">
                     <Link href={`/yourportfolio`}>
@@ -99,57 +99,59 @@ export default function Sidebar({
                         </p>)
                         }
                     </Link>
-
                 </div>
             )}
-            <div className="bg-white w-full h-100 rounded-xl shadow-md p-4 overflow-y-auto shadow-sm border border-gray-200">
-                <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4">
-                    <p className="text-md text-black ml-4">Majors:</p>
+
+            <div className="bg-white w-full rounded-xl p-4 shadow-sm border border-gray-200 flex-1 flex flex-col min-h-0">
+                <div className="overflow-y-auto flex-1 pr-2 min-h-0">
+                    <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4">
+                        <p className="text-md text-black ml-4">Majors:</p>
+                    </div>
+
+                    {majors.map((major) => (
+                        <label key={major.id} className="flex items-center text-black text-sm mt-1">
+                            <input
+                                type="checkbox"
+                                className="mr-2 h-3 w-3"
+                                checked={selectedMajors.includes(major.id)}
+                                onChange={() => handleMajorSelect(major.id)}
+                            />
+                            {major.name}
+                        </label>
+                    ))}
+
+                    <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4 mt-4">
+                        <p className="text-md text-black ml-4">Role:</p>
+                    </div>
+
+                    {role.map((role) => (
+                        <label key={role.id} className="flex items-center text-black text-sm mt-1">
+                            <input
+                                type="checkbox"
+                                className="mr-2 h-3 w-3"
+                                checked={selectedRoles.includes(role.id)}
+                                onChange={() => handleRoleSelect(role.id)}
+                            />
+                            {role.name}
+                        </label>
+                    ))}
+
+                    <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4 mt-4">
+                        <p className="text-md text-black ml-4">Employment Status:</p>
+                    </div>
+
+                    {workingStatus.map((workingStatus) => (
+                        <label key={workingStatus.id} className="flex items-center text-black text-sm mt-1">
+                            <input
+                                type="checkbox"
+                                className="mr-2 h-3 w-3"
+                                checked={selectedWorkingStatuses.includes(workingStatus.id)}
+                                onChange={() => handleWorkingStatusSelect(workingStatus.id)}
+                            />
+                            {workingStatus.name}
+                        </label>
+                    ))}
                 </div>
-
-                {majors.map((major) => (
-                    <label key={major.id} className="flex items-center text-black text-sm mt-1">
-                        <input
-                            type="checkbox"
-                            className="mr-2 h-3 w-3"
-                            checked={selectedMajors.includes(major.id)}
-                            onChange={() => handleMajorSelect(major.id)}
-                        />
-                        {major.name}
-                    </label>
-                ))}
-
-                <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4 mt-4">
-                    <p className="text-md text-black ml-4">Role:</p>
-                </div>
-
-                {role.map((role) => (
-                    <label key={role.id} className="flex items-center text-black text-sm mt-1">
-                        <input
-                            type="checkbox"
-                            className="mr-2 h-3 w-3"
-                            checked={selectedRoles.includes(role.id)}
-                            onChange={() => handleRoleSelect(role.id)}
-                        />
-                        {role.name}
-                    </label>
-                ))}
-
-                <div className="bg-[#C0DDEC] w-full h-8 justify-start items-center flex text-left mb-4 mt-4">
-                    <p className="text-md text-black ml-4">Employment Status:</p>
-                </div>
-
-                {workingStatus.map((workingStatus) => (
-                    <label key={workingStatus.id} className="flex items-center text-black text-sm mt-1">
-                        <input
-                            type="checkbox"
-                            className="mr-2 h-3 w-3"
-                            checked={selectedWorkingStatuses.includes(workingStatus.id)}
-                            onChange={() => handleWorkingStatusSelect(workingStatus.id)}
-                        />
-                        {workingStatus.name}
-                    </label>
-                ))}
             </div>
         </div>
     );

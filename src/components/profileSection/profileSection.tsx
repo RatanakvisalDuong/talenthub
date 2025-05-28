@@ -68,10 +68,10 @@ const ProfileSummarySection: React.FC<Props> = ({
                         <div className="text-black mt-2 text-sm flex">
                             <span className="font-bold mr-2">Email:</span>
                             <p className="text-gray-600">
-                                {session.data == null ? 
+                                {session.data == null ?
                                     (portfolio.portfolio.email && (
-                                        <span 
-                                            className="cursor-pointer text-blue-600 hover:underline" 
+                                        <span
+                                            className="cursor-pointer text-blue-600 hover:underline"
                                             onClick={() => window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${portfolio.portfolio.email}`, '_blank')}
                                         >
                                             Send an email
@@ -82,7 +82,7 @@ const ProfileSummarySection: React.FC<Props> = ({
                                 }
                             </p>
                         </div>
-                        <div className="text-black mt-2 text-sm flex">
+                        {session.data != null && (<div className="text-black mt-2 text-sm flex">
                             <span className="font-bold mr-2">Contact:</span>
                             <p className="text-gray-600">
                                 {portfolio.portfolio.phone_number
@@ -90,6 +90,8 @@ const ProfileSummarySection: React.FC<Props> = ({
                                     : 'N/A'}
                             </p>
                         </div>
+                        )}
+
                         {portfolio.portfolio.role_id === 1 && (
                             <div className="text-black mt-2 text-sm flex">
                                 <span className="font-bold mr-2">Major:</span>
