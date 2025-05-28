@@ -67,24 +67,21 @@ const ProfileSummarySection: React.FC<Props> = ({
                         <div className="w-20 bg-[#dfdfdf] h-[2px] mt-1"></div>
                         <div className="text-black mt-2 text-sm flex">
                             <span className="font-bold mr-2">Email:</span>
-                            {session.data == null ? <div className="blur-sm hover:blur-none transition-all duration-300 text-blue-500 underline cursor-pointer" onClick={handleSignIn}>
-                                Login to see
-                            </div> : <p className="text-gray-600">{portfolio.portfolio.email}</p>
-                            }
+                            <p
+                                className="text-gray-600 cursor-pointer hover:text-blue-600 hover:underline"
+                                onClick={() => window.location.href = `mailto:${portfolio.portfolio.email}`}
+                            >
+                                {/* {portfolio.portfolio.email} */}
+                                Send Email
+                            </p>
                         </div>
                         <div className="text-black mt-2 text-sm flex">
                             <span className="font-bold mr-2">Contact:</span>
-                            {session.data == null ? (
-                                <div className="blur-sm hover:blur-none transition-all duration-300 text-blue-500 underline cursor-pointer" onClick={handleSignIn}>
-                                    Login to see
-                                </div>
-                            ) : (
-                                <p className="text-gray-600">
-                                    {portfolio.portfolio.phone_number
-                                        ? convertPhoneNumberSpacing(portfolio.portfolio.phone_number || '')
-                                        : 'N/A'}
-                                </p>)}
-
+                            <p className="text-gray-600">
+                                {portfolio.portfolio.phone_number
+                                    ? convertPhoneNumberSpacing(portfolio.portfolio.phone_number || '')
+                                    : 'N/A'}
+                            </p>
                         </div>
                         {portfolio.portfolio.role_id === 1 && (
                             <div className="text-black mt-2 text-sm flex">

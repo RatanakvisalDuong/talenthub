@@ -90,7 +90,7 @@ const EditPortfolioDialog = ({
             }
         }
         else {
-            if (selectedMajor == null || selectedWorkingStatus == null || phone == null || about == null) {
+            if (selectedMajor == null || selectedWorkingStatus == null || about == null) {
                 setError("Please fill in all required fields.");
                 return;
             }
