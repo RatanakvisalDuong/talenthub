@@ -38,7 +38,7 @@ const ExperienceSection: React.FC<Props> = ({
                         onClick={toggleAddExperienceDialog}
                         className="flex items-center bg-blue-500 font-semibold py-2 px-4 rounded-xl hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 group cursor-pointer"
                     >
-                        <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
+                        <i className="fas fa-plus group-hover:text-white transition-colors duration-300 text-white"></i>
                     </button>
                 )}
             </div>

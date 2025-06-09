@@ -143,10 +143,10 @@ const AddExperienceDialog = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {loading ? (
-        <div className="bg-white rounded-xl p-6 w-[700px] h-[650px] max-w-full shadow-lg overflow-y-auto z-50 relative flex items-center justify-center">
+        <div className="bg-white rounded-xl p-6 w-[700px] h-[600px] max-w-full shadow-lg overflow-y-auto z-50 relative flex items-center justify-center">
           <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin m-auto" ></div>
         </div>
-      ) : <div className="bg-white rounded-xl p-6 w-[700px] h-[650px] max-w-full shadow-lg overflow-y-auto z-50 relative">
+      ) : <div className="bg-white rounded-xl p-6 w-[700px] h-[600px] max-w-full shadow-lg overflow-y-auto z-50 relative">
         <div className="flex justify-between items-start mb-2">
           <h2 className="text-xl font-bold text-black">Create New Experience</h2>
           <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">

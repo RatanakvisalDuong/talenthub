@@ -17,11 +17,12 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [projectLink, setProjectLink] = useState<string>("");
-    const [projectFiles, setProjectFiles] = useState<File[]>([]);
+    const [projectFile, setProjectFile] = useState<File | null>(null);
     const [projectInstruction, setProjectInstruction] = useState<string>("");
 
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const projectFileInputRef = useRef<HTMLInputElement>(null);
     const [languageInput, setLanguageInput] = useState("");
     const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
@@ -39,7 +40,6 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
         }
         setLanguageInput("");
     };
-
 
     const handleRemoveLanguage = (lang: string) => {
         setSelectedLanguages(selectedLanguages.filter((l) => l !== lang));
@@ -69,6 +69,10 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
         fileInputRef.current?.click();
     };
 
+    const handleProjectFileClick = () => {
+        projectFileInputRef.current?.click();
+    };
+
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (!files) return;
@@ -82,12 +86,21 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
     const handleRemoveImage = (index: number) => {
         setImageFiles(imageFiles.filter((_, i) => i !== index));
     };
+
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
-        if (!files) return;
+        if (!files || files.length === 0) return;
 
-        const newFiles = Array.from(files);
-        setProjectFiles(newFiles);
+        // Only take the first file
+        setProjectFile(files[0]);
+    };
+
+    const handleRemoveProjectFile = () => {
+        setProjectFile(null);
+        // Reset the file input
+        if (projectFileInputRef.current) {
+            projectFileInputRef.current.value = '';
+        }
     };
 
     const handleAddProject = async () => {
@@ -103,8 +116,8 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
         formData.append("description", description);
         formData.append("link", projectLink);
         formData.append("instruction", projectInstruction.toString());
-        if (projectFiles.length > 0) {
-            formData.append("file", projectFiles[0]);
+        if (projectFile) {
+            formData.append("file", projectFile);
         }
 
         if (imageFiles.length > 0) {
@@ -154,7 +167,6 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                 router.refresh();
 
                 setSuccessMessage("Project added successfully!");
-
             }
         }
         catch (error) {
@@ -163,7 +175,6 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
             setError("Failed to upload files. Please try again.");
             return;
         }
-
     }
 
     return (
@@ -172,7 +183,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                 <div className={`bg-white rounded-xl p-6 w-[800px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto flex justify-center items-center`}>
                     <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-blue-500"></div>
                 </div>
-            ) : <div className={`bg-white rounded-xl p-6 w-[850px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto`}>
+            ) : <div className={`bg-white rounded-xl p-6 w-[850px] max-w-full shadow-lg h-[600px] z-50 relative overflow-y-auto`}>
                 <div className="flex justify-between items-start mb-2">
                     <h2 className="text-xl font-bold text-black">Create New Project</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
@@ -242,7 +253,6 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                                 </ul>
                             )}
 
-
                             {/* Display selected languages */}
                             {selectedLanguages.length > 0 && (
                                 <div className="mt-2 flex flex-wrap gap-2">
@@ -274,20 +284,48 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                         />
 
                         <div className="mb-4">
-                            <label htmlFor="fileUpload" className="block text-sm font-medium text-black">
-                                Project Files
+                            <label htmlFor="fileUpload" className="block text-sm font-medium text-black mb-1">
+                                Project File
                             </label>
+                            <button
+                                type="button"
+                                onClick={handleProjectFileClick}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm hover:bg-gray-50 text-left"
+                            >
+                                {projectFile ? "1 file selected" : "Click to upload project file"}
+                            </button>
                             <input
                                 type="file"
-                                id="fileUpload"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black text-sm"
-                                multiple
-                                onChange={(e) => {
-                                    handleFileChange(e);
-                                    setProjectFiles(Array.from(e.target.files || []));
-                                }}
+                                ref={projectFileInputRef}
+                                className="hidden"
+                                onChange={handleFileChange}
                             />
-                            <p className="mt-1 text-xs text-gray-500">Upload project-related files (documents, source code, etc.)</p>
+                            <p className="mt-1 text-xs text-gray-500">Upload a single project-related file (document, source code, etc.)</p>
+
+                            {/* Display uploaded file */}
+                            {projectFile && (
+                                <div className="mt-2">
+                                    <div className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-md">
+                                        <div className="flex items-center space-x-2">
+                                            <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                            <span className="text-sm text-gray-700 truncate max-w-xs">{projectFile.name}</span>
+                                            <span className="text-xs text-gray-500">({(projectFile.size / 1024).toFixed(1)} KB)</span>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={handleRemoveProjectFile}
+                                            className="text-red-500 hover:text-red-700 p-1"
+                                            title="Remove file"
+                                        >
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         {error && (
@@ -329,12 +367,16 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
                                             className="object-cover rounded shadow"
                                             unoptimized
                                         />
-                                        <div
+                                        <button
+                                            type="button"
                                             onClick={() => handleRemoveImage(index)}
-                                            className="absolute top-0 right-0 text-red-500 p-1 rounded-full"
+                                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                                            title="Remove image"
                                         >
-                                            <i className="fas fa-times"></i>
-                                        </div>
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
                                     </div>
                                 ))}
                             </div>

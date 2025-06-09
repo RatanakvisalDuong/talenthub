@@ -169,8 +169,9 @@ export default function HomeComponent(
 
 	return (
 		<div className="bg-[#E8E8E8] w-full h-screen overflow-hidden fixed">
-			<div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex justify-between h-full">
-				<div className="w-[23%]">
+			<div className="max-w-8xl mx-auto px-2 sm:px-4 lg:px-8 py-20 flex justify-between h-full gap-2 sm:gap-4">
+				{/* Sidebar - responsive width */}
+				<div className="w-[30%] sm:w-[25%] lg:w-[23%] xl:w-[20%]">
 					<Sidebar
 						photo={photo || 'https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*'}
 						major={major ? major : 4}
@@ -180,14 +181,16 @@ export default function HomeComponent(
 						onWorkingStatusSelect={handleWorkingStatusSelect}
 					/>
 				</div>
-				<div className="h-[87vh] w-[78%] flex flex-col ">
+				
+				{/* Main content - responsive width */}
+				<div className="h-[87vh] w-[68%] sm:w-[73%] lg:w-[75%] xl:w-[78%] flex flex-col">
 					<SearchBar onSearch={handleSearch} />
-					<div className="flex-grow overflow-y-auto mt-4 pt-2 pb-16 pr-4">
+					<div className="flex-grow overflow-y-auto mt-4 pt-2 pb-16 pr-2 sm:pr-4">
 						{isLoading && displayPortfolios.length === 0 ? (
 							<p className="text-black text-center">Loading portfolios...</p>
 						) : displayPortfolios.length > 0 ? (
 							<>
-								<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-4 gap-4 auto-rows-auto px-2">
+								<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2 sm:gap-4 auto-rows-auto px-1 sm:px-2">
 									{displayPortfolios
 										.filter((portfolio) => {
 											if (searchResults !== null) return true;
@@ -220,7 +223,7 @@ export default function HomeComponent(
 								{hasMore && searchResults === null && (
 									<div className="flex justify-center items-center mt-6">
 										<button
-											className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group disabled:opacity-50"
+											className="bg-blue-500 text-white px-3 sm:px-4 py-2 text-sm sm:text-base rounded-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group disabled:opacity-50"
 											onClick={loadMore}
 											disabled={isLoading}
 										>
@@ -230,7 +233,7 @@ export default function HomeComponent(
 								)}
 							</>
 						) : (
-							<p className="text-black text-center">
+							<p className="text-black text-center text-sm sm:text-base">
 								No portfolios found
 							</p>
 						)}

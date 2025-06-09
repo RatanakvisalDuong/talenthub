@@ -11,6 +11,8 @@ import { Ubuntu } from "next/font/google";
 import { Notification } from "@/app/type/notification";
 import { ArrowDown01Icon, BadgeCheckIcon, CheckCircleIcon, ChevronUpIcon } from "lucide-react";
 import { redirect } from "next/navigation";
+import AddEndorserDialog from "@/app/project/[projectId]/addendorser-dialog";
+import BecomeEndorser from "../becomeEndorser/becomeEndorser";
 
 const ubuntuFont = Ubuntu({
 	subsets: ["latin"],
@@ -23,6 +25,7 @@ const Appbar = React.memo(() => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [notificationDropdownOpen, setNotificationDropdownOpen] = useState(false);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const [isAddEndorserDialogOpen, setIsAddEndorserDialogOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const notificationRef = useRef<HTMLDivElement>(null);
 	const [notification, setNotification] = useState<Notification[]>([]);
@@ -82,8 +85,14 @@ const Appbar = React.memo(() => {
 	}
 
 	const handleLogin = () => {
+		setIsAddEndorserDialogOpen(false);
 		setIsDialogOpen(true);
 	};
+
+	const handleAddEndorser = () => {
+		setIsDialogOpen(false);
+		setIsAddEndorserDialogOpen(true);
+	}
 
 	const closeDialog = () => {
 		setIsDialogOpen(false);
@@ -428,17 +437,30 @@ const Appbar = React.memo(() => {
 								)}
 							</div>
 						) : (
-							<button
-								className="px-5 py-2 text-white rounded-md cursor-pointer hover:bg-blue-600 transition-all shadow-sm font-medium bg-blue-500 border border-blue-400"
-								onClick={handleLogin}
-							>
-								Login
-							</button>
+							<div className="flex items-center space-x-2">
+								<button
+									className="px-5 py-2 text-white rounded-md cursor-pointer hover:bg-green-600 transition-all shadow-sm font-medium bg-green-500 border border-green-400"
+									onClick={handleAddEndorser}
+								>
+									Become Endorser
+								</button>
+								<button
+									className="px-5 py-2 text-white rounded-md cursor-pointer hover:bg-blue-600 transition-all shadow-sm font-medium bg-blue-500 border border-blue-400"
+									onClick={handleLogin}
+								>
+									Login
+								</button>
+							</div>
 						)}
 					</div>
 				</div>
 			</div>
-
+			{isAddEndorserDialogOpen && (
+				<>
+					<div className="fixed inset-0 blur-sm backdrop-blur-md z-40"></div>
+					<BecomeEndorser onClose={() => setIsAddEndorserDialogOpen(false)} />
+				</>
+			)}
 			{isDialogOpen && <div className="fixed inset-0 blur-sm backdrop-blur-md z-40"></div>}
 			<LoginDialog isOpen={isDialogOpen} onClose={closeDialog} />
 		</nav>

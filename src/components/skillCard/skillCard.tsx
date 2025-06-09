@@ -31,10 +31,31 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                             <div className="relative">
                                 <div
                                     className="py-2 px-4 bg-[#C0DDEC] rounded-full flex items-center cursor-pointer"
-                                    onClick={() => toggleDropdown(skill.id)}
+                                    onClick={(e) => {
+										// e.stopPropagation();
+										toggleDropdown(skill.id);
+									}}
+                                    // ref={(node) => {
+									// 	if (node) {
+									// 		// Add click outside listener
+									// 		const handleClickOutside = (event: MouseEvent) => {
+									// 			if (node && !node.contains(event.target as Node) && dropdownOpen[skill.id]) {
+									// 				toggleDropdown(skill.id);
+									// 			}
+									// 		};
+
+									// 		// Attach event listener
+									// 		document.addEventListener('mousedown', handleClickOutside);
+
+									// 		// Clean up
+									// 		return () => {
+									// 			document.removeEventListener('mousedown', handleClickOutside);
+									// 		};
+									// 	}
+									// }}
                                 >
                                     <Image src="/verified.png" alt="Verified" width={20} height={20} className="mr-2" />
-                                    <span className="text-sm text-black">Endorsed</span>
+                                    <span className="text-sm text-black">Endorsed by</span>
                                 </div>
 
                                 {dropdownOpen[skill.id] && (
@@ -42,11 +63,12 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                                         <ul>
                                             {skill.endorsers
                                                 .filter((endorser) => endorser.status_id === 2) // Only show endorsers with status_id === 2
-                                                .map((endorser, idx) => (
+                                                .map((endorser) => (
                                                     <li
                                                         key={endorser.email}
                                                         className="py-1 px-2 text-sm text-gray-800 hover:bg-gray-100 rounded cursor-pointer"
-                                                        onClick={() => {
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
                                                             window.location.href = `/portfolio/${endorser.id}`;
                                                         }}
                                                     >

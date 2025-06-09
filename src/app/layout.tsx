@@ -45,7 +45,7 @@ export default async function RootLayout({
             <body className={`${ubuntuFont.className} bg-[#E8E8E8]`}>
                 <SessionProvider>
                     {/* Desktop/Tablet View (>= 900px) */}
-                    <div className="hidden min-[900px]:block">
+                    <div className="hidden min-[650px]:block">
                         <Appbar />
                         {children}
                     </div>

@@ -32,10 +32,31 @@ const ExperienceCard: React.FC<Props> = ({ experience, index, dropdownOpen, togg
 							<div className="relative">
 								<div
 									className="py-2 px-4 bg-[#C0DDEC] rounded-full flex items-center cursor-pointer"
-									onClick={() => toggleDropdown(experience.id)}
+									onClick={(e) => {
+										e.stopPropagation();
+										toggleDropdown(experience.id);
+									}}
+									ref={(node) => {
+										if (node) {
+											// Add click outside listener
+											const handleClickOutside = (event: MouseEvent) => {
+												if (node && !node.contains(event.target as Node) && dropdownOpen[experience.id]) {
+													toggleDropdown(experience.id);
+												}
+											};
+
+											// Attach event listener
+											document.addEventListener('mousedown', handleClickOutside);
+
+											// Clean up
+											return () => {
+												document.removeEventListener('mousedown', handleClickOutside);
+											};
+										}
+									}}
 								>
 									<Image src="/verified.png" alt="Verified" width={20} height={20} className="mr-2" />
-									<span className="text-sm text-black">Endorsed</span>
+									<span className="text-sm text-black">Endorsed by</span>
 								</div>
 
 								{dropdownOpen[experience.id] && (
@@ -43,16 +64,16 @@ const ExperienceCard: React.FC<Props> = ({ experience, index, dropdownOpen, togg
 										<ul>
 											{experience.endorsers
 												.filter((endorser) => endorser.status_id === 2) // Only show endorsers with status_id === 2
-												.map((endorser, idx) => (
+												.map((endorser) => (
 													<li
 														key={endorser.email}
 														className="py-1 px-2 text-sm text-gray-800 hover:bg-gray-100 rounded cursor-pointer"
-														onClick={() => {
+														onClick={(e) => {
 															window.location.href = `/portfolio/${endorser.id}`;
 														}}
 													>
 														<div className='flex items-center'>
-															<Image src={endorser.photo ||  "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg"} alt="Endorser" width={20} height={20} className="mr-2 rounded-full w-8 h-8" />
+															<Image src={endorser.photo || "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg"} alt="Endorser" width={20} height={20} className="mr-2 rounded-full w-8 h-8" />
 															<p>{endorser.name}</p>
 														</div>
 													</li>
