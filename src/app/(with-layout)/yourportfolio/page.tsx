@@ -1,15 +1,12 @@
 import axios from "axios";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/option";
-import { Portfolio } from "../type/portfolio";
+import { authOptions } from "../../api/auth/[...nextauth]/option";
+import { Portfolio } from "../../type/portfolio";
 import YourPortfolioPageComponent from "./yourportfolio-page";
-import { redirect } from 'next/navigation';
 import BanPage from "@/components/banPage/page";
 import { Suspense } from "react";
-import LoadingScreen from "../../components/loadingScreen/loadingScreen";
-import { signOut } from "next-auth/react";
+import LoadingScreen from "../../../components/loadingScreen/loadingScreen";
 import PageNotFound from "@/components/pagenotfound/page";
-import { ErrorHandling } from "@/dummydata/error";
 import { getErrorById } from "@/utils";
 
 async function PortfolioContent() {

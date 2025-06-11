@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import TextInput from "../textinput/textInput";
+import EndorserInput from "../endorsementInput/endorsementInput";
+import Image from "next/image";
 
 export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
     const [name, setName] = useState("");
@@ -7,6 +9,29 @@ export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
     const [contact, setContact] = useState("");
     const [position, setPosition] = useState("");
     const [company, setCompany] = useState("");
+    const [students, setStudents] = useState<string[]>([]);
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleStudentChanges = (students: string[]) => {
+        setStudents(students);
+    };
+
+    const handleImageClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (!files || files.length === 0) return;
+
+        setImageFile(files[0]);
+        event.target.value = "";
+    };
+
+    const imagePreview = useMemo(() => {
+        return imageFile ? URL.createObjectURL(imageFile) : null;
+    }, [imageFile]);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -59,14 +84,15 @@ export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
                             placeholder="Eg.rduong1@paragoniu.edu.kh"
                         />
 
-                        <div className="flex items-center p-3 mb-4 bg-blue-50 rounded-lg border border-blue-100">
-                            <svg className="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <div className="flex items-center p-1 mb-2 bg-yellow-50 rounded-lg border border-yellow-300">
+                            <svg className="w-3 h-3 text-yellow-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <p className="text-sm text-blue-700">
+                            <p className="text-xs text-yellow-500">
                                 Please input your email address carefully, as we will use it to contact you regarding your application.
                             </p>
                         </div>
+
                         <TextInput
                             id="position"
                             label="Position You Are Working"
@@ -85,68 +111,67 @@ export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
                             placeholder="Eg.Paragon International University"
                         />
 
+                        <EndorserInput
+                            title="Name of Students"
+                            label="Students You Want to Endorse"
+                            existingEndorsers={students}
+                            onEndorserChange={(handleStudentChanges)}
+                            placeholder="Eg.Ratanakisal Duong, Chanphearun Cheam, & Lysa Sorkeo"
+                        />
+
                         {error && (
                             <div className="text-red-500 text-sm ">
                                 {error}
                             </div>
                         )}
                     </form>
-
-                    {/* Right side: Multiple Image Upload
                     <div className="w-2/5">
-                        <label className="block text-sm font-medium text-black mb-1">Upload Images</label>
+                        <label className="block text-sm font-medium text-black mb-1">Upload Certificate Image<span className="text-red-600 ml-2">*</span></label>
                         <button
                             type="button"
                             onClick={handleImageClick}
                             className="px-4 py-2 bg-[#EFEFEF] rounded hover:bg-black mb-2 text-black w-full hover:text-white"
                         >
-                            Upload Images
+                            {imageFile ? "Change Image" : "Upload Image"}
                         </button>
 
                         <input
                             type="file"
                             accept="image/*"
-                            multiple
                             ref={fileInputRef}
                             onChange={handleImageChange}
                             style={{ display: "none" }}
                         />
+                        <div className="flex items-start p-1 mb-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                                <svg className="w-3 h-3 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <div className="text-xs text-yellow-500">
+                                    <p>Please upload something to show your working identification.</p>
+                                </div>
+                            </div>
 
-                        {imagePreviews.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mt-2">
-                                {imagePreviews.map((src, index) => (
-                                    <div key={index} className="relative">
-                                        <Image
-                                            src={src}
-                                            alt={`Selected ${index + 1}`}
-                                            width={96}
-                                            height={96}
-                                            className="object-cover rounded shadow"
-                                            unoptimized
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => handleRemoveImage(index)}
-                                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
-                                            title="Remove image"
-                                        >
-                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                ))}
+                        {imagePreview && (
+                            <div className="mt-2 relative">
+                                <Image
+                                    src={imagePreview}
+                                    alt="Certificate Image"
+                                    width={300}
+                                    height={300}
+                                    className="object-contain rounded shadow mx-auto"
+                                    unoptimized
+                                />
                             </div>
                         )}
-                    </div> */}
+                    </div>
+
                 </div>
                 <div className="flex justify-end mt-2">
                     <button
                         type="submit"
                         className="ml-auto text-white bg-green-500 px-4 py-2 rounded-xl hover:bg-green-600 hover:cursor-pointer "
-                        // onClick={handleAddProject}
                     >
-                        Create Project
+                        Submit Application
                     </button>
                 </div>
             </div>

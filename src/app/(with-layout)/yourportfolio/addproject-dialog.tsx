@@ -9,7 +9,7 @@ import { allLanguages } from "@/dummydata/programmingLanguages";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Project } from "../type/project";
+import { Project } from "../../type/project";
 
 const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMessage, setProjectdata }: { isOpen: boolean; onClose: () => void; onClick: () => void; portfolioId: number; setSuccessMessage: (message: string) => void; setProjectdata: React.Dispatch<React.SetStateAction<Project[]>>; }) => {
     const router = useRouter();

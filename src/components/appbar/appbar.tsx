@@ -11,7 +11,7 @@ import { Ubuntu } from "next/font/google";
 import { Notification } from "@/app/type/notification";
 import { ArrowDown01Icon, BadgeCheckIcon, CheckCircleIcon, ChevronUpIcon } from "lucide-react";
 import { redirect } from "next/navigation";
-import AddEndorserDialog from "@/app/project/[projectId]/addendorser-dialog";
+import AddEndorserDialog from "@/app/(with-layout)/project/[projectId]/addendorser-dialog";
 import BecomeEndorser from "../becomeEndorser/becomeEndorser";
 
 const ubuntuFont = Ubuntu({
@@ -67,8 +67,6 @@ const Appbar = React.memo(() => {
 
 			const newNotifications = response.data || [];
 
-			// Check if we received any new notifications
-			console.log("Fetched notifications:", newNotifications);
 			if (newNotifications.length === 0) {
 				setHasMoreNotifications(false);
 			}
@@ -181,14 +179,14 @@ const Appbar = React.memo(() => {
 			}
 		);
 		signOut();
-		redirect("/");
+		redirect("/home");
 	};
 
 	return (
 		<nav className={`${ubuntuFont.className} bg-white shadow-md w-full fixed top-0 left-0 right-0 z-50`}>
 			<div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex justify-between items-center h-16">
-					<Link className="flex" href="/">
+					<Link className="flex" href="/home">
 						<h1 className="text-3xl font-bold text-black cursor-pointer">
 							Talent
 						</h1>
@@ -439,13 +437,13 @@ const Appbar = React.memo(() => {
 						) : (
 							<div className="flex items-center space-x-2">
 								<button
-									className="px-5 py-2 text-white rounded-md cursor-pointer hover:bg-green-600 transition-all shadow-sm font-medium bg-green-500 border border-green-400"
+									className="px-5 py-2 text-white rounded-xl cursor-pointer hover:bg-green-600 transition-all shadow-sm font-medium bg-green-500 border border-green-400"
 									onClick={handleAddEndorser}
 								>
 									Become Endorser
 								</button>
 								<button
-									className="px-5 py-2 text-white rounded-md cursor-pointer hover:bg-blue-600 transition-all shadow-sm font-medium bg-blue-500 border border-blue-400"
+									className="px-5 py-2 text-white rounded-xl cursor-pointer hover:bg-blue-600 transition-all shadow-sm font-medium bg-blue-500 border border-blue-400"
 									onClick={handleLogin}
 								>
 									Login

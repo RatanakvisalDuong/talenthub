@@ -15,8 +15,8 @@ type Props = {
 const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown, owner, openEditSkillDialog }) => {
     return (
         <div
-            className={`mt-4 text-black ml-4 flex items-start transition-all duration-300 ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
-                } p-4 rounded-xl shadow-md hover:shadow-lg hover:transform hover:scale-105 hover:cursor-pointer`}
+            className={`mt-4 text-black ml-4 flex items-start ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
+                } p-4 rounded-xl shadow-md hover:shadow-lg`}
         >
             <div className="bg-[#5086ed] w-5 h-5 rounded-full mr-6 mt-1 animate-pulse"></div>
 
@@ -35,24 +35,6 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
 										// e.stopPropagation();
 										toggleDropdown(skill.id);
 									}}
-                                    // ref={(node) => {
-									// 	if (node) {
-									// 		// Add click outside listener
-									// 		const handleClickOutside = (event: MouseEvent) => {
-									// 			if (node && !node.contains(event.target as Node) && dropdownOpen[skill.id]) {
-									// 				toggleDropdown(skill.id);
-									// 			}
-									// 		};
-
-									// 		// Attach event listener
-									// 		document.addEventListener('mousedown', handleClickOutside);
-
-									// 		// Clean up
-									// 		return () => {
-									// 			document.removeEventListener('mousedown', handleClickOutside);
-									// 		};
-									// 	}
-									// }}
                                 >
                                     <Image src="/verified.png" alt="Verified" width={20} height={20} className="mr-2" />
                                     <span className="text-sm text-black">Endorsed by</span>
@@ -73,7 +55,7 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                                                         }}
                                                     >
                                                         <div className='flex items-center'>
-                                                            <Image src={endorser.photo || 'https://example.com/default-avatar.png'} alt="Endorser" width={20} height={20} className="mr-2 rounded-full w-8 h-8" />
+                                                            <Image src={endorser.photo || "https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg"} alt="Endorser" width={20} height={20} className="mr-2 rounded-full w-8 h-8" />
                                                             <p>{endorser.name}</p>
                                                         </div>
                                                     </li>

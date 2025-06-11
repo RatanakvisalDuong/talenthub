@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Experience } from '@/app/type/experience';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
@@ -13,10 +13,31 @@ type Props = {
 };
 
 const ExperienceCard: React.FC<Props> = ({ experience, index, dropdownOpen, toggleDropdown, owner, openEditExperienceDialog }) => {
+	const dropdownRef = useRef<HTMLDivElement>(null);
+
+	// Handle click outside to close dropdown
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node) && dropdownOpen[experience.id]) {
+				toggleDropdown(experience.id);
+			}
+		};
+
+		// Add event listener when dropdown is open
+		if (dropdownOpen[experience.id]) {
+			document.addEventListener("mousedown", handleClickOutside);
+		}
+
+		// Cleanup event listener
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [dropdownOpen, experience.id, toggleDropdown]);
+
 	return (
 		<div
-			className={`mt-4 text-black ml-4 flex items-start transition-all duration-300 ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
-				} p-4 rounded-xl shadow-md hover:shadow-lg hover:transform hover:scale-105 cursor-pointer`}
+			className={`mt-4 text-black ml-4 flex items-start  ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
+				} p-4 rounded-xl shadow-md hover:shadow-lg`}
 		>
 			<div className="bg-[#5086ed] w-5 h-5 rounded-full mr-6 mt-1 animate-pulse"></div>
 
@@ -29,30 +50,12 @@ const ExperienceCard: React.FC<Props> = ({ experience, index, dropdownOpen, togg
 							<span>{experience.company_name}</span>
 						</p>
 						{experience.endorsers && experience.endorsers.filter(endorser => endorser.status_id === 2).length > 0 && (
-							<div className="relative">
+							<div className="relative" ref={dropdownRef}>
 								<div
 									className="py-2 px-4 bg-[#C0DDEC] rounded-full flex items-center cursor-pointer"
 									onClick={(e) => {
 										e.stopPropagation();
 										toggleDropdown(experience.id);
-									}}
-									ref={(node) => {
-										if (node) {
-											// Add click outside listener
-											const handleClickOutside = (event: MouseEvent) => {
-												if (node && !node.contains(event.target as Node) && dropdownOpen[experience.id]) {
-													toggleDropdown(experience.id);
-												}
-											};
-
-											// Attach event listener
-											document.addEventListener('mousedown', handleClickOutside);
-
-											// Clean up
-											return () => {
-												document.removeEventListener('mousedown', handleClickOutside);
-											};
-										}
 									}}
 								>
 									<Image src="/verified.png" alt="Verified" width={20} height={20} className="mr-2" />

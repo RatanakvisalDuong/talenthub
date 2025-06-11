@@ -1,6 +1,6 @@
 import { Achievement } from "@/app/type/achievement";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 type Props = {
     owner: boolean
@@ -13,14 +13,53 @@ type Props = {
 const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdit, ableToUpdate }) => {
     console.log("Achievement data:", achievement);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dialogRef = useRef<HTMLDivElement>(null);
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
 
+    // Handle click outside to close dialog
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dialogRef.current && !dialogRef.current.contains(event.target as Node)) {
+                onClose();
+            }
+        };
+
+        // Add event listener
+        document.addEventListener("mousedown", handleClickOutside);
+
+        // Cleanup event listener on component unmount
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [onClose]);
+
+    // Handle click outside for dropdown
+    useEffect(() => {
+        const handleDropdownClickOutside = (event: MouseEvent) => {
+            const dropdownElement = document.querySelector('.dropdown-container');
+            if (dropdownElement && !dropdownElement.contains(event.target as Node) && dropdownOpen) {
+                setDropdownOpen(false);
+            }
+        };
+
+        if (dropdownOpen) {
+            document.addEventListener("mousedown", handleDropdownClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleDropdownClickOutside);
+        };
+    }, [dropdownOpen]);
+
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-auto">
-            <div className="relative bg-white rounded-xl shadow-lg flex flex-col md:flex-row items-start max-w-5xl w-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-auto backdrop-blur-md">
+            <div 
+                ref={dialogRef}
+                className="relative bg-white rounded-xl shadow-lg flex flex-col md:flex-row items-start max-w-5xl w-auto"
+            >
                 <button
                     onClick={onClose}
                     className="absolute top-4 right-4 text-black hover:text-red-500 cursor-pointer z-10"
@@ -64,30 +103,14 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
 
                     <div className="flex items-center justify-between mt-4 w-full">
                         {achievement?.endorsers && achievement.endorsers.filter(endorser => endorser.status_id === 2).length > 0 && (
-                            <div className="relative" ref={(node) => {
-                                // Create a click outside handler
-                                if (node) {
-                                    const handleClickOutside = (event: MouseEvent) => {
-                                        if (node && !node.contains(event.target as Node) && dropdownOpen) {
-                                            setDropdownOpen(false);
-                                        }
-                                    };
-                                
-                                    // Add event listener when dropdown is open
-                                    if (dropdownOpen) {
-                                        document.addEventListener("mousedown", handleClickOutside);
-                                    }
-                                
-                                    // Cleanup event listener
-                                    return () => {
-                                        document.removeEventListener("mousedown", handleClickOutside);
-                                    };
-                                }
-                            }}>
-                                <div className="py-2 px-4 bg-[#C0DDEC] rounded-full flex items-center cursor-pointer mr-4" onClick={(e) => {
-                                    e.stopPropagation();
-                                    toggleDropdown();
-                                }}>
+                            <div className="relative dropdown-container">
+                                <div 
+                                    className="py-2 px-4 bg-[#C0DDEC] rounded-full flex items-center cursor-pointer mr-4" 
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        toggleDropdown();
+                                    }}
+                                >
                                     <Image src="/verified.png" alt="Verified" width={20} height={20} className="mr-2" />
                                     <span className="text-sm text-black font-bold">Endorsed by</span>
                                 </div>

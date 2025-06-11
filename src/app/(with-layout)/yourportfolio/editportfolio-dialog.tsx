@@ -5,9 +5,7 @@ import TextInput from "@/components/textinput/textInput";
 import Image from "next/image";
 import { useRef, useState, useMemo, useEffect } from "react";
 import axios from "axios";
-import { useSession, getSession } from "next-auth/react";
-import { Portfolio } from "../type/portfolio";
-import { error } from "console";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const EditPortfolioDialog = ({
@@ -98,6 +96,11 @@ const EditPortfolioDialog = ({
 
         if (phone && /[a-zA-Z]/.test(phone)) {
             setError("Phone number should not contain any letters.");
+            return;
+        }
+
+        if (phone && /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(phone)) {
+            setError("Phone number should not contain any symbols.");
             return;
         }
         

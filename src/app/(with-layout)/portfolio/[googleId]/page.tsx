@@ -1,9 +1,9 @@
 import axios from "axios";
 import PortfolioPageComponent from "./portfolio-page";
-import { Portfolio } from "../../type/portfolio";
+import { Portfolio } from "../../../type/portfolio";
 import PageNotFound from "@/components/pagenotfound/page";
 import { Suspense } from "react";
-import LoadingScreen from "../../../components/loadingScreen/loadingScreen";
+import LoadingScreen from "../../../../components/loadingScreen/loadingScreen";
 
 async function PortfolioContent({ googleId }: { googleId: string }) {
   try {

@@ -13,8 +13,8 @@ type Props = {
 const EducationCard: React.FC<Props> = ({ education, index, owner, openEditSkillDialog }) => {
     return (
         <div
-            className={`mt-4 text-black ml-4 flex items-start transition-all duration-300 ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
-                } p-4 rounded-lg shadow-md hover:shadow-lg hover:transform hover:scale-105 cursor-pointer`}
+            className={`mt-4 text-black ml-4 flex items-start ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
+                } p-4 rounded-lg shadow-md hover:shadow-lg`}
         >
             <div className="bg-[#5086ed] w-5 h-5 rounded-full mr-6 mt-1 animate-pulse"></div>
 

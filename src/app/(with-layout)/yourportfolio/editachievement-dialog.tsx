@@ -3,7 +3,7 @@ import React, { useState, useRef, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import TextInput from "@/components/textinput/textInput";
-import BigTextInput from "../../components/bigtextinput/bigtextinput";
+import BigTextInput from "../../../components/bigtextinput/bigtextinput";
 import SelectMonthInput from "@/components/selectMonthInput/selectMonthInput";
 import EndorserInput from "@/components/endorsementInput/endorsementInput";
 import axios from "axios";

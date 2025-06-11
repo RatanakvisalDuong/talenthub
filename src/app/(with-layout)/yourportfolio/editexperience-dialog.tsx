@@ -8,8 +8,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import CompanyInput from "@/components/companyInput/companyInput";
-import { Experience } from "../type/experience";
-import { Endorser } from "../type/endorser";
+import { Experience } from "../../type/experience";
+import { Endorser } from "../../type/endorser";
 import { useRouter } from "next/navigation";
 
 const EditExperienceDialog = ({

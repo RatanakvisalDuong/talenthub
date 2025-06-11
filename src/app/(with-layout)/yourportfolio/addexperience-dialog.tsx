@@ -8,7 +8,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import CompanyInput from "@/components/companyInput/companyInput";
-import { Experience } from "../type/experience";
+import { Experience } from "../../type/experience";
 import { useRouter } from "next/navigation";
 
 const AddExperienceDialog = ({

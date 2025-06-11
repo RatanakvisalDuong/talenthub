@@ -6,8 +6,8 @@ import TextInput from "@/components/textinput/textInput";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { Skill } from "../type/skill";
-import { Endorser } from "../type/endorser";
+import { Skill } from "../../type/skill";
+import { Endorser } from "../../type/endorser";
 import { useRouter } from "next/navigation";
 
 const EditSkillDialog = ({

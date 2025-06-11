@@ -6,7 +6,7 @@ import TextInput from "@/components/textinput/textInput";
 import axios from "axios";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { Skill } from "../type/skill";
+import { Skill } from "../../type/skill";
 import { useRouter } from "next/navigation";
 
 const AddSkillDialog = ({

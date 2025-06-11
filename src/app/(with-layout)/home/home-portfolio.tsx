@@ -102,7 +102,6 @@ export default function HomeComponent(
 			return;
 		}
 
-		// Prevent searching the same term again
 		if (name === lastSearchedTerm) {
 			return;
 		}
@@ -132,10 +131,10 @@ export default function HomeComponent(
 	};
 
 	useEffect(() => {
-		if (!searchTerm) {
-			fetchPortfolios(1, true);
-			setSearchResults(null);
-			setLastSearchedTerm('');
+		if (!searchTerm.trim()) {
+			if (portfolios.length === 0 || selectedMajors.length > 0 || selectedRoles.length > 0 || selectedWorkingStatuses.length > 0) {
+				fetchPortfolios(1, true);
+			}
 		}
 	}, [selectedMajors, selectedRoles, selectedWorkingStatuses]);
 
@@ -154,8 +153,10 @@ export default function HomeComponent(
 	const handleSearch = (term: string) => {
 		setSearchTerm(term);
 
-		// Only search if the term has changed from the last searched term
-		if (term !== lastSearchedTerm) {
+		if (!term.trim()) {
+			setSearchResults(null);
+			setLastSearchedTerm('');
+		} else if (term !== lastSearchedTerm) {
 			searchPortfolios(term);
 		}
 	};
