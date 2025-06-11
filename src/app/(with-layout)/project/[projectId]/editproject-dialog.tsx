@@ -8,7 +8,7 @@ import { allLanguages } from "@/dummydata/programmingLanguages";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import TextEditor from "@/app/yourportfolio/text-editor";
+import TextEditor from "../../yourportfolio/text-editor";
 import { useSession } from "next-auth/react";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import RemoveImageDialog from "./removeimage-dialog";
