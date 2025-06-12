@@ -2,7 +2,6 @@
 
 import { UserPlus, Code, XIcon, ChevronRight, ChevronLeft, Globe, Lock } from "lucide-react";
 import { useState, useEffect } from "react";
-import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { ArrowDownTrayIcon, LinkIcon } from "@heroicons/react/24/solid";
 import TextEditor from "../../yourportfolio/text-editor";

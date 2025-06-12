@@ -62,7 +62,7 @@ export default async function RootLayout({
                                 Desktop Required
                             </h2>
                             <p className="text-gray-600 mb-4">
-                                This application does not work on your device. Please use a desktop or tablet with a screen width of at least 900px.
+                                This application does not work on your device. Please use a desktop or tablet with a screen width of at least 650px.
                             </p>
                             <div className="text-sm text-gray-500">
                                 Current screen size is too small

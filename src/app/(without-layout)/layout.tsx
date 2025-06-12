@@ -3,9 +3,6 @@ import "../globals.css";
 import SessionProvider from "@/components/providers/SessionProvider";
 import { Metadata } from "next";
 
-// export const metadata = {
-//   title: 'TalentHub',
-// }
 const ubuntuFont = Ubuntu({
     subsets: ["latin"],
     weight: ["400", "700"],

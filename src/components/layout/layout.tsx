@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import Appbar from '../appbar/appbar';
 
-const Layout = ({ children }: {children: any}) => {
+const Layout = ({ children }: { children: any }) => {
   return (
     <div>
       <Head>
@@ -14,7 +14,7 @@ const Layout = ({ children }: {children: any}) => {
         <Appbar />
         <main>{children}</main>
       </div>
-      
+
       {/* Mobile View (< 900px) - Restriction Message */}
       <div className="block min-[900px]:hidden min-h-screen flex items-center justify-center p-4 bg-[#E8E8E8]">
         <div className="bg-white rounded-lg shadow-lg p-8 text-center max-w-md mx-auto">
@@ -27,7 +27,7 @@ const Layout = ({ children }: {children: any}) => {
             Desktop Required
           </h2>
           <p className="text-gray-600 mb-4">
-            This application does not work on your device. Please use a desktop or tablet with a screen width of at least 900px.
+            This application does not work on your device. Please use a desktop or tablet with a screen width of at least 650px.
           </p>
           <div className="text-sm text-gray-500">
             Current screen size is too small

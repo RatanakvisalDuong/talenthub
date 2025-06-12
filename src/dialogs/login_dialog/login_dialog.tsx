@@ -29,7 +29,7 @@ function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
       <div className="bg-white p-6 rounded-lg shadow-lg w-[500px] text-center relative">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold">Login to Create Your Portfolio</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700" disabled={isLoading}>
+          <button onClick={onClose} className="text-gray-500 hover:text-red-600 cursor-pointer" disabled={isLoading}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -45,8 +45,8 @@ function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
             <span className="font-semibold">Important</span>
           </div>
           <p className="text-sm text-left">
-            Please use your <span className="font-bold">organization email</span> to login. 
-            Personal email domains (gmail.com, yahoo.com, etc.) are not permitted.
+            Please use your <span className="font-bold">Paragon International University email</span> to login. 
+            Personal email domains (gmail.com, yahoo.com, etc.) are not permitted unless you have requested to be an endorser.
           </p>
         </div>
 

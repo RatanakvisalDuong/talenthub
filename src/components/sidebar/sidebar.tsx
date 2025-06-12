@@ -65,7 +65,8 @@ export default function Sidebar({
     }, [selectedMajors, selectedRoles, selectedWorkingStatuses, onMajorSelect, onRoleSelect, onWorkingStatusSelect]);
 
     return (
-        <div className={`flex flex-col px-2 sm:px-4 ${session?.user == null ? 'h-max' : 'h-full'}`}>
+        // <div className={`flex flex-col px-2 sm:px-4 ${session?.user == null ? 'h-max' : 'h-full'}`}>
+        <div className={`flex flex-col px-2 sm:px-4 h-max`}>
             {session?.user?.name && (
                 <div className="bg-white w-full rounded-xl p-2 sm:p-4 items-center justify-center text-black mb-2 sm:mb-4 cursor-pointer shadow-sm border border-gray-200 flex-shrink-0">
                     <Link href={`/yourportfolio`}>
@@ -108,7 +109,7 @@ export default function Sidebar({
             <div className="bg-white w-full rounded-xl p-2 sm:p-4 shadow-sm border border-gray-200 flex-1 flex flex-col h-max min-h-0">
                 <div className="overflow-y-auto flex-1 pr-1 sm:pr-2">
                     <div className="bg-[#C0DDEC] w-full h-6 sm:h-8 justify-start items-center flex text-left mb-2 sm:mb-4">
-                        <p className="text-md sm:text-md text-black ml-2 sm:ml-4">Majors:</p>
+                        <p className="text-md sm:text-md text-black ml-1 sm:ml-2">Majors:</p>
                     </div>
 
                     {majors.map((major) => (
@@ -124,7 +125,7 @@ export default function Sidebar({
                     ))}
 
                     <div className="bg-[#C0DDEC] w-full h-6 sm:h-8 justify-start items-center flex text-left mb-2 sm:mb-4 mt-2 sm:mt-4">
-                        <p className="text-md sm:text-md text-black ml-2 sm:ml-4">Role:</p>
+                        <p className="text-md sm:text-md text-black ml-1 sm:ml-2">Role:</p>
                     </div>
 
                     {role.map((role) => (
@@ -140,7 +141,7 @@ export default function Sidebar({
                     ))}
 
                     <div className="bg-[#C0DDEC] w-full h-6 sm:h-8 justify-start items-center flex text-left mb-2 sm:mb-4 mt-2 sm:mt-4">
-                        <p className="text-md sm:text-md text-black ml-2 sm:ml-4">Employment Status:</p>
+                        <p className="text-md sm:text-md text-black ml-1 sm:ml-2">Employment Status:</p>
                     </div>
 
                     {workingStatus.map((workingStatus) => (

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
 import axios from "axios";
-import { BellIcon, UserGroupIcon } from "@heroicons/react/20/solid";
+import { BellIcon, UserGroupIcon, EnvelopeIcon } from "@heroicons/react/20/solid";
 import { UserCircleIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import LoginDialog from "@/dialogs/login_dialog/login_dialog";
@@ -101,6 +101,12 @@ const Appbar = React.memo(() => {
 		setHasMoreNotifications(true);
 		getNotification();
 		setNotificationDropdownOpen(!notificationDropdownOpen);
+	};
+
+	const handleEnvelopeClick = () => {
+		// Add your envelope/messages functionality here
+		console.log("Envelope clicked - navigate to messages/connections");
+		// For example: redirect("/connections") or redirect("/messages")
 	};
 
 	const mapEndorsementStatus = (statusId: number) => {
@@ -204,197 +210,212 @@ const Appbar = React.memo(() => {
 
 					<div className="flex items-center space-x-6">
 						{isAuthenticated && (
-							<div className="relative mr-4" ref={notificationRef}>
-								<BellIcon
-									className="w-6 h-6 text-gray-700 cursor-pointer"
-									onClick={handleNotificationClick}
-								/>
+							<>
+								{/* Envelope Icon */}
+								<div className="relative">
+									<EnvelopeIcon
+										className="w-6 h-6 text-gray-700 cursor-pointer hover:text-blue-500 transition-colors"
+										onClick={handleEnvelopeClick}
+									/>
+									{/* Optional: Add a badge for unread messages */}
+									{/* <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center -mr-1 -mt-1">
+										3
+									</span> */}
+								</div>
 
-								{notification.filter((notification) => notification.status === 1).length > 0 && (
-									<span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center mr-4">
-										{notification.filter((notification) => notification.status === 1).length}
-									</span>
-								)}
+								{/* Notifications */}
+								<div className="relative mr-4" ref={notificationRef}>
+									<BellIcon
+										className="w-6 h-6 text-gray-700 cursor-pointer hover:text-blue-500 transition-colors"
+										onClick={handleNotificationClick}
+									/>
 
-								{notificationDropdownOpen && (
-									<div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl py-2 z-10 max-h-96 overflow-y-auto border border-gray-200">
-										<div className="px-4 py-2 border-b border-gray-100">
-											<h3 className="font-semibold text-gray-700">Notifications</h3>
-										</div>
+									{notification.filter((notification) => notification.status === 1).length > 0 && (
+										<span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center mr-4">
+											{notification.filter((notification) => notification.status === 1).length}
+										</span>
+									)}
 
-										{notification.length > 0 ? (
-											notification.map((notification) => (
-												<div
-													key={`${notification.id} - ${notification.status} - ${notification.type}}`}
-													className={`px-4 py-3 text-sm border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors ${notification.status === 1 ? "bg-blue-50" : ""}`}
-													onClick={() => {
-														if (notification.type == 2) {
-															if (notification.status === 1) {
-																if (notification.endorsement_type == 2) {
-																	redirect(`/project/${notification.project_id}`);
-																} else {
-																	redirect(`/portfolio/${notification.owner_google_id}`);
+									{notificationDropdownOpen && (
+										<div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl py-2 z-10 max-h-96 overflow-y-auto border border-gray-200">
+											<div className="px-4 py-2 border-b border-gray-100">
+												<h3 className="font-semibold text-gray-700">Notifications</h3>
+											</div>
+
+											{notification.length > 0 ? (
+												notification.map((notification) => (
+													<div
+														key={`${notification.id} - ${notification.status} - ${notification.type}}`}
+														className={`px-4 py-3 text-sm border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors ${notification.status === 1 ? "bg-blue-50" : ""}`}
+														onClick={() => {
+															if (notification.type == 2) {
+																if (notification.status === 1) {
+																	if (notification.endorsement_type == 2) {
+																		redirect(`/project/${notification.project_id}`);
+																	} else {
+																		redirect(`/portfolio/${notification.owner_google_id}`);
+																	}
+																}
+																else {
+																	if (notification.endorsement_type == 2) {
+																		redirect(`/project/${notification.project_id}`);
+																	} else {
+																		redirect(`/portfolio/${notification.owner_google_id}`);
+																	}
 																}
 															}
 															else {
-																if (notification.endorsement_type == 2) {
-																	redirect(`/project/${notification.project_id}`);
-																} else {
-																	redirect(`/portfolio/${notification.owner_google_id}`);
-																}
+																redirect(`/project/${notification.project_id}`);
 															}
-														}
-														else {
-															redirect(`/project/${notification.project_id}`);
-														}
-													}}
-												>
-													{notification.type === 1 ? (
-														notification.status === 1 ? (
-															<div>
-																<div className="flex items-start mb-2">
-																	<div className="bg-blue-100 p-2 rounded-full mr-3">
-																		<UserGroupIcon className="h-4 w-4 text-blue-600" />
+														}}
+													>
+														{notification.type === 1 ? (
+															notification.status === 1 ? (
+																<div>
+																	<div className="flex items-start mb-2">
+																		<div className="bg-blue-100 p-2 rounded-full mr-3">
+																			<UserGroupIcon className="h-4 w-4 text-blue-600" />
+																		</div>
+																		<p className="text-gray-700">
+																			<span className="font-medium">{notification.owner_name}</span> has invited you to collaborate on: <span className="font-medium">Project {notification.title}</span>
+																		</p>
+																	</div>
+																	<div className="flex space-x-2 mt-2">
+																		<button
+																			onClick={(e) => {
+																				e.stopPropagation();
+																				handleSetChangesToNotificationStatus({
+																					id: notification.id,
+																					status: 2,
+																					type: notification.type,
+																					endorsementType: notification.endorsement_type || null
+																				});
+																			}}
+																			className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md cursor-pointer text-xs font-medium hover:from-blue-600 hover:to-blue-700 transition-all"
+																		>
+																			Approve
+																		</button>
+																		<button
+																			onClick={(e) => {
+																				e.stopPropagation(); // Prevent event bubbling
+																				handleSetChangesToNotificationStatus({
+																					id: notification.id,
+																					status: 3,
+																					type: notification.type,
+																					endorsementType: notification.endorsement_type || null
+																				});
+																			}}
+																			className="px-4 py-1.5 bg-white text-gray-700 rounded-md border border-gray-300 cursor-pointer text-xs font-medium hover:bg-gray-100 transition-all"
+																		>
+																			Decline
+																		</button>
+																	</div>
+																</div>
+															) : session.googleId === notification.owner_google_id ? (
+																<div className="flex items-start">
+																	<div className="bg-gray-100 p-2 rounded-full mr-3">
+																		<CheckCircleIcon className="h-4 w-4 text-gray-600" />
 																	</div>
 																	<p className="text-gray-700">
-																		<span className="font-medium">{notification.owner_name}</span> has invited you to collaborate on: <span className="font-medium">Project {notification.title}</span>
+																		<span className="font-medium">{notification.receiver_name}</span> has {mapEndorsementStatus(notification.status).toLowerCase()} your project collaboration invitation for: <span className="font-medium">Project {notification.title}</span>
 																	</p>
 																</div>
-																<div className="flex space-x-2 mt-2">
-																	<button
-																		onClick={(e) => {
-																			e.stopPropagation();
-																			handleSetChangesToNotificationStatus({
-																				id: notification.id,
-																				status: 2,
-																				type: notification.type,
-																				endorsementType: notification.endorsement_type || null
-																			});
-																		}}
-																		className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md cursor-pointer text-xs font-medium hover:from-blue-600 hover:to-blue-700 transition-all"
-																	>
-																		Approve
-																	</button>
-																	<button
-																		onClick={(e) => {
-																			e.stopPropagation(); // Prevent event bubbling
-																			handleSetChangesToNotificationStatus({
-																				id: notification.id,
-																				status: 3,
-																				type: notification.type,
-																				endorsementType: notification.endorsement_type || null
-																			});
-																		}}
-																		className="px-4 py-1.5 bg-white text-gray-700 rounded-md border border-gray-300 cursor-pointer text-xs font-medium hover:bg-gray-100 transition-all"
-																	>
-																		Decline
-																	</button>
-																</div>
-															</div>
-														) : session.googleId === notification.owner_google_id ? (
-															<div className="flex items-start">
-																<div className="bg-gray-100 p-2 rounded-full mr-3">
-																	<CheckCircleIcon className="h-4 w-4 text-gray-600" />
-																</div>
-																<p className="text-gray-700">
-																	<span className="font-medium">{notification.receiver_name}</span> has {mapEndorsementStatus(notification.status).toLowerCase()} your project collaboration invitation for: <span className="font-medium">Project {notification.title}</span>
-																</p>
-															</div>
-														) : (
-															<div className="flex items-start">
-																<div className="bg-gray-100 p-2 rounded-full mr-3">
-																	<CheckCircleIcon className="h-4 w-4 text-gray-600" />
-																</div>
-																<p className="text-gray-700">
-																	You have {mapEndorsementStatus(notification.status).toLowerCase()} <span className="font-medium">{notification.owner_name}</span>'s project collaboration for: <span className="font-medium">Project {notification.title}</span>
-																</p>
-															</div>
-														)
-													) : (
-														notification.status === 1 ? (
-															<div>
-																<div className="flex items-start mb-2">
-																	<div className="bg-indigo-100 p-2 rounded-full mr-3">
-																		<BadgeCheckIcon className="h-4 w-4 text-indigo-600" />
+															) : (
+																<div className="flex items-start">
+																	<div className="bg-gray-100 p-2 rounded-full mr-3">
+																		<CheckCircleIcon className="h-4 w-4 text-gray-600" />
 																	</div>
 																	<p className="text-gray-700">
-																		<span className="font-medium">{notification.owner_name}</span> has requested you to endorse their {mapEndorsementType(notification.endorsement_type).toLowerCase()}: <span className="font-medium">{notification.title}</span>
+																		You have {mapEndorsementStatus(notification.status).toLowerCase()} <span className="font-medium">{notification.owner_name}</span>'s project collaboration for: <span className="font-medium">Project {notification.title}</span>
 																	</p>
 																</div>
-																<div className="flex space-x-2 mt-2">
-																	<button
-																		onClick={(e) => {
-																			e.stopPropagation(); // Prevent event bubbling
-																			handleSetChangesToNotificationStatus({
-																				id: notification.id,
-																				status: 2,
-																				type: notification.type,
-																				endorsementType: notification.endorsement_type || null
-																			});
-																		}}
-																		className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md cursor-pointer text-xs font-medium hover:from-blue-600 hover:to-blue-700 transition-all"
-																	>
-																		Accept
-																	</button>
-																	<button
-																		onClick={(e) => {
-																			e.stopPropagation(); // Prevent event bubbling
-																			handleSetChangesToNotificationStatus({
-																				id: notification.id,
-																				status: 3,
-																				type: notification.type,
-																				endorsementType: notification.endorsement_type || null
-																			});
-																		}}
-																		className="px-4 py-1.5 bg-white text-gray-700 rounded-md border border-gray-300 cursor-pointer text-xs font-medium hover:bg-gray-100 transition-all"
-																	>
-																		Decline
-																	</button>
-																</div>
-															</div>
-														) : session.googleId === notification.owner_google_id ? (
-															<div className="flex items-start">
-																<div className="bg-gray-100 p-2 rounded-full mr-3">
-																	<BadgeCheckIcon className="h-4 w-4 text-gray-600" />
-																</div>
-																<p className="text-gray-700">
-																	<span className="font-medium">{notification.receiver_name}</span> has {mapEndorsementStatus(notification.status).toLowerCase()} your endorsement request for: <span className="font-medium">{notification.title}</span>
-																</p>
-															</div>
+															)
 														) : (
-															<div className="flex items-start">
-																<div className="bg-gray-100 p-2 rounded-full mr-3">
-																	<BadgeCheckIcon className="h-4 w-4 text-gray-600" />
+															notification.status === 1 ? (
+																<div>
+																	<div className="flex items-start mb-2">
+																		<div className="bg-indigo-100 p-2 rounded-full mr-3">
+																			<BadgeCheckIcon className="h-4 w-4 text-indigo-600" />
+																		</div>
+																		<p className="text-gray-700">
+																			<span className="font-medium">{notification.owner_name}</span> has requested you to endorse their {mapEndorsementType(notification.endorsement_type).toLowerCase()}: <span className="font-medium">{notification.title}</span>
+																		</p>
+																	</div>
+																	<div className="flex space-x-2 mt-2">
+																		<button
+																			onClick={(e) => {
+																				e.stopPropagation(); // Prevent event bubbling
+																				handleSetChangesToNotificationStatus({
+																					id: notification.id,
+																					status: 2,
+																					type: notification.type,
+																					endorsementType: notification.endorsement_type || null
+																				});
+																			}}
+																			className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md cursor-pointer text-xs font-medium hover:from-blue-600 hover:to-blue-700 transition-all"
+																		>
+																			Accept
+																		</button>
+																		<button
+																			onClick={(e) => {
+																				e.stopPropagation(); // Prevent event bubbling
+																				handleSetChangesToNotificationStatus({
+																					id: notification.id,
+																					status: 3,
+																					type: notification.type,
+																					endorsementType: notification.endorsement_type || null
+																				});
+																			}}
+																			className="px-4 py-1.5 bg-white text-gray-700 rounded-md border border-gray-300 cursor-pointer text-xs font-medium hover:bg-gray-100 transition-all"
+																		>
+																			Decline
+																		</button>
+																	</div>
 																</div>
-																<p className="text-gray-700">
-																	You have {mapEndorsementStatus(notification.status).toLowerCase()} endorsement for <span className="font-medium">{mapEndorsementType(notification.endorsement_type)} {notification.title}</span>
-																</p>
-															</div>
-														)
-													)}
+															) : session.googleId === notification.owner_google_id ? (
+																<div className="flex items-start">
+																	<div className="bg-gray-100 p-2 rounded-full mr-3">
+																		<BadgeCheckIcon className="h-4 w-4 text-gray-600" />
+																	</div>
+																	<p className="text-gray-700">
+																		<span className="font-medium">{notification.receiver_name}</span> has {mapEndorsementStatus(notification.status).toLowerCase()} your endorsement request for: <span className="font-medium">{notification.title}</span>
+																	</p>
+																</div>
+															) : (
+																<div className="flex items-start">
+																	<div className="bg-gray-100 p-2 rounded-full mr-3">
+																		<BadgeCheckIcon className="h-4 w-4 text-gray-600" />
+																	</div>
+																	<p className="text-gray-700">
+																		You have {mapEndorsementStatus(notification.status).toLowerCase()} endorsement for <span className="font-medium">{mapEndorsementType(notification.endorsement_type)} {notification.title}</span>
+																	</p>
+																</div>
+															)
+														)}
+													</div>
+												))
+											) : (
+												<div className="px-4 py-6 text-sm text-gray-500 flex flex-col items-center justify-center">
+													<BellIcon className="h-8 w-8 text-gray-300 mb-2" />
+													No notifications
 												</div>
-											))
-										) : (
-											<div className="px-4 py-6 text-sm text-gray-500 flex flex-col items-center justify-center">
-												<BellIcon className="h-8 w-8 text-gray-300 mb-2" />
-												No notifications
-											</div>
-										)}
+											)}
 
-										{hasMoreNotifications && notification.length > 0 && (
-											<div className="px-4 py-2">
-												<button
-													className="w-full py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-all text-xs font-medium flex items-center justify-center cursor-pointer"
-													onClick={loadMoreNotifications}
-												>
-													<ArrowDown01Icon className="h-3 w-3 mr-1" />
-													Load More
-												</button>
-											</div>
-										)}
-									</div>
-								)}
-							</div>
+											{hasMoreNotifications && notification.length > 0 && (
+												<div className="px-4 py-2">
+													<button
+														className="w-full py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-all text-xs font-medium flex items-center justify-center cursor-pointer"
+														onClick={loadMoreNotifications}
+													>
+														<ArrowDown01Icon className="h-3 w-3 mr-1" />
+														Load More
+													</button>
+												</div>
+											)}
+										</div>
+									)}
+								</div>
+							</>
 						)}
 
 						{isAuthenticated ? (
@@ -465,4 +486,4 @@ const Appbar = React.memo(() => {
 	);
 });
 
-export default Appbar;
+export default Appbar

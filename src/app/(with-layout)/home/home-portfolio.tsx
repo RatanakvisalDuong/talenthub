@@ -86,7 +86,12 @@ export default function HomeComponent(
 			}
 
 			setCurrentPage(page);
-			setHasMore(newMeta ? newMeta.has_more : newPortfolios.length > 0);
+
+			const shouldHaveMore = newMeta
+				? newMeta.has_more && newPortfolios.length >= 20
+				: newPortfolios.length >= 20;
+
+			setHasMore(shouldHaveMore);
 
 		} catch (error) {
 			console.error("Error fetching portfolios:", error);
@@ -130,13 +135,19 @@ export default function HomeComponent(
 		}
 	};
 
+	// useEffect(() => {
+	// 	if (!searchTerm.trim()) {
+	// 		if (portfolios.length === 0 || selectedMajors.length > 0 || selectedRoles.length > 0 || selectedWorkingStatuses.length > 0) {
+	// 			fetchPortfolios(1, true);
+	// 		}
+	// 	}
+	// }, [selectedMajors, selectedRoles, selectedWorkingStatuses]);
+
 	useEffect(() => {
-		if (!searchTerm.trim()) {
-			if (portfolios.length === 0 || selectedMajors.length > 0 || selectedRoles.length > 0 || selectedWorkingStatuses.length > 0) {
-				fetchPortfolios(1, true);
-			}
+		if (portfolios.length === 0) {
+			fetchPortfolios(1, true);
 		}
-	}, [selectedMajors, selectedRoles, selectedWorkingStatuses]);
+	}, []); // Run only once on component mount
 
 	const handleMajorSelect = (majors: number[]) => {
 		setSelectedMajors(majors);
@@ -171,8 +182,7 @@ export default function HomeComponent(
 	return (
 		<div className="bg-[#E8E8E8] w-full h-screen overflow-hidden fixed">
 			<div className="max-w-8xl mx-auto px-2 sm:px-4 lg:px-8 py-20 flex justify-between h-full gap-2 sm:gap-4">
-				{/* Sidebar - responsive width */}
-				<div className="w-[30%] sm:w-[25%] lg:w-[23%] xl:w-[20%]">
+				<div className="w-[30%] sm:w-[25%] lg:w-[23%] xl:w-[20%] h-[87vh] overflow-y-auto flex-shrink-0">
 					<Sidebar
 						photo={photo || 'https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*'}
 						major={major ? major : 4}
@@ -182,7 +192,7 @@ export default function HomeComponent(
 						onWorkingStatusSelect={handleWorkingStatusSelect}
 					/>
 				</div>
-				
+
 				{/* Main content - responsive width */}
 				<div className="h-[87vh] w-[68%] sm:w-[73%] lg:w-[75%] xl:w-[78%] flex flex-col">
 					<SearchBar onSearch={handleSearch} />
