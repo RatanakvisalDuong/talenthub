@@ -55,7 +55,7 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
     }, [dropdownOpen]);
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-auto backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-auto">
             <div 
                 ref={dialogRef}
                 className="relative bg-white rounded-xl shadow-lg flex flex-col md:flex-row items-start max-w-5xl w-auto"

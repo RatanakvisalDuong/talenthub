@@ -66,7 +66,7 @@ export default function Sidebar({
 
     return (
         // <div className={`flex flex-col px-2 sm:px-4 ${session?.user == null ? 'h-max' : 'h-full'}`}>
-        <div className={`flex flex-col px-2 sm:px-4 h-max`}>
+        <div className={`flex flex-col px-2 sm:px-4 `}>
             {session?.user?.name && (
                 <div className="bg-white w-full rounded-xl p-2 sm:p-4 items-center justify-center text-black mb-2 sm:mb-4 cursor-pointer shadow-sm border border-gray-200 flex-shrink-0">
                     <Link href={`/yourportfolio`}>

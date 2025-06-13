@@ -11,8 +11,8 @@ import { Ubuntu } from "next/font/google";
 import { Notification } from "@/app/type/notification";
 import { ArrowDown01Icon, BadgeCheckIcon, CheckCircleIcon, ChevronUpIcon } from "lucide-react";
 import { redirect } from "next/navigation";
-import AddEndorserDialog from "@/app/(with-layout)/project/[projectId]/addendorser-dialog";
 import BecomeEndorser from "../becomeEndorser/becomeEndorser";
+import InboxDialog from "../inbox/inboxDialog";
 
 const ubuntuFont = Ubuntu({
 	subsets: ["latin"],
@@ -24,8 +24,10 @@ const Appbar = React.memo(() => {
 	const isAuthenticated = status === "authenticated" && session;
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [notificationDropdownOpen, setNotificationDropdownOpen] = useState(false);
+	const [isInboxOpen, setIsInboxOpen] = useState(false);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [isAddEndorserDialogOpen, setIsAddEndorserDialogOpen] = useState(false);
+	const [inboxMessage, setInboxMessage] = useState<InboxMessage[]>([]);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const notificationRef = useRef<HTMLDivElement>(null);
 	const [notification, setNotification] = useState<Notification[]>([]);
@@ -35,6 +37,7 @@ const Appbar = React.memo(() => {
 	useEffect(() => {
 		if (isAuthenticated) {
 			getNotification();
+			getMessage();
 		}
 
 		function handleClickOutside(event: MouseEvent) {
@@ -50,6 +53,23 @@ const Appbar = React.memo(() => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, [session]);
+
+	const getMessage = async () => {
+		try{
+			const response = await axios.get(
+				`${process.env.NEXT_PUBLIC_API_URL}view_incoming_contact`, {
+				headers: {
+					Authorization: `Bearer ${session?.accessToken}`
+				}
+			});
+
+			setInboxMessage(response.data.contact || []);
+			
+		}
+		catch (error) {
+			console.error("Failed to fetch messages:", error);
+		}
+	};
 
 	const getNotification = async () => {
 		try {
@@ -82,6 +102,7 @@ const Appbar = React.memo(() => {
 		}
 	}
 
+
 	const handleLogin = () => {
 		setIsAddEndorserDialogOpen(false);
 		setIsDialogOpen(true);
@@ -104,9 +125,7 @@ const Appbar = React.memo(() => {
 	};
 
 	const handleEnvelopeClick = () => {
-		// Add your envelope/messages functionality here
-		console.log("Envelope clicked - navigate to messages/connections");
-		// For example: redirect("/connections") or redirect("/messages")
+		setIsInboxOpen(true);
 	};
 
 	const mapEndorsementStatus = (statusId: number) => {
@@ -217,10 +236,6 @@ const Appbar = React.memo(() => {
 										className="w-6 h-6 text-gray-700 cursor-pointer hover:text-blue-500 transition-colors"
 										onClick={handleEnvelopeClick}
 									/>
-									{/* Optional: Add a badge for unread messages */}
-									{/* <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center -mr-1 -mt-1">
-										3
-									</span> */}
 								</div>
 
 								{/* Notifications */}
@@ -474,12 +489,24 @@ const Appbar = React.memo(() => {
 					</div>
 				</div>
 			</div>
-			{isAddEndorserDialogOpen && (
-				<>
-					<div className="fixed inset-0 blur-sm backdrop-blur-md z-40"></div>
-					<BecomeEndorser onClose={() => setIsAddEndorserDialogOpen(false)} />
-				</>
-			)}
+			{
+				isAddEndorserDialogOpen && (
+					<>
+						<div className="fixed inset-0 blur-sm backdrop-blur-md z-40"></div>
+						<BecomeEndorser onClose={() => setIsAddEndorserDialogOpen(false)} />
+					</>
+				)
+			}
+
+			{
+				isInboxOpen && (
+					<>
+						<div className="fixed inset-0 blur-sm backdrop-blur-md z-40"></div>
+						<InboxDialog isOpen={isInboxOpen} onClose={() => setIsInboxOpen(false)} googleId={session?.googleId || ''} inbox={inboxMessage} />
+					</>
+				)
+			}
+
 			{isDialogOpen && <div className="fixed inset-0 blur-sm backdrop-blur-md z-40"></div>}
 			<LoginDialog isOpen={isDialogOpen} onClose={closeDialog} />
 		</nav>

@@ -2,11 +2,10 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { PencilSquareIcon, ShareIcon } from '@heroicons/react/20/solid';
+import { PencilSquareIcon, ShareIcon, EnvelopeIcon } from '@heroicons/react/20/solid';
 import WorkingStatusBar from '../workingStatus/workingStatusBar';
 import { signIn, useSession } from 'next-auth/react';
 import { Portfolio } from '@/app/type/portfolio';
-import { EnvelopeIcon } from '@heroicons/react/24/outline';
 import SendContactDialog from '../../app/(with-layout)/portfolio/[googleId]/send-contact-dialog'; // Import the dialog
 
 interface Props {
@@ -28,27 +27,17 @@ const ProfileSummarySection: React.FC<Props> = ({
 }) => {
     const session = useSession();
     
-    // State for the SendContactDialog
     const [showContactDialog, setShowContactDialog] = useState(false);
-    
-    const handleSignIn = async () => {
-        const result = await signIn('google', { redirect: false });
-    };
 
-    // Handler to open the contact dialog
     const handleSendContactClick = () => {
         setShowContactDialog(true);
     };
 
-    // Handler to close the contact dialog
     const handleCloseContactDialog = () => {
         setShowContactDialog(false);
     };
 
-    // Handler for when contact is sent
     const handleSendContact = (message: string) => {
-        // Implement your send contact logic here
-        console.log('Sending contact with message:', message);
         setShowContactDialog(false);
     };
 
@@ -171,7 +160,6 @@ const ProfileSummarySection: React.FC<Props> = ({
                     open={showContactDialog}
                     onClose={handleCloseContactDialog}
                     onSend={handleSendContact}
-                    apiUrl="/api/send-contact" // Update with your actual API URL
                 />
             )}
         </>

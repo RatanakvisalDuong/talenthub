@@ -1,4 +1,5 @@
 import TextInput from "@/components/textinput/textInput";
+import axios from "axios";
 import { useState } from "react";
 
 export default function SendContactDialog({
@@ -6,13 +7,11 @@ export default function SendContactDialog({
     open,
     onClose,
     onSend,
-    apiUrl
 }: {
     googleId: string;
     open: boolean;
     onClose: () => void;
     onSend: (message: string) => void;
-    apiUrl: string;
 }) {
     const [message, setMessage] = useState<string>('');
     const [contact, setContact] = useState<string>('');
@@ -22,13 +21,25 @@ export default function SendContactDialog({
     const [error, setError] = useState<string | null>(null);
 
     const handleSend = async () => {
-        // Validate required fields
         if (!email.trim()) {
             setError('Email is required');
             return;
         }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email.trim())) {
+            setError('Please enter a valid email address');
+            return;
+        }
+        
         if (!contact.trim()) {
             setError('Contact name is required');
+            return;
+        }
+        
+        const phoneRegex = /^[0-9]{9,10}$/;
+        if (!phoneRegex.test(contact.trim())) {
+            setError('Please enter a valid phone number (9-10 digits)');
             return;
         }
 
@@ -36,11 +47,26 @@ export default function SendContactDialog({
         setLoading(true);
 
         try {
-            onSend(message);
-            
-            setEmail('');
-            setContact('');
-            setMessage('');
+            const response = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}send_contact`,
+                {
+                    google_id: googleId,
+                    email: email,
+                    phone_number: contact,
+                },
+            );
+
+            if (response.status === 200) {
+                onSend(message);
+                
+                setEmail('');
+                setContact('');
+                setMessage('');
+                
+                onClose();
+            } else {
+                setError('Failed to send contact information. Please try again.');
+            }
         } catch (err) {
             setError('Failed to send contact information. Please try again.');
         } finally {
@@ -51,11 +77,11 @@ export default function SendContactDialog({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
             {loading ? (
-                <div className="bg-white rounded-md p-6 w-[700px] max-w-full shadow-lg justify-center flex items-center">
+                <div className="bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg justify-center flex items-center">
                     <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
                 </div>
             ) : (
-                <div className="bg-white rounded-md p-6 w-[700px] max-w-full shadow-lg">
+                <div className="bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg">
                     <div className="flex justify-between items-start mb-2">
                         <h2 className="text-xl font-bold text-black">Send Your Contact</h2>
                         <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">

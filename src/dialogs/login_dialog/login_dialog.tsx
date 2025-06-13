@@ -14,7 +14,7 @@ function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
 
   const handleSignIn = async () => {
     setIsLoading(true);
-    setErrorMessage(null); 
+    setErrorMessage(null);
 
     const result = await signIn('google', { redirect: false });
     if (result?.error) {
@@ -45,7 +45,7 @@ function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
             <span className="font-semibold">Important</span>
           </div>
           <p className="text-sm text-left">
-            Please use your <span className="font-bold">Paragon International University email</span> to login. 
+            Please use your <span className="font-bold">Paragon International University email</span> to login.
             Personal email domains (gmail.com, yahoo.com, etc.) are not permitted unless you have requested to be an endorser.
           </p>
         </div>
