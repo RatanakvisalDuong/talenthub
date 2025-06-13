@@ -56,7 +56,7 @@ export default function SendContactDialog({
                 },
             );
 
-            if (response.status === 200) {
+            if (response.status == 200) {
                 onSend(message);
                 
                 setEmail('');

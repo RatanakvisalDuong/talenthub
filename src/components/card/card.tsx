@@ -4,7 +4,6 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import React from 'react';
 import Link from 'next/link';
 import { getMajorName } from '@/dummydata/major';
-import { convertPhoneNumberSpacing } from '@/utils';
 import { useSession } from 'next-auth/react';
 
 interface Portfolio {

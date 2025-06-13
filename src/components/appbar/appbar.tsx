@@ -208,7 +208,7 @@ const Appbar = React.memo(() => {
 	};
 
 	return (
-		<nav className={`${ubuntuFont.className} bg-white shadow-md w-full fixed top-0 left-0 right-0 z-50`}>
+		<nav className={`${ubuntuFont.className} bg-white shadow-md w-full fixed top-0 left-0 right-0 z-10`}>
 			<div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex justify-between items-center h-16">
 					<Link className="flex" href="/home">
@@ -492,7 +492,7 @@ const Appbar = React.memo(() => {
 			{
 				isAddEndorserDialogOpen && (
 					<>
-						<div className="fixed inset-0 blur-sm backdrop-blur-md z-40"></div>
+						<div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40"></div>
 						<BecomeEndorser onClose={() => setIsAddEndorserDialogOpen(false)} />
 					</>
 				)
@@ -501,13 +501,16 @@ const Appbar = React.memo(() => {
 			{
 				isInboxOpen && (
 					<>
-						<div className="fixed inset-0 blur-sm backdrop-blur-md z-40"></div>
+						<div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40"></div>
 						<InboxDialog isOpen={isInboxOpen} onClose={() => setIsInboxOpen(false)} googleId={session?.googleId || ''} inbox={inboxMessage} />
 					</>
 				)
 			}
 
-			{isDialogOpen && <div className="fixed inset-0 blur-sm backdrop-blur-md z-40"></div>}
+			{
+			isDialogOpen &&
+				<div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40"></div>
+			}
 			<LoginDialog isOpen={isDialogOpen} onClose={closeDialog} />
 		</nav>
 	);

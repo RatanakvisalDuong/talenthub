@@ -45,12 +45,11 @@ export default async function RootLayout({
             <body className={`${ubuntuFont.className} bg-[#E8E8E8]`}>
                 <SessionProvider>
                     {/* Desktop/Tablet View (>= 900px) */}
-                    <div className="hidden min-[650px]:block">
+                    <div className="hidden min-[650px]:block ">
                         <Appbar />
                         {children}
                     </div>
                     
-                    {/* Mobile View (< 900px) - Restriction Message */}
                     <div className="block min-[900px]:hidden min-h-screen flex items-center justify-center p-4">
                         <div className="bg-white rounded-lg shadow-lg p-8 text-center max-w-md mx-auto">
                             <div className="mb-4">

@@ -135,19 +135,11 @@ export default function HomeComponent(
 		}
 	};
 
-	// useEffect(() => {
-	// 	if (!searchTerm.trim()) {
-	// 		if (portfolios.length === 0 || selectedMajors.length > 0 || selectedRoles.length > 0 || selectedWorkingStatuses.length > 0) {
-	// 			fetchPortfolios(1, true);
-	// 		}
-	// 	}
-	// }, [selectedMajors, selectedRoles, selectedWorkingStatuses]);
-
 	useEffect(() => {
 		if (portfolios.length === 0) {
 			fetchPortfolios(1, true);
 		}
-	}, []); // Run only once on component mount
+	}, []); 
 
 	const handleMajorSelect = (majors: number[]) => {
 		setSelectedMajors(majors);
@@ -193,7 +185,6 @@ export default function HomeComponent(
 					/>
 				</div>
 
-				{/* Main content - responsive width */}
 				<div className="h-[87vh] w-[68%] sm:w-[73%] lg:w-[75%] xl:w-[78%] flex flex-col">
 					<SearchBar onSearch={handleSearch} />
 					<div className="flex-grow overflow-y-auto mt-4 pt-2 pb-16 pr-2 sm:pr-4">

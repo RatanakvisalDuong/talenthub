@@ -38,12 +38,11 @@ const InboxDialog = ({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
             {loading ? (
-                <div className="bg-white rounded-xl p-6 w-[600px] h-[700px] max-w-full shadow-lg flex items-center justify-center">
+                <div className="bg-white rounded-xl p-6 w-[600px] h-[80%] max-w-full shadow-lg flex items-center justify-center">
                     <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
                 </div>
             ) : (
-                <div className="bg-white rounded-xl p-6 w-[600px] h-[700px] max-w-full shadow-lg relative flex flex-col">
-                    {/* Header */}
+                <div className="bg-white rounded-xl p-6 w-[600px] h-[80%] max-w-full shadow-lg relative flex flex-col">
                     <div className="flex justify-between items-start mb-4">
                         <div>
                             <h2 className="text-xl font-bold text-black">Inbox</h2>

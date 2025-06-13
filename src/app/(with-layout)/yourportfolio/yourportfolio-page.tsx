@@ -435,7 +435,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                 </div>
             </div>
             {(openAddProjectDialog || openAddSkillDialog || openAddExpereinceDialog || openAddEducationDialog || openAddCertificateDialog || openEditSkillDialog || viewCertificateDialog || openEditPortfolioDialog || openEditEducationDialog || openEditExperienceDialog || editCertificateDialog) && (
-                <div className="fixed inset-0 blur-sm backdrop-blur-md z-40" />
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40" />
             )}
 
             {openAddProjectDialog && (
