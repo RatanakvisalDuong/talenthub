@@ -78,7 +78,6 @@ const InboxDialog = ({
                             inbox.map((message, index) => (
                                 <div key={message.id} className="flex justify-start">
                                     <div className="w-full">
-                                        {/* Contact Info Bubble */}
                                         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
                                             <div className="flex items-center mb-3">
                                                 <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center mr-3">
@@ -91,7 +90,6 @@ const InboxDialog = ({
                                                     <p className="text-xs text-gray-500">{formatTime(message.created_at)}</p>
                                                 </div>
                                             </div>
-
                                             <div className="space-y-1">
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center">

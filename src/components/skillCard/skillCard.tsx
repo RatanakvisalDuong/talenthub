@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Skill } from '@/app/type/skill';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
@@ -13,6 +13,29 @@ type Props = {
 };
 
 const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown, owner, openEditSkillDialog }) => {
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                // Close the dropdown if it's open and click is outside
+                if (dropdownOpen[skill.id]) {
+                    toggleDropdown(skill.id);
+                }
+            }
+        }
+
+        // Only add event listener if dropdown is open
+        if (dropdownOpen[skill.id]) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        // Cleanup event listener
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [dropdownOpen, skill.id, toggleDropdown]);
+
     return (
         <div
             className={`mt-4 text-black ml-4 flex items-start ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-50'
@@ -28,13 +51,13 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                         </p>
 
                         {skill.endorsers && skill.endorsers.filter(endorser => endorser.status_id === 2).length > 0 && (
-                            <div className="relative">
+                            <div className="relative" ref={dropdownRef}>
                                 <div
                                     className="py-2 px-4 bg-[#C0DDEC] rounded-full flex items-center cursor-pointer"
                                     onClick={(e) => {
-										// e.stopPropagation();
-										toggleDropdown(skill.id);
-									}}
+                                        e.stopPropagation();
+                                        toggleDropdown(skill.id);
+                                    }}
                                 >
                                     <Image src="/verified.png" alt="Verified" width={20} height={20} className="mr-2" />
                                     <span className="text-sm text-black">Endorsed by</span>

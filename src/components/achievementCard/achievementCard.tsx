@@ -29,7 +29,7 @@ export default function AchievementCard({ achievement, onClick }: { achievement:
 				Issued Date: {achievement.issue_month} {achievement.issue_year}
 			</p>
 			
-			<div className='w-full max-w-[160px] sm:max-w-[180px] md:max-w-[200px] lg:max-w-[220px] h-[80px] sm:h-[100px] md:h-[120px] lg:h-[130px] mt-1 sm:mt-2'>
+			<div className='w-full max-w-[160px] sm:max-w-[180px] md:max-w-[200px] lg:max-w-[220px] h-[100px] sm:h-[100px] md:h-[120px] lg:h-[150px] mt-1 sm:mt-2'>
 				<Image
 					src={achievement.image}
 					alt="Certificate"

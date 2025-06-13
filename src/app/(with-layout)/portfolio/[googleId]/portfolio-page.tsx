@@ -55,8 +55,9 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
     }
 
     const toggleSharePortfolio = () => {
+        const currentUrl = window.location.href;
         displaySuccessMessage("Portfolio link copied to clipboard!");
-        navigator.clipboard.writeText(`http://localhost:3000/portfolio/${portfolio.portfolio.google_id}`);
+        navigator.clipboard.writeText(currentUrl);
     }
 
     const displaySuccessMessage = (message: string) => {
