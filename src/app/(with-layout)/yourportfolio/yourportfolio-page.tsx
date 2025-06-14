@@ -241,66 +241,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                 )}
                 <div className="flex justify-between w-full">
                     <div className="max-h-[87vh] w-[30%] flex flex-col justify-between overflow-y-auto">
-                        {/* <div className={`${expandedProject ? 'h-auto' : 'h-[32%]'} bg-white rounded-xl shadow-sm p-4 relative border border-gray-200 shadow-sm`}>
-                            <div className="flex justify-between items-center">
-                                <div className="flex items-center">
-                                    <i className="fas fa-folder text-blue-500 mr-2"></i>
-                                    <p className="font-bold text-lg text-black">Projects</p>
-                                </div>
-                                <button
-                                    className="flex items-center bg-blue-500 font-semibold py-2 px-4 rounded-xl cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group"
-                                    onClick={() => toggleAddProjectDialog()}
-                                >
-                                    <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
-                                </button>
-                            </div>
-                            <div className="w-25 bg-[#dfdfdf] h-[2px] mt-1"></div>
-                            {projectData.length > 0 ? (
-                                <>
-                                    {projectData
-                                        .slice(0, expandedProject ? projectData.length : 2)
-                                        .map((project) => (
-                                            <ProjectCard key={project.project_id} project={project} />
-                                        ))}
-
-                                    {projectData.length > 2 && (
-                                        <div className={`h-40px ${projectData.length > 2 ? 'block' : 'hidden'}`}>
-                                            <button
-                                                onClick={toggleDropdownProject}
-                                                className="mt-4 text-blue-400 hover:underline w-full mx-auto font-semibold cursor-pointer"
-                                            >
-                                                {expandedProject ? 'See Less' : 'See More'}
-                                            </button>
-                                        </div>
-                                    )}
-                                </>
-                            ) : (
-                                <p className="justify-center items-center flex text-gray-400">No projects available</p>
-                            )}
-                        </div> */}
                         <ProjectsSection portfolio={portfolio} owner={true} addProject={toggleAddProjectDialog} />
-                        {/* <div className={`h-[65%] bg-white rounded-xl shadow-sm p-4 ${expandedProject ? 'mt-10' : 'mt-0'} overflow-y-auto border border-gray-200`}>
-                            <div className="flex justify-between items-center">
-                                <div className="flex items-center">
-                                    <i className="fas fa-trophy text-blue-500 mr-2"></i>
-                                    <p className="text-black font-bold text-lg">Achievements & Certificate</p>
-                                </div>
-                                <button className="flex items-center bg-blue-500 font-semibold py-2 px-4 rounded-xl cursor-pointer hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group" onClick={toggleAddCertificateDialog}>
-                                    <i className="fas fa-plus group-hover:text-white transition-colors duration-300"></i>
-                                </button>
-                            </div>
-                            <div className="w-70 bg-[#dfdfdf] h-[2px] mt-1"></div>
-                            {Array.isArray(achievementData) && achievementData.length === 0 ? (
-                                <p className="text-gray-400 text-md mt-4 justify-center items-center flex">No achievement & certificate available</p>
-                            ) : (
-                                Array.isArray(achievementData) && achievementData.length > 0 && (
-                                    achievementData.map((achievement) => (
-                                        <AchievementCard key={achievement.id} achievement={achievement} onClick={() => toggleCertificateDialog(achievement)}
-                                        />
-                                    ))
-                                )
-                            )}
-                        </div> */}
                         <AchievementsSection
                             portfolio={portfolio}
                             owner={true}
@@ -359,7 +300,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                         : <div className="flex flex-col items-center justify-center h-full">
 
                                             <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl mx-auto mb-3 flex items-center justify-center">
-                                                <i className="fa-solid fa-cogs text-slate-400 text-xl" />
+                                                <i className="fas fa-cogs text-slate-400 text-xl" />
                                             </div>
                                             <p className="text-gray-400 text-sm">No skill available</p>
                                         </div>
@@ -367,7 +308,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                                 : <div className="flex flex-col items-center justify-center h-full">
 
                                     <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl mx-auto mb-3 flex items-center justify-center">
-                                        <i className="fa-solid fa-cogs text-slate-400 text-xl" />
+                                        <i className="fas fa-cogs text-slate-400 text-xl" />
                                     </div>
                                     <p className="text-gray-400 text-sm">No skill available</p>
                                 </div>

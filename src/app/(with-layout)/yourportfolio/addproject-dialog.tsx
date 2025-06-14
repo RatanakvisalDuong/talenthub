@@ -178,12 +178,12 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 flex z-50 items-center justify-center">
             {loading ? (
-                <div className={`bg-white rounded-xl p-6 w-[800px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto flex justify-center items-center`}>
+                <div className={`bg-white rounded-xl p-6 w-[800px] max-w-full shadow-lg h-[650px] relative overflow-y-auto flex justify-center items-center`}>
                     <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-blue-500"></div>
                 </div>
-            ) : <div className={`bg-white rounded-xl p-6 w-[850px] max-w-full shadow-lg h-[600px] z-50 relative overflow-y-auto`}>
+            ) : <div className={`bg-white rounded-xl p-6 w-[850px] max-w-full shadow-lg h-[600px]  relative overflow-y-auto`}>
                 <div className="flex justify-between items-start mb-2">
                     <h2 className="text-xl font-bold text-black">Create New Project</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">

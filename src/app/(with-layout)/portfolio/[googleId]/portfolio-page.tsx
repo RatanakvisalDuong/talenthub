@@ -120,7 +120,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                                 <div className="flex flex-col items-center justify-center h-full">
 
                                     <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl mx-auto mb-3 flex items-center justify-center">
-                                        <i className="fa-solid fa-cog text-slate-400 text-xl" />
+                                        <i className="fas fa-cogs text-slate-400 text-xl" />
                                     </div>
                                     <p className="text-gray-400 text-sm">No skill available</p>
                                 </div>
