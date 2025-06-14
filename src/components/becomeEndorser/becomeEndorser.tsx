@@ -43,15 +43,6 @@ export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
             return;
         }
 
-        if (!/^[a-zA-Z\s]+$/.test(name)) {
-            setError("Name can only contain letters and spaces.");
-            return;
-        }
-        if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
-            setError("Please enter a valid email address.");
-            return;
-        }
-
         if (!imageFile) {
             setError("Please upload your working identification image.");
             return;
@@ -68,14 +59,13 @@ export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
         formData.append("company", company);
         formData.append("image", imageFile);
 
-        for (var i = 0; i < students.length; i++) {
+        for(var i = 0; i < students.length; i++) {
             formData.append("student_name[]", students[i]);
         }
+        
         try {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}become_endorser`, formData);
-
             if (response.status === 200) {
-                // Show success message for 2.5 seconds
                 setShowSuccess(true);
                 setTimeout(() => {
                     setShowSuccess(false);
@@ -93,13 +83,22 @@ export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div 
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            onClick={() => {
+                if (showSuccess) {
+                    // Close immediately when clicking outside during success message
+                    setShowSuccess(false);
+                    onClose();
+                }
+            }}
+        >
             {loading ? (
-                <div className={`bg-white rounded-xl p-6 w-[800px] max-w-full shadow-lg h-[610px] z-50 relative overflow-y-auto flex justify-center items-center`}>
+                <div className={`bg-white rounded-xl p-6 w-[800px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto flex justify-center items-center`}>
                     <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-blue-500"></div>
                 </div>
             ) : showSuccess ? (
-                <div className={`bg-white rounded-xl p-6 w-[800px] max-w-full shadow-lg h-[610px] z-50 relative overflow-y-auto flex flex-col justify-center items-center`}>
+                <div className={`bg-white rounded-xl p-6 w-[800px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto flex flex-col justify-center items-center`}>
                     <div className="text-center">
                         <div className="mb-4">
                             <svg className="mx-auto h-16 w-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,7 +110,7 @@ export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
                     </div>
                 </div>
             ) : (
-                <div className={`bg-white rounded-xl p-6 w-[850px] max-w-full shadow-lg h-[610px] z-50 relative overflow-y-auto`}>
+                <div className={`bg-white rounded-xl p-6 w-[850px] max-w-full shadow-lg h-[600px] z-50 relative overflow-y-auto`}>
                     <div className="flex justify-between items-start mb-2">
                         <h2 className="text-xl font-bold text-black">Become Endorser Application</h2>
                         <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
@@ -237,7 +236,7 @@ export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
                     </div>
                     <div className="flex justify-end mt-2">
                         <button
-                            onClick={becomeEndorser}
+                        onClick={becomeEndorser}
                             type="submit"
                             className="ml-auto text-white bg-green-500 px-4 py-2 rounded-xl hover:bg-green-600 hover:cursor-pointer "
                         >

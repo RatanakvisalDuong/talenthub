@@ -19,6 +19,7 @@ export default function SendContactDialog({
 
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
     const handleSend = async () => {
         if (!email.trim()) {
@@ -57,13 +58,18 @@ export default function SendContactDialog({
             );
 
             if (response.status == 200) {
-                onSend(message);
-                
-                setEmail('');
-                setContact('');
-                setMessage('');
-                
-                onClose();
+                // Show success message for 2.5 seconds
+                setShowSuccess(true);
+                setTimeout(() => {
+                    setShowSuccess(false);
+                    onSend(message);
+                    
+                    setEmail('');
+                    setContact('');
+                    setMessage('');
+                    
+                    onClose();
+                }, 2500);
             } else {
                 setError('Failed to send contact information. Please try again.');
             }
@@ -75,13 +81,47 @@ export default function SendContactDialog({
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
+        <div 
+            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
+            onClick={() => {
+                if (showSuccess) {
+                    // Close immediately when clicking outside during success message
+                    setShowSuccess(false);
+                    onSend(message);
+                    setEmail('');
+                    setContact('');
+                    setMessage('');
+                    onClose();
+                }
+            }}
+        >
             {loading ? (
-                <div className="bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg justify-center flex items-center">
+                <div 
+                    className="bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg justify-center flex items-center"
+                    onClick={(e) => e.stopPropagation()}
+                >
                     <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
                 </div>
+            ) : showSuccess ? (
+                <div 
+                    className="bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg flex flex-col justify-center items-center"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div className="text-center">
+                        <div className="mb-4">
+                            <svg className="mx-auto h-16 w-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 className="text-2xl font-bold text-green-600 mb-2">Contact Sent Successfully!</h3>
+                        <p className="text-gray-600">Your contact information has been sent successfully.</p>
+                    </div>
+                </div>
             ) : (
-                <div className="bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg">
+                <div 
+                    className="bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg"
+                    onClick={(e) => e.stopPropagation()}
+                >
                     <div className="flex justify-between items-start mb-2">
                         <h2 className="text-xl font-bold text-black">Send Your Contact</h2>
                         <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
