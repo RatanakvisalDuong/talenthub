@@ -202,8 +202,18 @@ const AddCertificateDialog = ({ isOpen, onClose, onClick, portfolioId, handleUpd
                             onClick={handleImageClick}
                             className="px-4 py-2 bg-[#EFEFEF] rounded hover:bg-black mb-2 text-black w-full hover:text-white"
                         >
-                            {imageFile ? "Change Image" : "Upload Image"}
+                            {imageFile ? "Change Image" : "Upload Image (MAX 4MB)"}
                         </button>
+
+                        <div className="flex items-start p-1 mb-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                            <svg className="w-3 h-3 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div className="text-xs text-yellow-500">
+                                <p>Please upload your certificate.</p>
+                                <p>Accepted formats: JPEG, PNG, JPG, GIF, SVG (Max 4MB)</p>
+                            </div>
+                        </div>
 
                         <input
                             type="file"

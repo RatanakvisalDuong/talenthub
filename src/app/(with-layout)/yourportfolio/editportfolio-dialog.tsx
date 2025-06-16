@@ -259,7 +259,7 @@ const EditPortfolioDialog = ({
                             onClick={handleImageClick}
                             className="px-4 py-2 bg-[#EFEFEF] rounded hover:bg-black mb-2 text-black w-full hover:text-white"
                         >
-                            Upload Images
+                            Upload Images (Max 4MB)
                         </button>
 
                         <input
@@ -275,6 +275,7 @@ const EditPortfolioDialog = ({
                             </svg>
                             <div className="text-xs text-yellow-500">
                                 <p>Please upload a professional picture of you.</p>
+                                <p>Accepted formats: JPEG, PNG, JPG, GIF, SVG (Max 4MB)</p>
                             </div>
                         </div>
 

@@ -25,11 +25,38 @@ export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
         fileInputRef.current?.click();
     };
 
+    const validateImageFile = (file: File): string | null => {
+        // Check file size (4MB = 4 * 1024 * 1024 bytes)
+        const maxSize = 4 * 1024 * 1024;
+        if (file.size > maxSize) {
+            return "Image file size must be less than 4MB.";
+        }
+
+        // Check file format
+        const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/svg+xml'];
+        if (!allowedFormats.includes(file.type)) {
+            return "Please upload a valid image file (JPEG, PNG, JPG, GIF, or SVG).";
+        }
+
+        return null;
+    };
+
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (!files || files.length === 0) return;
 
-        setImageFile(files[0]);
+        const file = files[0];
+        const validationError = validateImageFile(file);
+        
+        if (validationError) {
+            setError(validationError);
+            event.target.value = "";
+            return;
+        }
+
+        // Clear any previous errors
+        setError("");
+        setImageFile(file);
         event.target.value = "";
     };
 
@@ -63,6 +90,7 @@ export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
             formData.append("student_name[]", students[i]);
         }
         
+
         try {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}become_endorser`, formData);
             if (response.status === 200) {
@@ -194,18 +222,18 @@ export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
                             )}
                         </form>
                         <div className="w-2/5">
-                            <label className="block text-sm font-medium text-black mb-1">Upload Certificate Image<span className="text-red-600 ml-2">*</span></label>
+                            <label className="block text-sm font-medium text-black mb-1">Upload Image<span className="text-red-600 ml-2">*</span></label>
                             <button
                                 type="button"
                                 onClick={handleImageClick}
                                 className="px-4 py-2 bg-[#EFEFEF] rounded hover:bg-black mb-2 text-black w-full hover:text-white"
                             >
-                                {imageFile ? "Change Image" : "Upload Image"}
+                                {imageFile ? "Change Image" : "Upload Image (Max 4MB)"}
                             </button>
 
                             <input
                                 type="file"
-                                accept="image/*"
+                                accept="image/jpeg,image/jpg,image/png,image/gif,image/svg+xml"
                                 ref={fileInputRef}
                                 onChange={handleImageChange}
                                 style={{ display: "none" }}
@@ -215,7 +243,8 @@ export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <div className="text-xs text-yellow-500">
-                                    <p>Please upload something to show your working identification.</p>
+                                    <p>Please upload your working identification image.</p>
+                                    <p>Accepted formats: JPEG, PNG, JPG, GIF, SVG (Max 4MB)</p>
                                 </div>
                             </div>
 

@@ -63,7 +63,7 @@ const Appbar = React.memo(() => {
 				}
 			});
 
-			setInboxMessage(response.data.contact || []);
+			setInboxMessage(response.data.data || []);
 			
 		}
 		catch (error) {
