@@ -43,7 +43,6 @@ export default function TextEditor({
 
             if (initialContent) {
                 q.clipboard.dangerouslyPasteHTML(initialContent);
-                console.log(initialContent)
             }
 
             q.on("text-change", () => {

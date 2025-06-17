@@ -11,7 +11,6 @@ type Props = {
 };
 
 const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdit, ableToUpdate }) => {
-    console.log("Achievement data:", achievement);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dialogRef = useRef<HTMLDivElement>(null);
 

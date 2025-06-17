@@ -16,7 +16,6 @@ async function ProjectContent({ projectId }: { projectId: string }) {
       `${process.env.NEXT_PUBLIC_API_URL}view_project_detail/${projectId}`
     );
     projectData = response.data;
-    console.log("Project Data:", projectData);
     
     if (response.data.user_status === 0) {
       return <PageNotFound />;

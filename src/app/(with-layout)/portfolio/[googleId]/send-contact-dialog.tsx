@@ -146,7 +146,7 @@ export default function SendContactDialog({
                         id="contact"
                         label="Contact"
                         required
-                        placeholder="Enter your name"
+                        placeholder="Enter your phone number"
                         value={contact}
                         onChange={(e) => setContact(e.target.value)}
                     />

@@ -369,7 +369,7 @@ const Appbar = React.memo(() => {
 																			}}
 																			className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md cursor-pointer text-xs font-medium hover:from-blue-600 hover:to-blue-700 transition-all"
 																		>
-																			Accept
+																			Approve
 																		</button>
 																		<button
 																			onClick={(e) => {
