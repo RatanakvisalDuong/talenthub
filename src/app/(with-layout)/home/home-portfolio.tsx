@@ -225,7 +225,7 @@ export default function HomeComponent(
 								{hasMore && searchResults === null && (
 									<div className="flex justify-center items-center mt-6">
 										<button
-											className="bg-blue-500 text-white px-3 sm:px-4 py-2 text-sm sm:text-base rounded-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group disabled:opacity-50"
+											className="bg-blue-500 text-white px-3 sm:px-4 py-2 text-sm sm:text-base rounded-xl hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group disabled:opacity-50"
 											onClick={loadMore}
 											disabled={isLoading}
 										>

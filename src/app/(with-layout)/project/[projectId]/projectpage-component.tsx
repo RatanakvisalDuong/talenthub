@@ -10,17 +10,18 @@ import { useSession } from "next-auth/react";
 import EditProjectDialog from "./editproject-dialog";
 import AddCollaboratorDialog from "./addcollaborator-dialog";
 import AddEndorserDialog from "./addendorser-dialog";
-import { Endorser } from "@/app/type/endorser";
 import RemoveCollaboratorDialog from "./removecollaborator-dialog";
 import RemoveEndorserDialog from "./removeendorser-dialog";
 import axios from "axios";
 import { PencilSquareIcon } from "@heroicons/react/20/solid";
+import ApiDialog from "@/components/apiDialog/page";
 
 interface ProjectPageComponentProps {
     projectData: any;
+    onEndorserRemoved?: () => void;
 }
 
-export default function ProjectPageComponent({ projectData }: ProjectPageComponentProps) {
+export default function ProjectPageComponent({ projectData, onEndorserRemoved }: ProjectPageComponentProps) {
     const { data: session } = useSession();
     const userId = session?.googleId;
     const isOwner = projectData.google_id === userId;
@@ -39,6 +40,9 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
     const [removeCollaboratorId, setRemoveCollaboratorId] = useState<string | null>(null);
     const [removeEndorserId, setRemoveEndorserId] = useState<string | null>(null);
 
+    const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
+    const [selectedEndorser, setSelectedEndorser] = useState<any>(null);
+    const [toggleDropdownData, setToggleDropdownData] = useState<{ [key: string]: boolean }>({});
 
     const slidePairs = [];
     for (let i = 0; i < projectData.images.length; i += 2) {
@@ -61,8 +65,6 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
             setTimeout(() => setIsTransitioning(false), 300);
         }
     };
-
-    // const handleRemoveEndorser = (googleId: string) => {
 
     useEffect(() => {
         const interval = setInterval(nextSlide, 5000);
@@ -125,6 +127,23 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
             displaySuccessMessage("Failed to update project visibility");
         }
     };
+
+    const toggleDropdown = (id: number) => {
+        setToggleDropdownData((prev) => ({ ...prev, [id]: !prev[id] }));
+    };
+
+    const handleRemoveEndorser = (endorser: any) => {
+		setSelectedEndorser(endorser);
+		setRemoveDialogOpen(true);
+	};
+
+	const handleRemoveSuccess = () => {
+		toggleDropdown(projectData.id);
+		if (onEndorserRemoved) {
+			onEndorserRemoved();
+		}
+	};
+
 
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
@@ -379,7 +398,13 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                                                 <Image src={endorser.photo} alt="" width={34} height={34} className="rounded-full w-12 h-12 object-cover" />
                                                 <div className="text-sm font-medium ml-1">{endorser.name}</div>
                                             </Link>
-                                            {session?.googleId == projectData.google_id && (<XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveEndorserDialog(endorser.google_id) }} />)}
+                                            {session?.googleId === projectData.google_id && (<XIcon className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" onClick={() => { toggleRemoveEndorserDialog(endorser.google_id) }} />)}
+                                            {session?.googleId === endorser.google_id && (
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500 hover:text-red-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => { handleRemoveEndorser(endorser) }}>
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+
+                                            )}
                                         </div>
                                     ))
                             ) : <div className="text-center py-2 text-slate-500">
@@ -499,6 +524,26 @@ export default function ProjectPageComponent({ projectData }: ProjectPageCompone
                     onClose={() => setConfirmRemoveEndorserDialog(false)}
                 />
             )}
+
+            {removeDialogOpen && (
+				<div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+
+					<ApiDialog
+						isOpen={removeDialogOpen}
+						onClose={() => setRemoveDialogOpen(false)}
+						apiUrl="https://talenthub.newlinkmarketing.com/api/remove_endorsement"
+						requestData={{
+							"type": 4,
+							"id": projectData.project_id,
+						}}
+						title="Remove Endorsement"
+						description={`Are you sure you want to remove your endorsement?`}
+						confirmButtonText="Remove"
+						cancelButtonText="Cancel"
+						onSuccess={handleRemoveSuccess}
+					/>
+				</div>
+			)}
         </div>
     );
 }

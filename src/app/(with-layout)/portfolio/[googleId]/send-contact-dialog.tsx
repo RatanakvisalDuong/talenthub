@@ -1,6 +1,6 @@
 import TextInput from "@/components/textinput/textInput";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function SendContactDialog({
     googleId,
@@ -20,6 +20,68 @@ export default function SendContactDialog({
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
+    
+    // Use ref to store timer ID so we can clear it
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+    // Track if dialog was manually closed to prevent timer callback
+    const wasManuallyClosedRef = useRef<boolean>(false);
+
+    // Clean up timer when component unmounts
+    useEffect(() => {
+        return () => {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+                timerRef.current = null;
+            }
+        };
+    }, []);
+
+    // Clear timer and reset states when dialog closes
+    useEffect(() => {
+        if (!open) {
+            // Clear timer if dialog is closed
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+                timerRef.current = null;
+            }
+            
+            // Reset all states when dialog closes
+            setEmail('');
+            setContact('');
+            setMessage('');
+            setShowSuccess(false);
+            setError(null);
+            setLoading(false);
+            wasManuallyClosedRef.current = false;
+        }
+    }, [open]);
+
+    const clearFormAndClose = () => {
+        // Mark as manually closed to prevent timer callback
+        wasManuallyClosedRef.current = true;
+        
+        // Clear the timer
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+            timerRef.current = null;
+        }
+        
+        // Reset states
+        setEmail('');
+        setContact('');
+        setMessage('');
+        setShowSuccess(false);
+        setError(null);
+        setLoading(false);
+        
+        // Call parent callbacks
+        onSend(message);
+        onClose();
+    };
+
+    const handleBackdropClick = () => {
+        clearFormAndClose();
+    };
 
     const handleSend = async () => {
         if (!email.trim()) {
@@ -58,49 +120,60 @@ export default function SendContactDialog({
             );
 
             if (response.status == 200) {
-                // Show success message for 2.5 seconds
+                // Show success message and set timer
                 setShowSuccess(true);
-                setTimeout(() => {
-                    setShowSuccess(false);
-                    onSend(message);
-                    
-                    setEmail('');
-                    setContact('');
-                    setMessage('');
-                    
-                    onClose();
+                wasManuallyClosedRef.current = false; // Reset manual close flag
+                
+                timerRef.current = setTimeout(() => {
+                    // Only auto-close if it wasn't manually closed
+                    if (!wasManuallyClosedRef.current) {
+                        clearFormAndClose();
+                    }
                 }, 2500);
             } else {
                 setError('Failed to send contact information. Please try again.');
             }
-        } catch (err) {
-            setError('Failed to send contact information. Please try again.');
+        } catch (err: any) {
+            console.error('Error sending contact:', err);
+            
+            let errorMessage = 'Failed to send contact information. Please try again.';
+            if (err.response) {
+                if (err.response.status === 400) {
+                    errorMessage = 'Invalid contact information. Please check your details.';
+                } else if (err.response.status === 401) {
+                    errorMessage = 'Unauthorized. Please login again.';
+                } else if (err.response.status >= 500) {
+                    errorMessage = 'Server error. Please try again later.';
+                } else if (err.response.data?.message) {
+                    errorMessage = err.response.data.message;
+                }
+            } else if (err.request) {
+                errorMessage = 'No response from server. Please check your internet connection.';
+            }
+            
+            setError(errorMessage);
         } finally {
             setLoading(false);
         }
     };
 
+    // Don't render if dialog is not open
+    if (!open) return null;
+
     return (
         <div 
             className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
-            onClick={() => {
-                if (showSuccess) {
-                    // Close immediately when clicking outside during success message
-                    setShowSuccess(false);
-                    onSend(message);
-                    setEmail('');
-                    setContact('');
-                    setMessage('');
-                    onClose();
-                }
-            }}
+            onClick={handleBackdropClick}
         >
             {loading ? (
                 <div 
                     className="bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg justify-center flex items-center"
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
+                    <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
+                        <span className="text-gray-600">Sending contact...</span>
+                    </div>
                 </div>
             ) : showSuccess ? (
                 <div 
@@ -114,7 +187,7 @@ export default function SendContactDialog({
                             </svg>
                         </div>
                         <h3 className="text-2xl font-bold text-green-600 mb-2">Contact Sent Successfully!</h3>
-                        <p className="text-gray-600">Your contact information has been sent successfully.</p>
+                        <p className="text-gray-600 mb-4">Your contact information has been sent successfully.</p>
                     </div>
                 </div>
             ) : (
@@ -124,7 +197,10 @@ export default function SendContactDialog({
                 >
                     <div className="flex justify-between items-start mb-2">
                         <h2 className="text-xl font-bold text-black">Send Your Contact</h2>
-                        <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">
+                        <button 
+                            onClick={clearFormAndClose} 
+                            className="text-black cursor-pointer hover:text-red-500 transition-colors"
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                             </svg>
@@ -152,8 +228,19 @@ export default function SendContactDialog({
                     />
 
                     {error && (
-                        <div className="mt-2 text-red-500 text-sm">
-                            {error}
+                        <div className="mt-2 p-3 bg-red-100 border border-red-400 text-red-700 rounded flex items-center">
+                            <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                            </svg>
+                            <span className="text-sm">{error}</span>
+                            <button
+                                onClick={() => setError(null)}
+                                className="ml-auto text-red-500 hover:text-red-700"
+                            >
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
                         </div>
                     )}
 

@@ -24,7 +24,7 @@ export default function PageNotFound({ customMessage = null }: PageNotFoundProps
 
                         <div className="mt-4">
                             <Link
-                                href="/"
+                                href="/home"
                                 className="text-sm text-blue-600 hover:text-blue-800"
                             >
                                 Return to Homepage

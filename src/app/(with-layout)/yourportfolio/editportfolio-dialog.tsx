@@ -83,7 +83,7 @@ const EditPortfolioDialog = ({
     const handleOnEdit = async () => {
         if (session?.roleId == 2) {
             if (phone == null || about == null) {
-                setError("Please fill in all required fields. xD");
+                setError("Please fill in all required fields.");
                 return;
             }
         }

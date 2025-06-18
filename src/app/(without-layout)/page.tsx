@@ -18,7 +18,7 @@ export default function LandingPage() {
                                 Are you a recruiter looking for talented students? You are in the right place! TalentHub is designed to help you find and connect with the best ICT students from Paragon International University.
                             </p>
                             <button
-                                className='mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer transition-colors duration-300 flex items-center justify-center group'
+                                className='mt-4 px-6 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 cursor-pointer transition-colors duration-300 flex items-center justify-center group'
                                 onClick={() => window.location.href = '/home'}
                             >
                                 Find Students

@@ -36,6 +36,8 @@ const ApiDialog: React.FC<Props> = ({
     const handleConfirm = async () => {
         setIsLoading(true);
         setError(null);
+        console.log("API URL:", apiUrl);
+        console.log("Request Data:", requestData);
 
         try {
             const response = await axios.delete(apiUrl, {

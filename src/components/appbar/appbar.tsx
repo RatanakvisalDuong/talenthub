@@ -37,7 +37,6 @@ const Appbar = React.memo(() => {
 	useEffect(() => {
 		if (isAuthenticated) {
 			getNotification();
-			getMessage();
 		}
 
 		function handleClickOutside(event: MouseEvent) {
@@ -53,23 +52,6 @@ const Appbar = React.memo(() => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, [session]);
-
-	const getMessage = async () => {
-		try{
-			const response = await axios.get(
-				`${process.env.NEXT_PUBLIC_API_URL}view_incoming_contact`, {
-				headers: {
-					Authorization: `Bearer ${session?.accessToken}`
-				}
-			});
-
-			setInboxMessage(response.data.data || []);
-			
-		}
-		catch (error) {
-			console.error("Failed to fetch messages:", error);
-		}
-	};
 
 	const getNotification = async () => {
 		try {
@@ -449,6 +431,10 @@ const Appbar = React.memo(() => {
 										<div className="px-4 py-2 bg-gray-50 border-b border-gray-100">
 											<p className="text-xs text-gray-500 font-medium">ACCOUNT</p>
 										</div>
+											<div className="flex flex-col px-4 py-2">
+												<p className="text-sm text-gray-800 font-medium truncate">{session.user?.name || "User"}</p>
+												<p className="text-xs text-red-500 truncate">{session.user?.email}</p>
+											</div>
 										<Link
 											href="/yourportfolio"
 											className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 transition-colors"

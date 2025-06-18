@@ -29,7 +29,7 @@ function ErrorPageContent() {
           {errorDescription}
         </div>
         <div className="mt-4 text-center">
-          <Link href="/" className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 inline-block" onClick={() => window.location.href = "/"}>
+          <Link href="/home" className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 inline-block" onClick={() => window.location.href = "/"}>
             Back to Home
           </Link>
         </div>

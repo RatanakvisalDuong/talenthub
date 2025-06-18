@@ -12,37 +12,32 @@ type Props = {
 	toggleDropdown: (id: number) => void;
 	owner: boolean;
 	openEditExperienceDialog: (experience: Experience) => void;
-	onEndorserRemoved?: () => void; 
+	onEndorserRemoved?: () => void;
 };
 
-const ExperienceCard: React.FC<Props> = ({ 
-	experience, 
-	index, 
-	dropdownOpen, 
-	toggleDropdown, 
-	owner, 
+const ExperienceCard: React.FC<Props> = ({
+	experience,
+	index,
+	dropdownOpen,
+	toggleDropdown,
+	owner,
 	openEditExperienceDialog,
-	onEndorserRemoved 
+	onEndorserRemoved
 }) => {
 	const { data: session } = useSession();
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
 	const [selectedEndorser, setSelectedEndorser] = useState<any>(null);
 
-	// Handle click outside to close dropdown
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node) && dropdownOpen[experience.id]) {
 				toggleDropdown(experience.id);
 			}
 		};
-
-		// Add event listener when dropdown is open
 		if (dropdownOpen[experience.id]) {
 			document.addEventListener("mousedown", handleClickOutside);
 		}
-
-		// Cleanup event listener
 		return () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
@@ -54,7 +49,6 @@ const ExperienceCard: React.FC<Props> = ({
 	};
 
 	const handleRemoveSuccess = () => {
-		// Close the dropdown and refresh data
 		toggleDropdown(experience.id);
 		if (onEndorserRemoved) {
 			onEndorserRemoved();
@@ -110,8 +104,8 @@ const ExperienceCard: React.FC<Props> = ({
 																	<p>{endorser.name}</p>
 																</div>
 																{session?.googleId === endorser.id.toString() && (
-																	<div 
-																		className="flex items-center hover:bg-red-100 p-1 rounded" 
+																	<div
+																		className="flex items-center hover:bg-red-100 p-1 rounded"
 																		onClick={(e) => {
 																			e.stopPropagation();
 																			handleRemoveEndorser(endorser);
@@ -152,25 +146,25 @@ const ExperienceCard: React.FC<Props> = ({
 				</div>
 			</div>
 
-{removeDialogOpen && (
-  <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-    
-	  <ApiDialog
-		  isOpen={removeDialogOpen}
-		  onClose={() => setRemoveDialogOpen(false)}
-		  apiUrl="https://talenthub.newlinkmarketing.com/api/remove_endorsement"
-		  requestData={{
-			  "type": 2,
-			  "id": experience.id
-		  }}
-		  title="Remove Endorsement"
-		  description={`Are you sure you want to remove your endorsement?`}
-		  confirmButtonText="Remove"
-		  cancelButtonText="Cancel"
-		  onSuccess={handleRemoveSuccess}
-	  />
-  </div>
-)}
+			{removeDialogOpen && (
+				<div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+
+					<ApiDialog
+						isOpen={removeDialogOpen}
+						onClose={() => setRemoveDialogOpen(false)}
+						apiUrl="https://talenthub.newlinkmarketing.com/api/remove_endorsement"
+						requestData={{
+							"type": 2,
+							"id": experience.id
+						}}
+						title="Remove Endorsement"
+						description={`Are you sure you want to remove your endorsement?`}
+						confirmButtonText="Remove"
+						cancelButtonText="Cancel"
+						onSuccess={handleRemoveSuccess}
+					/>
+				</div>
+			)}
 		</>
 	);
 };

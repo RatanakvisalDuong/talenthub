@@ -37,7 +37,6 @@ async function ProjectContent({ projectId }: { projectId: string }) {
       return <PageNotFound />;
     }
   }
-  
   return <ProjectPage projectData={projectData} />;
 }
 
