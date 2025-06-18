@@ -25,10 +25,10 @@ async function fetchPortfolioData(googleId: string): Promise<Portfolio | null> {
 }
 
 // Generate metadata for SEO
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: Promise<{ googleId: string }> 
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ googleId: string }>
 }): Promise<Metadata> {
   const { googleId } = await params;
   const portfolioData = await fetchPortfolioData(googleId);
@@ -43,10 +43,8 @@ export async function generateMetadata({
   const userName = portfolioData.portfolio.user_name;
   const about = portfolioData.portfolio.about;
   const photo = portfolioData.portfolio.photo;
-  const email = portfolioData.portfolio.email;
-  const phone = portfolioData.portfolio.phone_number;
-  
-  const majorName = portfolioData.portfolio.role_id === 1 ? 
+
+  const majorName = portfolioData.portfolio.role_id === 1 ?
     portfolioData.portfolio.major || 'Student' : 'Endorser';
 
   const title = `${userName} - Professional Portfolio`;
@@ -67,9 +65,8 @@ export async function generateMetadata({
     ].join(', '),
     authors: [{ name: userName }],
     creator: userName,
-    publisher: 'Your Platform Name', // Replace with your platform name
-    
-    // Open Graph
+    publisher: 'TalentHub',
+
     openGraph: {
       type: 'profile',
       title,
@@ -83,7 +80,7 @@ export async function generateMetadata({
           alt: `${userName} profile picture`,
         }
       ] : [],
-      siteName: 'Your Platform Name', // Replace with your platform name
+      siteName: 'TalentHub',
       locale: 'en_US',
     },
 
@@ -93,10 +90,9 @@ export async function generateMetadata({
       title,
       description,
       images: photo ? [photo] : [],
-      creator: `@${userName.replace(/\s+/g, '').toLowerCase()}`, // Optional: if you have Twitter handles
+      creator: `@${userName.replace(/\s+/g, '').toLowerCase()}`,
     },
 
-    // Additional meta tags
     robots: {
       index: true,
       follow: true,
@@ -109,12 +105,10 @@ export async function generateMetadata({
       },
     },
 
-    // Canonical URL
     alternates: {
       canonical: url,
     },
 
-    // Additional metadata
     other: {
       'profile:first_name': userName.split(' ')[0],
       'profile:last_name': userName.split(' ').slice(1).join(' '),
@@ -123,7 +117,6 @@ export async function generateMetadata({
   };
 }
 
-// Generate structured data
 function generateStructuredData(portfolio: Portfolio, googleId: string) {
   const structuredData = {
     '@context': 'https://schema.org',
@@ -135,11 +128,11 @@ function generateStructuredData(portfolio: Portfolio, googleId: string) {
     description: portfolio.portfolio.about || `Professional portfolio of ${portfolio.portfolio.user_name}`,
     email: portfolio.portfolio.email,
     telephone: portfolio.portfolio.phone_number,
-    jobTitle: portfolio.portfolio.role_id === 1 ? 
+    jobTitle: portfolio.portfolio.role_id === 1 ?
       portfolio.portfolio.major || 'Student' : 'Endorser',
     worksFor: {
       '@type': 'Organization',
-      name: 'Your Platform Name', // Replace with your platform name
+      name: 'TalentHub',
     },
     sameAs: [
       `${process.env.NEXT_PUBLIC_SITE_URL}/portfolio/${googleId}`,
@@ -155,27 +148,25 @@ function generateStructuredData(portfolio: Portfolio, googleId: string) {
 
 async function PortfolioContent({ googleId }: { googleId: string }) {
   const portfolioData = await fetchPortfolioData(googleId);
-  
+
   if (!portfolioData) {
-    notFound(); // This will show the 404 page and return proper HTTP status
+    notFound();
   }
 
   const structuredData = generateStructuredData(portfolioData, googleId);
 
   return (
     <>
-      {/* Structured Data Script */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(structuredData),
         }}
       />
-      
-      {/* Semantic HTML wrapper */}
+
       <main role="main">
-        <article 
-          itemScope 
+        <article
+          itemScope
           itemType="https://schema.org/Person"
           itemID={`${process.env.NEXT_PUBLIC_SITE_URL}/portfolio/${googleId}#person`}
         >
@@ -186,14 +177,14 @@ async function PortfolioContent({ googleId }: { googleId: string }) {
             <span itemProp="email">{portfolioData.portfolio.email}</span>
             <span itemProp="telephone">{portfolioData.portfolio.phone_number}</span>
             <span itemProp="jobTitle">
-              {portfolioData.portfolio.role_id === 1 ? 
+              {portfolioData.portfolio.role_id === 1 ?
                 portfolioData.portfolio.major || 'Student' : 'Endorser'}
             </span>
             <link itemProp="url" href={`${process.env.NEXT_PUBLIC_SITE_URL}/portfolio/${googleId}`} />
             {portfolioData.portfolio.photo && (
-              <img 
-                itemProp="image" 
-                src={portfolioData.portfolio.photo} 
+              <img
+                itemProp="image"
+                src={portfolioData.portfolio.photo}
                 alt={`${portfolioData.portfolio.user_name} profile`}
                 style={{ display: 'none' }}
               />
@@ -207,13 +198,13 @@ async function PortfolioContent({ googleId }: { googleId: string }) {
   );
 }
 
-export default async function PortfolioPage({ 
-  params 
-}: { 
-  params: Promise<{ googleId: string }> 
+export default async function PortfolioPage({
+  params
+}: {
+  params: Promise<{ googleId: string }>
 }) {
   const { googleId } = await params;
-  
+
   return (
     <Suspense fallback={<LoadingScreen message="Loading portfolio..." />}>
       <PortfolioContent googleId={googleId} />
