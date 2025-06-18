@@ -54,7 +54,6 @@ const InboxDialog = ({
                 
             } catch (error) {
                 console.error("Failed to fetch messages:", error);
-                setError("Failed to load messages. Please try again.");
             }
         };
 
