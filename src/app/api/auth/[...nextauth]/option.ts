@@ -9,7 +9,7 @@ declare module "next-auth" {
 		roleId: number;
 		googleId: string;
 		photo: string;
-		expires: string; // ISO date string for session expiry
+		expires: string;
 	}
 }
 
@@ -19,11 +19,9 @@ declare module "next-auth/jwt" {
 		roleId: number;
 		googleId: string;
 		photo: string;
-		exp: number; // Standard JWT expiration claim
+		exp: number;
 	}
 }
-
-const BLOCKED_DOMAINS = ["yahoo.com", "email.com", "hotmail.com", "outlook.com", "live.com", "icloud.com", "protonmail.com", "tutanota.com", "yandex.com", "zoho.com", "gmx.com", "mailinator.com"];
 
 let laravelToken = "";
 let roleId = 0;
@@ -58,12 +56,6 @@ export const authOptions: NextAuthOptions = {
 	},
 	callbacks: {
 		async signIn({ user }) {
-			if (user?.email) {
-				const domain = user.email.split("@")[1];
-				if (BLOCKED_DOMAINS.includes(domain)) {
-					return "/auth/error?error=BlockedDomain";
-				}
-			}
 			try {
 				const params = new URLSearchParams();
 				params.append("sub", user.id);

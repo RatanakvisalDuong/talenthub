@@ -10,20 +10,17 @@ type Props = {
     achievement: Achievement | null;
     onEdit: (updatedAchievement: Achievement) => void;
     ableToUpdate: boolean;
-    openEditExperienceDialog: (achievement: Achievement) => void;
     onEndorserRemoved?: () => void;
 };
 
-const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdit, ableToUpdate, openEditExperienceDialog, onEndorserRemoved }) => {
+const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdit, ableToUpdate, onEndorserRemoved }) => {
     const { data: session } = useSession();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dialogRef = useRef<HTMLDivElement>(null);
     const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
     const [selectedEndorser, setSelectedEndorser] = useState<any>(null);
-    // Local state to manage endorsers list for immediate UI update
     const [localEndorsers, setLocalEndorsers] = useState(achievement?.endorsers || []);
 
-    // Update local endorsers when achievement prop changes
     useEffect(() => {
         setLocalEndorsers(achievement?.endorsers || []);
     }, [achievement?.endorsers]);
@@ -32,7 +29,6 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
         setDropdownOpen(!dropdownOpen);
     };
 
-    // Click outside to close dialog, but not when API dialog is open
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dialogRef.current && !dialogRef.current.contains(event.target as Node) && !removeDialogOpen) {
@@ -68,7 +64,6 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
     };
 
     const handleRemoveSuccess = () => {
-        // Remove the endorser from local state immediately
         if (selectedEndorser) {
             setLocalEndorsers(prev => 
                 prev.filter(endorser => endorser.id !== selectedEndorser.id)
