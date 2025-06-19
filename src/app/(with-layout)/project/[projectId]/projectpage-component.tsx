@@ -44,6 +44,10 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
     const [selectedEndorser, setSelectedEndorser] = useState<any>(null);
     const [toggleDropdownData, setToggleDropdownData] = useState<{ [key: string]: boolean }>({});
 
+    // Image dialog states
+    const [imageDialogOpen, setImageDialogOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<string>('');
+
     const slidePairs = [];
     for (let i = 0; i < projectData.images.length; i += 2) {
         if (i + 1 < projectData.images.length) slidePairs.push([projectData.images[i], projectData.images[i + 1]]);
@@ -114,7 +118,6 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
                 }
             );
 
-
             if (response.status === 200) {
                 displaySuccessMessage(`Project visibility changed to ${isChecked ? 'private' : 'public'}`);
             } else {
@@ -144,10 +147,20 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
 		}
 	};
 
+    // Image dialog handlers
+    const openImageDialog = (imageUrl: string) => {
+        setSelectedImage(imageUrl);
+        setImageDialogOpen(true);
+    };
+
+    const closeImageDialog = () => {
+        setImageDialogOpen(false);
+        setSelectedImage('');
+    };
 
     return (
         <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
-            <div className={`max-w-8xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between ${updateProjectDialog || addCollaboratorDialog || addEndorserDialog || confirmRemoveCollaboratorDialog || confirmRemoveEndorserDialog ? "blur-md" : ""}`}>
+            <div className={`max-w-8xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between ${updateProjectDialog || addCollaboratorDialog || addEndorserDialog || confirmRemoveCollaboratorDialog || confirmRemoveEndorserDialog || imageDialogOpen ? "blur-md" : ""}`}>
                 {successMessage && (
                     <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-xl shadow-md z-50 mt-18">
                         <div className="flex items-center">
@@ -228,7 +241,10 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
                                                         {pair.length === 2 ? (
                                                             pair.map(slide => (
                                                                 <div key={slide.id} className="w-1/2 group">
-                                                                    <div className="relative aspect-[16/9] overflow-hidden rounded-lg shadow-lg border border-white/30 bg-gradient-to-br from-white/20 to-transparent backdrop-blur-sm hover:shadow-xl transition-all duration-500 hover:scale-[1.02]">
+                                                                    <div 
+                                                                        className="relative aspect-[16/9] overflow-hidden rounded-lg shadow-lg border border-white/30 bg-gradient-to-br from-white/20 to-transparent backdrop-blur-sm hover:shadow-xl transition-all duration-500 hover:scale-[1.02] cursor-pointer"
+                                                                        onClick={() => openImageDialog(slide.url)}
+                                                                    >
                                                                         <img
                                                                             src={slide.url}
                                                                             alt={`Project slide ${slide.id}`}
@@ -241,7 +257,10 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
                                                         ) : (
                                                             <div className="w-full flex justify-center">
                                                                 <div className="w-1/2 group">
-                                                                    <div className="relative aspect-[16/9] overflow-hidden rounded-lg shadow-lg border border-white/30 bg-gradient-to-br from-white/20 to-transparent backdrop-blur-sm hover:shadow-xl transition-all duration-500 hover:scale-[1.02]">
+                                                                    <div 
+                                                                        className="relative aspect-[16/9] overflow-hidden rounded-lg shadow-lg border border-white/30 bg-gradient-to-br from-white/20 to-transparent backdrop-blur-sm hover:shadow-xl transition-all duration-500 hover:scale-[1.02] cursor-pointer"
+                                                                        onClick={() => openImageDialog(pair[0].url)}
+                                                                    >
                                                                         <img
                                                                             src={pair[0].url}
                                                                             alt={`Project slide ${pair[0].id}`}
@@ -481,6 +500,37 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
                     </div>
                 </div>
             </div>
+
+            {/* Image Dialog */}
+            {imageDialogOpen && (
+                <div 
+                    className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+                    onClick={closeImageDialog} // Close when clicking the backdrop
+                >
+                    <div 
+                        className="relative max-w-4xl w-max h-max flex items-center justify-center"
+                        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the image
+                    >
+                        {/* Image container */}
+                        <div className="relative w-full h-full flex items-center justify-center">
+                            <img
+                                src={selectedImage}
+                                alt="Project image"
+                                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                            />
+                            
+                            {/* Close button - positioned absolutely at top right */}
+                            <button
+                                onClick={closeImageDialog}
+                                className="absolute -right-4 -top-4 z-60 p-2 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-all duration-200 hover:scale-110"
+                            >
+                                <XIcon className="w-6 h-6 text-white" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {updateProjectDialog && (
                 <EditProjectDialog
                     isOpen={updateProjectDialog}
@@ -527,7 +577,6 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
 
             {removeDialogOpen && (
 				<div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-
 					<ApiDialog
 						isOpen={removeDialogOpen}
 						onClose={() => setRemoveDialogOpen(false)}
