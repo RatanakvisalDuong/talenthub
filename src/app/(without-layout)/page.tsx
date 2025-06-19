@@ -16,6 +16,7 @@ export default function LandingPage() {
             "name": "Paragon International University",
         }
     };
+    
     return (
         <>
             <Head>
@@ -50,35 +51,56 @@ export default function LandingPage() {
                 />
             </Head>
 
-            <div className="min-h-screen bg-[#E8E8E8] p-40 h-screen overflow-hidden">
+            {/* Mobile/Small Screen Warning (below 650px) */}
+            <div className="block min-[650px]:hidden min-h-screen flex items-center justify-center p-4">
+                <div className="bg-white rounded-lg shadow-lg p-8 text-center max-w-md mx-auto">
+                    <div className="mb-4">
+                        <svg className="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h2 className="text-xl font-bold text-gray-800 mb-2">
+                        Desktop Required
+                    </h2>
+                    <p className="text-gray-600 mb-4">
+                        This application does not work on your device. Please use a desktop or tablet with a screen width of at least 650px.
+                    </p>
+                    <div className="text-sm text-gray-500">
+                        Current screen size is too small
+                    </div>
+                </div>
+            </div>
+
+            {/* Main Content (650px and above) */}
+            <div className="hidden min-[650px]:block min-h-screen bg-[#E8E8E8] lg:p-40 md:p-20 sm:p-10 p-6 h-screen overflow-y-auto">
                 <AppBar />
 
                 {/* Main Content with SEO-optimized headings */}
                 <main className='items-center justify-center h-screen p-4'>
-                    <div className='flex justify-center items-center mb-4'>
-                        <div className=''>
-                            <h1 className='text-3xl font-bold text-gray-800'>
+                    <div className='flex flex-col lg:flex-row justify-center items-center mb-4 gap-8'>
+                        <div className='flex-1 max-w-3xl'>
+                            <h1 className='text-2xl lg:text-3xl font-bold text-gray-800 leading-tight sm:mt-8 lg:mt-0'>
                                 TalentHub: Premier Web Platform for <span className='text-blue-600'>Paragon International University</span> ICT Students to Create and Explore Academic and Career Portfolios
                             </h1>
 
-                            <div className='mt-4 text-md text-gray-600'>
-                                <h2 className='text-xl font-semibold mb-2 text-gray-700'>
+                            <div className='mt-4 text-sm lg:text-md text-gray-600'>
+                                <h2 className='text-lg lg:text-xl font-semibold mb-2 text-gray-700'>
                                     Connect with Top ICT Talent from Cambodia's Leading University
                                 </h2>
-                                <p>
+                                <p className='leading-relaxed'>
                                     Are you a recruiter looking for talented ICT students? You are in the right place! TalentHub is specifically designed to help employers and recruiters discover and connect with the most skilled Information and Communication Technology students from Paragon International University. Our platform showcases comprehensive academic achievements, technical skills, and professional portfolios.
                                 </p>
 
                                 {/* Additional SEO content */}
                                 <div className='mt-3'>
-                                    <h3 className='text-lg font-medium text-gray-700 mb-2'>Why Choose TalentHub?</h3>
-                                    <p className='text-sm'>
+                                    <h3 className='text-base lg:text-lg font-medium text-gray-700 mb-2'>Why Choose TalentHub?</h3>
+                                    <p className='text-sm leading-relaxed'>
                                         TalentHub serves as the bridge between Cambodia's top ICT education and industry needs. Students from Paragon International University showcase their projects, certifications, internship experiences, and technical competencies through detailed portfolios. Find your next software developer, web designer, data analyst, or IT specialist today.
                                     </p>
                                 </div>
 
                                 <button
-                                    className='mt-6 px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 cursor-pointer transition-colors duration-300 flex items-center justify-center group font-medium'
+                                    className='mt-6 px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 cursor-pointer transition-colors duration-300 flex items-center justify-center group font-medium text-sm lg:text-base'
                                     onClick={() => window.location.href = '/home'}
                                     aria-label="Browse ICT student portfolios from Paragon International University"
                                 >
@@ -90,11 +112,11 @@ export default function LandingPage() {
                             </div>
                         </div>
 
-                        <div className="flex justify-center mb-4">
+                        <div className="flex justify-center flex-shrink-0">
                             <img
                                 src="/PIULogo.svg"
                                 alt="Paragon International University Logo - Premier ICT Education in Cambodia"
-                                className="w-100 h-100 mx-auto mb-4"
+                                className="w-64 h-64 lg:w-80 lg:h-80 xl:w-96 xl:h-96 mx-auto"
                                 loading="eager"
                                 width="400"
                                 height="400"

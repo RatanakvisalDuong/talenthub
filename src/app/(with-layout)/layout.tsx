@@ -1,5 +1,5 @@
 import { Ubuntu } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { ReactNode } from "react";
 import Appbar from "@/components/appbar/appbar";
 import SessionProvider from "@/components/providers/SessionProvider";
