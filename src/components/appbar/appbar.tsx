@@ -13,6 +13,7 @@ import { ArrowDown01Icon, BadgeCheckIcon, CheckCircleIcon, ChevronUpIcon } from 
 import { redirect } from "next/navigation";
 import BecomeEndorser from "../becomeEndorser/becomeEndorser";
 import InboxDialog from "../inbox/inboxDialog";
+import Image from "next/image";
 
 const ubuntuFont = Ubuntu({
 	subsets: ["latin"],
@@ -193,12 +194,17 @@ const Appbar = React.memo(() => {
 		<nav className={`${ubuntuFont.className} bg-white shadow-md w-full fixed top-0 left-0 right-0 z-10`}>
 			<div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex justify-between items-center h-16">
-					<Link className="flex" href="/home">
-						<h1 className="text-3xl font-bold text-black cursor-pointer">
-							Talent
-						</h1>
-						<h1 className="text-blue-500 text-3xl font-bold cursor-pointer">Hub</h1>
-						<div className="ml-16">
+					<div className="flex items-center justify-center">
+						<Link className="flex" href="/home">
+							<Image
+								src="/logo.png"
+								alt="Paragon International University Logo"
+								width={200}
+								height={100}
+								className="cursor-pointer ml-4"
+							/>
+						</Link>
+						<div className="ml-4">
 							{isAuthenticated ? (
 								<div className="bg-blue-500 text-white px-2 py-1 rounded-md cursor-pointer">
 									<p className="text-white">{session.roleId === 1 ? "Student" : "Endorser"}</p>
@@ -207,8 +213,7 @@ const Appbar = React.memo(() => {
 								<div></div>
 							)}
 						</div>
-					</Link>
-
+					</div>
 					<div className="flex items-center space-x-6">
 						{isAuthenticated && (
 							<>
@@ -431,10 +436,10 @@ const Appbar = React.memo(() => {
 										<div className="px-4 py-2 bg-gray-50 border-b border-gray-100">
 											<p className="text-xs text-gray-500 font-medium">ACCOUNT</p>
 										</div>
-											<div className="flex flex-col px-4 py-2">
-												<p className="text-sm text-gray-800 font-medium truncate">{session.user?.name || "User"}</p>
-												<p className="text-xs text-red-500 truncate">{session.user?.email}</p>
-											</div>
+										<div className="flex flex-col px-4 py-2">
+											<p className="text-sm text-gray-800 font-medium truncate">{session.user?.name || "User"}</p>
+											<p className="text-xs text-red-500 truncate">{session.user?.email}</p>
+										</div>
 										<Link
 											href="/yourportfolio"
 											className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 transition-colors"
@@ -494,7 +499,7 @@ const Appbar = React.memo(() => {
 			}
 
 			{
-			isDialogOpen &&
+				isDialogOpen &&
 				<div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40"></div>
 			}
 			<LoginDialog isOpen={isDialogOpen} onClose={closeDialog} />

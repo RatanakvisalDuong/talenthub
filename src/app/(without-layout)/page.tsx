@@ -5,28 +5,17 @@ import Head from 'next/head';
 import AppBar from './appbar';
 
 export default function LandingPage() {
-    // Structured data for better SEO
     const structuredData = {
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "TalentHub - Paragon International University Portfolio Platform",
         "description": "Web platform for Paragon International University ICT students to create and explore academic and career portfolios. Connect with talented students and showcase your skills.",
-        "url": "https://yourdomain.com",
+        "url": "https://talenthub.paragoniu.app",
         "publisher": {
             "@type": "Organization",
             "name": "Paragon International University",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://yourdomain.com/PIULogo.svg"
-            }
-        },
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://yourdomain.com/search?q={search_term_string}",
-            "query-input": "required name=search_term_string"
         }
     };
-
     return (
         <>
             <Head>
@@ -63,7 +52,7 @@ export default function LandingPage() {
 
             <div className="min-h-screen bg-[#E8E8E8] p-40 h-screen overflow-hidden">
                 <AppBar />
-                
+
                 {/* Main Content with SEO-optimized headings */}
                 <main className='items-center justify-center h-screen p-4'>
                     <div className='flex justify-center items-center mb-4'>
@@ -71,7 +60,7 @@ export default function LandingPage() {
                             <h1 className='text-3xl font-bold text-gray-800'>
                                 TalentHub: Premier Web Platform for <span className='text-blue-600'>Paragon International University</span> ICT Students to Create and Explore Academic and Career Portfolios
                             </h1>
-                            
+
                             <div className='mt-4 text-md text-gray-600'>
                                 <h2 className='text-xl font-semibold mb-2 text-gray-700'>
                                     Connect with Top ICT Talent from Cambodia's Leading University
@@ -79,7 +68,7 @@ export default function LandingPage() {
                                 <p>
                                     Are you a recruiter looking for talented ICT students? You are in the right place! TalentHub is specifically designed to help employers and recruiters discover and connect with the most skilled Information and Communication Technology students from Paragon International University. Our platform showcases comprehensive academic achievements, technical skills, and professional portfolios.
                                 </p>
-                                
+
                                 {/* Additional SEO content */}
                                 <div className='mt-3'>
                                     <h3 className='text-lg font-medium text-gray-700 mb-2'>Why Choose TalentHub?</h3>
@@ -100,7 +89,7 @@ export default function LandingPage() {
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div className="flex justify-center mb-4">
                             <img
                                 src="/PIULogo.svg"

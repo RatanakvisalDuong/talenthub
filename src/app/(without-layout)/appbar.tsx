@@ -1,5 +1,6 @@
 import { signIn, useSession } from "next-auth/react";
 import { Ubuntu } from "next/font/google";
+import Image from "next/image";
 import Link from "next/link";
 
 const ubuntuFont = Ubuntu({
@@ -19,11 +20,14 @@ export default function AppBar() {
             <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <Link className="flex" href="/home">
-                        <h1 className="text-3xl font-bold text-black cursor-pointer">
-                            Talent
-                        </h1>
-                        <h1 className="text-blue-500 text-3xl font-bold cursor-pointer">Hub</h1>
-                    </Link>
+							<Image
+								src="/logo.png"
+								alt="Paragon International University Logo"
+								width={200}
+								height={100}
+								className="cursor-pointer ml-4"
+							/>
+						</Link>
 
                     <div className="flex items-center space-x-6">
                         {!session?.user?.email && (
