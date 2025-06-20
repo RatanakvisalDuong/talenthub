@@ -94,7 +94,7 @@ export const metadata: Metadata = {
     images: ["https://talenthub-liart.vercel.app/og-image.jpg"],
   },
   verification: {
-    google: "your-google-site-verification-code", // Add your Google Search Console verification code
+    google: "google-site-verification=NhFAJMnBkxDvWqZGbxMtdA95TW2DGV96hn9RaF5Wv0g", // Add your Google Search Console verification code
   },
   alternates: {
     canonical: "https://talenthub-liart.vercel.app",
