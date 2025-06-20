@@ -141,7 +141,7 @@ const AddExperienceDialog = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       {loading ? (
         <div className="bg-white rounded-xl p-6 w-[700px] h-[600px] max-w-full shadow-lg overflow-y-auto z-50 relative flex items-center justify-center">
           <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin m-auto" ></div>

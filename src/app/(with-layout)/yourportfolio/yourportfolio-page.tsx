@@ -232,7 +232,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
     };
 
     return (
-        <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
+        <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
             { }
             <div className="max-w-8xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between">
                 {successMessage && (
@@ -381,9 +381,9 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                     </div>
                 </div>
             </div>
-            {(openAddProjectDialog || openAddSkillDialog || openAddExpereinceDialog || openAddEducationDialog || openAddCertificateDialog || openEditSkillDialog || viewCertificateDialog || openEditPortfolioDialog || openEditEducationDialog || openEditExperienceDialog || editCertificateDialog) && (
+            {/* {(openAddProjectDialog || openAddSkillDialog || openAddExpereinceDialog || openAddEducationDialog || openAddCertificateDialog || openEditSkillDialog || viewCertificateDialog || openEditPortfolioDialog || openEditEducationDialog || openEditExperienceDialog || editCertificateDialog) && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40" />
-            )}
+            )} */}
 
             {openAddProjectDialog && (
                 <AddProjectDialog isOpen={true} onClose={toggleAddProjectDialog} onClick={() => addProject()} portfolioId={portfolioData.portfolio.id} setSuccessMessage={displaySuccessMessage} setProjectdata={setProjectData} />

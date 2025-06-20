@@ -90,7 +90,7 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
 
     return (
         <>
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-auto">
+            <div className="fixed inset-0 z-100 flex items-center justify-center p-4 overflow-auto bg-black/50">
                 <div
                     ref={dialogRef}
                     className="relative bg-white rounded-xl shadow-lg flex flex-col md:flex-row items-start max-w-5xl w-auto"

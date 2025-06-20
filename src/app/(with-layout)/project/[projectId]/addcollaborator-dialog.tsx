@@ -51,12 +51,12 @@ const AddCollaboratorDialog = ({ isOpen, onClose, onClick, projectId }: { isOpen
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
             {loading ? (
-                <div className="bg-white rounded-md p-6 w-[700px] max-w-full shadow-lg justify-center flex items-center">
+                <div className="bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg justify-center flex items-center">
                     <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
                 </div>
-            ) : <div className="bg-white rounded-md p-6 w-[700px] max-w-full shadow-lg ">
+            ) : <div className="bg-white rounded-md p-6 w-[500px] max-w-full shadow-lg ">
                 <div className="flex justify-between items-start mb-2">
                     <h2 className="text-xl font-bold text-black">Add Collaborators</h2>
                     <button onClick={onClose} className="text-black cursor-pointer hover:text-red-500">

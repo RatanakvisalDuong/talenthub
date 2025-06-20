@@ -482,25 +482,14 @@ const Appbar = React.memo(() => {
 			</div>
 			{
 				isAddEndorserDialogOpen && (
-					<>
-						<div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40"></div>
-						<BecomeEndorser onClose={() => setIsAddEndorserDialogOpen(false)} />
-					</>
+					<BecomeEndorser onClose={() => setIsAddEndorserDialogOpen(false)} />
 				)
 			}
 
 			{
 				isInboxOpen && (
-					<>
-						<div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40"></div>
-						<InboxDialog isOpen={isInboxOpen} onClose={() => setIsInboxOpen(false)} googleId={session?.googleId || ''} inbox={inboxMessage} />
-					</>
+					<InboxDialog isOpen={isInboxOpen} onClose={() => setIsInboxOpen(false)} googleId={session?.googleId || ''} inbox={inboxMessage} />
 				)
-			}
-
-			{
-				isDialogOpen &&
-				<div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40"></div>
 			}
 			<LoginDialog isOpen={isDialogOpen} onClose={closeDialog} />
 		</nav>

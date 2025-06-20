@@ -78,13 +78,13 @@ const ProfileSummarySection: React.FC<Props> = ({
                 />
             </Head>
 
-            <div className="flex flex-col lg:flex-row justify-between gap-2 sm:gap-3 lg:gap-0 h-auto lg:h-[240px]">
+            <div className="flex flex-col lg:flex-row justify-between gap-2 sm:gap-3 lg:gap-0 h-auto lg:h-[240px] ">
                 {/* Main Profile Section */}
                 <div className="w-full lg:w-[68%] bg-white rounded-xl border border-gray-200 shadow-sm p-2 sm:p-3 md:p-4 overflow-y-auto">
                     <div className="flex flex-col sm:flex-row items-center justify-start h-full gap-3 sm:gap-4">
                         {/* Profile Image and Status */}
                         <div className="w-full sm:w-[40%] relative flex items-center justify-center">
-                            <div className="absolute top-0 right-0 z-10 -translate-y-1/2 translate-x-1/2 sm:translate-x-0">
+                            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 sm:translate-x-0">
                                 {portfolio.portfolio.role_id === 1 ? (
                                     portfolio.portfolio.working_status != null ? (
                                         <WorkingStatusBar status={portfolio.portfolio.working_status} />
@@ -92,7 +92,7 @@ const ProfileSummarySection: React.FC<Props> = ({
                                         <WorkingStatusBar status={2} />
                                     )
                                 ) : (
-                                    <div className="h-5 sm:h-6 flex justify-center items-center text-white text-[10px] sm:text-[12px] rounded-lg sm:rounded-xl bg-blue-500 px-2 py-1">
+                                    <div className="h-5 sm:h-6 flex justify-center items-center text-white text-[10px] sm:text-[12px] rounded-lg sm:rounded-xl bg-blue-500 px-2 py-1 z-10">
                                         Endorser
                                     </div>
                                 )}

@@ -178,7 +178,7 @@ const AddProjectDialog = ({ isOpen, onClose, onClick, portfolioId, setSuccessMes
     }
 
     return (
-        <div className="fixed inset-0 flex z-50 items-center justify-center">
+        <div className="fixed inset-0 flex z-50 items-center justify-center bg-black/50">
             {loading ? (
                 <div className={`bg-white rounded-xl p-6 w-[800px] max-w-full shadow-lg h-[650px] relative overflow-y-auto flex justify-center items-center`}>
                     <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-blue-500"></div>

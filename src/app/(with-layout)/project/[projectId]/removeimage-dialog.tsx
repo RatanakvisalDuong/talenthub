@@ -7,7 +7,7 @@ export default function RemoveImageDialog({ onClose, onConfirm }: { onClose: () 
     //     // await axios.delete;
     // }
     return (
-        <div className="fixed inset-0 z-60 flex items-center justify-center">
+        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/50">
             <div className="bg-white rounded-md shadow-lg p-6 w-[400px] text-center">
                 <p className="text-lg font-semibold mb-4 text-red-600">Confirm Remove</p>
                 <p className="text-gray-700 mb-6">Are you sure you want to remove this image from this project? This action cannot be undone.</p>

@@ -159,8 +159,8 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
     };
 
     return (
-        <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden fixed">
-            <div className={`max-w-8xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between ${updateProjectDialog || addCollaboratorDialog || addEndorserDialog || confirmRemoveCollaboratorDialog || confirmRemoveEndorserDialog || imageDialogOpen ? "blur-md" : ""}`}>
+        <div className="bg-[#E8E8E8] w-screen h-screen overflow-hidden">
+            <div className={`max-w-8xl mx-auto sm:px-6 lg:px-8 py-20 flex justify-between`}>
                 {successMessage && (
                     <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-xl shadow-md z-50 mt-18">
                         <div className="flex items-center">
@@ -174,7 +174,6 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
                 <div className="flex justify-between w-full">
                     <div className="h-[88vh] w-[73%]">
                         <div className="h-full w-full bg-white p-4 overflow-y-auto rounded-xl shadow-md px-8">
-                            {/* Header section with title and controls */}
                             <div className="w-full flex justify-between items-center mb-4">
                                 <p className="text-2xl font-bold text-black">{projectData.title}</p>
                                 <div className="flex items-center gap-3 text-sm text-slate-600">
@@ -205,8 +204,6 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
                                                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#5086ed]"></div>
                                             </label>
                                         </div>
-
-                                        {/* Update button */}
                                         <button
                                             className="flex text-sm text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-xl items-center justify-center transition-all duration-200"
                                             onClick={toggleUpdateProject}
@@ -217,18 +214,13 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
                                     </div>
                                 )}
                             </div>
-
-                            {/* Image slideshow */}
                             <div className="w-full h-64 bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl mx-auto flex justify-center items-center shadow-xl border border-white/20 backdrop-blur-sm">
-                                {/* Previous slide control */}
                                 <button
                                     onClick={prevSlide}
                                     className="group text-slate-600 hover:text-slate-800 transition-all duration-300 focus:outline-none hover:scale-110 p-2 rounded-full hover:bg-white/50 backdrop-blur-sm"
                                 >
                                     <ChevronLeft className="h-8 w-8 drop-shadow-sm" />
                                 </button>
-
-                                {/* Slideshow container */}
                                 <div className="relative w-[85%] overflow-hidden rounded-xl mx-auto h-58 bg-white/30 backdrop-blur-sm border border-white/30 shadow-inner">
                                     {projectData.images && projectData.images.length > 0 ? (
                                         <>
@@ -576,7 +568,7 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
             )}
 
             {removeDialogOpen && (
-				<div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+				<div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
 					<ApiDialog
 						isOpen={removeDialogOpen}
 						onClose={() => setRemoveDialogOpen(false)}

@@ -247,7 +247,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
             {loading ? (
                 <div className={`bg-white rounded-md p-6 w-[800px] max-w-full shadow-lg h-[650px] z-50 relative overflow-y-auto flex justify-center items-center`}>
                     <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-blue-500"></div>

@@ -112,7 +112,7 @@ export default function BecomeEndorser({ onClose }: { onClose: () => void }) {
 
     return (
         <div 
-            className="fixed inset-0 z-50 flex items-center justify-center"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
             onClick={() => {
                 if (showSuccess) {
                     // Close immediately when clicking outside during success message

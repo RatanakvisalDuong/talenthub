@@ -189,8 +189,8 @@ const EditEducationDialog = ({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center ">
-            <div className={`bg-white rounded-xl p-6 w-[700px] max-w-full shadow-lg overflow-y-auto z-50 relative ${showDeleteConfirmation ? "blur-sm" : ""}`}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div className={`bg-white rounded-xl p-6 w-[700px] max-w-full shadow-lg overflow-y-auto z-50 relative`}>
                 {loading && (
                     <div className="absolute inset-0 bg-white backdrop-blur-sm z-10 flex items-center justify-center">
                         <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
@@ -334,7 +334,7 @@ const EditEducationDialog = ({
 
             </div>
             {showDeleteConfirmation && (
-                <div className="fixed inset-0 z-60 flex items-center justify-center">
+                <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/50">
                     <div className="bg-white rounded-xl shadow-lg p-6 w-[400px] text-center">
                         <p className="text-lg font-semibold mb-4 text-red-600">Confirm Delete</p>
                         <p className="text-gray-700 mb-6">Are you sure you want to delete this education entry? This action cannot be undone.</p>

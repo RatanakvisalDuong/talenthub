@@ -156,7 +156,7 @@ const InboxDialog = ({
 
     return (
         <>
-            <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
                 {loading ? (
                     <div className="bg-white rounded-xl p-6 w-[600px] h-[80%] max-w-full shadow-lg flex items-center justify-center">
                         <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>

@@ -159,7 +159,7 @@ const EditPortfolioDialog = ({
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
             <div className="bg-white rounded-xl p-6 w-[850px] max-w-full shadow-lg overflow-y-auto z-50 relative">
                 {/* Loading overlay - positioned relative to the dialog */}
                 {loading && (

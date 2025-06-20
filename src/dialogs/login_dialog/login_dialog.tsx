@@ -24,7 +24,7 @@ function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 text-black">
+    <div className="fixed inset-0 flex items-center justify-center z-50 text-black bg-black/50">
       <div className="fixed inset-0" onClick={onClose}></div>
       <div className="bg-white p-6 rounded-lg shadow-lg w-[500px] text-center relative">
         <div className="flex justify-between items-center">
