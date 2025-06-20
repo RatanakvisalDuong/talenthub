@@ -114,6 +114,7 @@ export default function LandingPage() {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
             />
+            <head><meta name="google-site-verification" content="DiJ-PP241sdC-xkwfNCDNMRpsVmVWHzUKbxILp8HrJQ" /></head>
 
             {/* Mobile/Small Screen Warning (below 650px) */}
             <div className="block min-[650px]:hidden min-h-screen flex items-center justify-center p-4">

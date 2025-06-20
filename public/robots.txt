@@ -9,6 +9,6 @@ Crawl-delay: 1
 
 # Allow all search engines to index
 User-agent: *
-Disallow: /api/
 Allow: /search
 Allow: /home
+Allow: /
