@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, JSX } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Card from "@/components/card/card";
 import SearchBar from "./search-bar";
@@ -8,10 +8,12 @@ import axios from "axios";
 import { PortfolioProfile } from "../home/home-portfolio";
 
 interface SearchPageProps {
-    apiUrl?: string;
+    apiUrl: string;
 }
 
-export default function SearchPage({ apiUrl }: SearchPageProps) {
+type SearchMethod = 'exact' | 'partial' | 'split';
+
+export default function SearchPage({ apiUrl }: SearchPageProps): JSX.Element {
     const searchParams = useSearchParams();
     const router = useRouter();
     const query = searchParams.get('q') || '';
@@ -20,8 +22,10 @@ export default function SearchPage({ apiUrl }: SearchPageProps) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [hasSearched, setHasSearched] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>(query);
+    const [searchMethod, setSearchMethod] = useState<SearchMethod>('exact');
 
-    const searchPortfolios = async (searchQuery: string) => {
+    // Enhanced search function that handles full names like "Ratanakvisal Duong"
+    const searchPortfolios = useCallback(async (searchQuery: string): Promise<void> => {
         if (!searchQuery.trim()) {
             setSearchResults([]);
             setHasSearched(false);
@@ -32,25 +36,145 @@ export default function SearchPage({ apiUrl }: SearchPageProps) {
             setIsLoading(true);
             setHasSearched(true);
 
-            const response = await axios.get(`${apiUrl}search_portfolio`, {
-                params: { name: searchQuery }
-            });
-
-            let results: PortfolioProfile[] = [];
-            if (response.data && Array.isArray(response.data)) {
-                results = response.data;
-            } else if (response.data && response.data.data) {
-                results = response.data.data;
+            const cleanQuery = searchQuery.trim();
+            let allResults: PortfolioProfile[] = [];
+            
+            // Method 1: Exact search first
+            try {
+                const exactResponse = await axios.get(`${apiUrl}search_portfolio`, {
+                    params: { name: cleanQuery },
+                    timeout: 10000
+                });
+                
+                let exactResults: PortfolioProfile[] = [];
+                if (exactResponse.data && Array.isArray(exactResponse.data)) {
+                    exactResults = exactResponse.data;
+                } else if (exactResponse.data && exactResponse.data.data) {
+                    exactResults = exactResponse.data.data;
+                }
+                
+                if (exactResults.length > 0) {
+                    setSearchResults(exactResults);
+                    setSearchMethod('exact');
+                    return;
+                }
+                
+                allResults = [...exactResults];
+            } catch (error) {
+                console.log('Exact search failed, trying alternative methods');
             }
 
-            setSearchResults(results);
+            // Method 2: Split search for full names (e.g., "Ratanakvisal Duong")
+            const words = cleanQuery.split(' ').filter(word => word.length >= 2);
+            if (words.length > 1) {
+                try {
+                    const wordSearchPromises = words.map(word => 
+                        axios.get(`${apiUrl}search_portfolio`, {
+                            params: { name: word },
+                            timeout: 5000
+                        }).catch(() => ({ data: [] }))
+                    );
+
+                    const wordResults = await Promise.all(wordSearchPromises);
+                    const combinedResults = new Map<number, PortfolioProfile>();
+
+                    wordResults.forEach(response => {
+                        let results: PortfolioProfile[] = [];
+                        if (response.data && Array.isArray(response.data)) {
+                            results = response.data;
+                        } else if (response.data && response.data.data) {
+                            results = response.data.data;
+                        }
+
+                        results.forEach(result => {
+                            if (result && result.user_id && result.name) {
+                                // Check if the student's name contains multiple search words
+                                const nameWords = result.name.toLowerCase().split(' ');
+                                const matchingWords = words.filter(word => 
+                                    nameWords.some(nameWord => 
+                                        nameWord.includes(word.toLowerCase()) || 
+                                        word.toLowerCase().includes(nameWord)
+                                    )
+                                );
+                                
+                                // If at least 2 words match (or all words for shorter queries), include the result
+                                const minMatches = Math.min(2, words.length);
+                                if (matchingWords.length >= minMatches) {
+                                    combinedResults.set(result.user_id, result);
+                                }
+                            }
+                        });
+                    });
+
+                    if (combinedResults.size > 0) {
+                        const sortedResults = Array.from(combinedResults.values()).sort((a, b) => {
+                            // Sort by relevance - more matching words first
+                            const aMatches = words.filter(word => 
+                                a.name.toLowerCase().includes(word.toLowerCase())
+                            ).length;
+                            const bMatches = words.filter(word => 
+                                b.name.toLowerCase().includes(word.toLowerCase())
+                            ).length;
+                            return bMatches - aMatches;
+                        });
+                        
+                        setSearchResults(sortedResults);
+                        setSearchMethod('split');
+                        return;
+                    }
+                } catch (error) {
+                    console.warn('Split search failed:', error);
+                }
+            }
+
+            // Method 3: Partial matching with individual words
+            if (words.length > 0) {
+                try {
+                    const partialSearchPromises = words.map(word => 
+                        axios.get(`${apiUrl}search_portfolio`, {
+                            params: { name: word },
+                            timeout: 5000
+                        }).catch(() => ({ data: [] }))
+                    );
+
+                    const partialResults = await Promise.all(partialSearchPromises);
+                    const allPartialResults = new Set<PortfolioProfile>();
+
+                    partialResults.forEach(response => {
+                        let results: PortfolioProfile[] = [];
+                        if (response.data && Array.isArray(response.data)) {
+                            results = response.data;
+                        } else if (response.data && response.data.data) {
+                            results = response.data.data;
+                        }
+
+                        results.forEach(result => {
+                            if (result && result.user_id && result.name) {
+                                allPartialResults.add(result);
+                            }
+                        });
+                    });
+
+                    if (allPartialResults.size > 0) {
+                        setSearchResults(Array.from(allPartialResults));
+                        setSearchMethod('partial');
+                        return;
+                    }
+                } catch (error) {
+                    console.warn('Partial search failed:', error);
+                }
+            }
+
+            // No results found
+            setSearchResults([]);
+
         } catch (error) {
             console.error("Error searching portfolios:", error);
             setSearchResults([]);
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [apiUrl]);
 
     // Search when component mounts with URL query
     useEffect(() => {
@@ -58,24 +182,36 @@ export default function SearchPage({ apiUrl }: SearchPageProps) {
             setSearchTerm(query);
             searchPortfolios(query);
         }
-    }, [query, apiUrl]);
+    }, [query, searchPortfolios]);
 
-    const handleSearch = (term: string) => {
+    const handleSearch = useCallback((term: string): void => {
         setSearchTerm(term);
         
         // Update URL with search query
         if (term.trim()) {
             router.push(`/search?q=${encodeURIComponent(term)}`);
-            searchPortfolios(term);
         } else {
             router.push('/search');
             setSearchResults([]);
             setHasSearched(false);
         }
-    };
+    }, [router]);
 
-    const handleBackToHome = () => {
+    const handleBackToHome = useCallback((): void => {
         router.push('/home');
+    }, [router]);
+
+    const getSearchMethodMessage = (): string => {
+        switch (searchMethod) {
+            case 'exact':
+                return 'Exact match found';
+            case 'split':
+                return 'Found by matching name parts';
+            case 'partial':
+                return 'Found similar names';
+            default:
+                return '';
+        }
     };
 
     return (
@@ -100,8 +236,13 @@ export default function SearchPage({ apiUrl }: SearchPageProps) {
                     <SearchBar 
                         onSearch={handleSearch}
                         initialValue={searchTerm}
-                        placeholder="Search for students by name..."
+                        placeholder="Search for students by full name (e.g., Ratanakvisal Duong)..."
                     />
+                    
+                    {/* Search tips */}
+                    <div className="mt-2 text-sm text-gray-600">
+                        <p>💡 Try searching with full names for better results. Example: "Ratanakvisal Duong"</p>
+                    </div>
                 </div>
 
                 {/* Search Results */}
@@ -112,9 +253,16 @@ export default function SearchPage({ apiUrl }: SearchPageProps) {
                                 Search results for: <span className="text-blue-600">"{query}"</span>
                             </h2>
                             {hasSearched && !isLoading && (
-                                <p className="text-gray-600 mt-1">
-                                    Found {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
-                                </p>
+                                <div className="flex items-center space-x-4 mt-1">
+                                    <p className="text-gray-600">
+                                        Found {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
+                                    </p>
+                                    {searchResults.length > 0 && searchMethod !== 'exact' && (
+                                        <span className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                                            {getSearchMethodMessage()}
+                                        </span>
+                                    )}
+                                </div>
                             )}
                         </div>
                     )}
@@ -124,6 +272,7 @@ export default function SearchPage({ apiUrl }: SearchPageProps) {
                             <div className="text-center">
                                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
                                 <p className="text-gray-600">Searching portfolios...</p>
+                                <p className="text-sm text-gray-500 mt-1">Trying multiple search methods for best results</p>
                             </div>
                         </div>
                     ) : hasSearched ? (
@@ -144,9 +293,15 @@ export default function SearchPage({ apiUrl }: SearchPageProps) {
                                 <p className="text-gray-600 mb-4">
                                     We couldn't find any portfolios matching "{query}"
                                 </p>
-                                <p className="text-gray-500 text-sm">
-                                    Try adjusting your search terms or browse all portfolios
-                                </p>
+                                <div className="text-gray-500 text-sm space-y-1">
+                                    <p>Try these search tips:</p>
+                                    <ul className="list-disc list-inside space-y-1">
+                                        <li>Check spelling of the name</li>
+                                        <li>Try searching with just the first or last name</li>
+                                        <li>Remove middle names or initials</li>
+                                        <li>Browse all portfolios instead</li>
+                                    </ul>
+                                </div>
                                 <button
                                     onClick={handleBackToHome}
                                     className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -163,9 +318,23 @@ export default function SearchPage({ apiUrl }: SearchPageProps) {
                                 </svg>
                             </div>
                             <h3 className="text-xl font-semibold text-gray-700 mb-2">Search Student Portfolios</h3>
-                            <p className="text-gray-600">
+                            <p className="text-gray-600 mb-4">
                                 Enter a student name to find their portfolio from Paragon International University
                             </p>
+                            <div className="text-sm text-gray-500">
+                                <p className="mb-2">Examples of searches:</p>
+                                <div className="flex flex-wrap justify-center gap-2">
+                                    {['Ratanakvisal Duong', 'Rata', 'Computer Science', 'ICT'].map((example) => (
+                                        <button
+                                            key={example}
+                                            onClick={() => handleSearch(example)}
+                                            className="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-xs transition-colors"
+                                        >
+                                            {example}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     )}
                 </div>
@@ -173,4 +342,3 @@ export default function SearchPage({ apiUrl }: SearchPageProps) {
         </div>
     );
 }
-
