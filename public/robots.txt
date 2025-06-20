@@ -1,11 +1,14 @@
 User-agent: *
 Allow: /
+
 Sitemap: https://talenthub-liart.vercel.app/sitemap.xml
 
+# Additional crawl instructions
 User-agent: Googlebot
-Allow: /
 Crawl-delay: 1
 
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
+# Allow all search engines to index
+User-agent: *
+Disallow: /api/
+Allow: /search
+Allow: /home
