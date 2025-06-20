@@ -82,7 +82,7 @@ export default function LandingPage() {
                 "name": "How do I search for Paragon International University students on TalentHub?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "You can search for Paragon International University students by visiting talenthub-liart.vercel.app/search and entering the student's name or browsing by major and skills."
+                    "text": "You can search for Paragon International University students by visiting talenthub-liart.vercel.app/search and entering the student's name."
                 }
             },
             {
