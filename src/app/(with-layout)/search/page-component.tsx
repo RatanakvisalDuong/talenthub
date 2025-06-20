@@ -241,7 +241,7 @@ export default function SearchPage({ apiUrl }: SearchPageProps): JSX.Element {
                     
                     {/* Search tips */}
                     <div className="mt-2 text-sm text-gray-600">
-                        <p>💡 Try searching with full names for better results. Example: "Ratanakvisal Duong"</p>
+                        <p>Try searching with full names for better results. Example: "Ratanakvisal Duong"</p>
                     </div>
                 </div>
 
@@ -324,7 +324,7 @@ export default function SearchPage({ apiUrl }: SearchPageProps): JSX.Element {
                             <div className="text-sm text-gray-500">
                                 <p className="mb-2">Examples of searches:</p>
                                 <div className="flex flex-wrap justify-center gap-2">
-                                    {['Ratanakvisal Duong', 'Rata', 'Computer Science', 'ICT'].map((example) => (
+                                    {['Ratanakvisal Duong', 'Chanphearun Cheam', 'Lysa Sorkeo'].map((example) => (
                                         <button
                                             key={example}
                                             onClick={() => handleSearch(example)}
