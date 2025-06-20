@@ -85,20 +85,6 @@ export const metadata: Metadata = {
     title: "TalentHub PIU - Paragon International University Portfolio Platform",
     description: "Official TalentHub Paragon International University platform. Discover talented ICT students and connect with Paragon International University through TalentHub PIU.",
     siteName: "TalentHub PIU",
-    images: [
-      {
-        url: "https://talenthub-liart.vercel.app/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "TalentHub PIU - Paragon International University Portfolio Platform"
-      }
-    ]
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "TalentHub PIU - Paragon International University Portfolio Platform",
-    description: "Official TalentHub Paragon International University platform. Discover talented ICT students and connect with PIU through TalentHub.",
-    images: ["https://talenthub-liart.vercel.app/og-image.jpg"],
   },
   verification: {
     google: "NhFAJMnBkxDvWqZGbxMtdA95TW2DGV96hn9RaF5Wv0g",
