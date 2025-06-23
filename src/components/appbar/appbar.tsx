@@ -433,12 +433,12 @@ const Appbar = React.memo(() => {
 
 								{dropdownOpen && (
 									<div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-10 border border-gray-200 overflow-hidden">
-										<div className="px-4 py-2 bg-gray-50 border-b border-gray-100">
+										{/* <div className="px-4 py-2 bg-gray-50 border-b border-gray-100">
 											<p className="text-xs text-gray-500 font-medium">ACCOUNT</p>
-										</div>
+										</div> */}
 										<div className="flex flex-col px-4 py-2">
 											<p className="text-sm text-gray-800 font-medium truncate">{session.user?.name || "User"}</p>
-											<p className="text-xs text-red-500 truncate">{session.user?.email}</p>
+											<p className="text-xs text-gray-500 truncate">{session.user?.email}</p>
 										</div>
 										<Link
 											href="/yourportfolio"
