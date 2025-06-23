@@ -205,7 +205,7 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
                                             </label>
                                         </div>
                                         <button
-                                            className="flex text-sm text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-xl items-center justify-center transition-all duration-200"
+                                            className="flex text-sm text-white hover:underline hover:brightness-110 cursor-pointer py-2 px-4 bg-[#ffc107] rounded-xl items-center justify-center transition-all duration-200 font-bold"
                                             onClick={toggleUpdateProject}
                                         >
                                             <PencilSquareIcon className="w-5 h-5 mr-2" />

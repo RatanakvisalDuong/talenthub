@@ -156,7 +156,7 @@ const EditCertificateDialog: React.FC<Props> = ({ achievement, onClose, onSave, 
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center text-black bg-black/50">
-            <div className={`relative bg-white rounded-xl p-6 w-[850px] max-w-full shadow-lg z-50 relative`}>
+            <div className="bg-white rounded-xl p-6 h-[650px] w-[850px] max-w-full shadow-lg overflow-y-auto z-50 relative">
                 {loading && (
                     <div className="absolute inset-0 bg-white backdrop-blur-sm z-10 flex items-center justify-center">
                         <div className="w-12 h-12 border-4 border-t-4 border-blue-500 rounded-full animate-spin"></div>
