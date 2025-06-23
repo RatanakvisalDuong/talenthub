@@ -215,9 +215,8 @@ export default function SearchPage({ apiUrl }: SearchPageProps): JSX.Element {
     };
 
     return (
-        <div className="bg-[#E8E8E8] min-h-screen">
+        <div className="bg-[#E8E8E8] h-screen overflow-y-auto fixed w-full">
             <div className="max-w-8xl mx-auto px-2 sm:px-4 lg:px-8 py-20">
-                {/* Header */}
                 <div className="mb-6">
                     <button
                         onClick={handleBackToHome}
@@ -238,14 +237,10 @@ export default function SearchPage({ apiUrl }: SearchPageProps): JSX.Element {
                         initialValue={searchTerm}
                         placeholder="Search for students by full name (e.g., Ratanakvisal Duong)..."
                     />
-                    
-                    {/* Search tips */}
                     <div className="mt-2 text-sm text-gray-600">
                         <p>Try searching with full names for better results. Example: "Ratanakvisal Duong"</p>
                     </div>
                 </div>
-
-                {/* Search Results */}
                 <div className="mt-8">
                     {query && (
                         <div className="mb-6">
@@ -277,7 +272,7 @@ export default function SearchPage({ apiUrl }: SearchPageProps): JSX.Element {
                         </div>
                     ) : hasSearched ? (
                         searchResults.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 z-10">
                                 {searchResults.map((portfolio) => (
                                     <Card key={`${portfolio.user_id}-${portfolio.id}`} portfolio={portfolio} />
                                 ))}
