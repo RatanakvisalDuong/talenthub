@@ -136,15 +136,12 @@ export default function LandingPage() {
                 </div>
             </div>
 
-            {/* Main Content (650px and above) */}
-            <div className="hidden min-[650px]:block min-h-screen bg-[#E8E8E8] lg:p-40 md:p-20 sm:p-10 p-6 h-screen overflow-y-auto">
+            <div className="hidden min-[650px]:block min-h-screen bg-[#E8E8E8] lg:p-40 md:p-20 sm:pt-30 p-6 h-screen overflow-y-auto">
                 <AppBar />
-
-                {/* Main Content with enhanced SEO headings */}
-                <main className='items-center justify-center h-screen p-4'>
-                    <div className='flex flex-col lg:flex-row justify-center items-center mb-4 gap-8'>
+                <main className='items-center justify-center h-screen px-4'>
+                    <div className='flex flex-col lg:flex-row justify-center items-center gap-2'>
                         <div className='flex-1 max-w-3xl'>
-                            <h1 className='text-2xl lg:text-3xl font-bold text-gray-800 leading-tight sm:mt-8 lg:mt-0'>
+                            <h1 className='text-2xl lg:text-3xl font-bold text-gray-800 leading-tight '>
                                 TalentHub PIU: Official <span className='text-blue-600'>Paragon International University</span> Portfolio Platform
                             </h1>
 
@@ -152,19 +149,15 @@ export default function LandingPage() {
                                 <h2 className='text-lg lg:text-xl font-semibold mb-2 text-gray-700'>
                                     Discover Paragon International University Students on TalentHub PIU
                                 </h2>
-                                <p className='leading-relaxed'>
-                                    Welcome to TalentHub PIU, the official Paragon International University portfolio platform. As the premier destination for TalentHub Paragon International University experience, we connect talented ICT students with industry opportunities. Explore comprehensive student portfolios from Paragon International University's brightest minds and discover Cambodia's next generation of tech professionals.
-                                </p>
 
                                 <div className='mt-3'>
-                                    <h3 className='text-base lg:text-lg font-medium text-gray-700 mb-2'>Why Choose TalentHub Paragon International University?</h3>
                                     <p className='text-sm leading-relaxed'>
-                                        TalentHub PIU serves as the official bridge between Paragon International University's exceptional ICT education and industry needs. Our TalentHub Paragon International University platform showcases student achievements, technical skills, and professional projects. Whether you're searching for specific students or browsing our comprehensive directory, TalentHub PIU makes finding Paragon International University students effortless.
+                                        TalentHub PIU serves as the official bridge between Paragon International University's exceptional ICT education and industry needs. Our TalentHub Paragon International University platform showcases student achievements, technical skills, and professional projects. 
                                     </p>
                                 </div>
 
                                 <div className='mt-3'>
-                                    <h3 className='text-base lg:text-lg font-medium text-gray-700 mb-2'>Search TalentHub PIU Student Directory</h3>
+                                    <h3 className='text-base lg:text-lg text-gray-700 mb-2 font-bold'>Search TalentHub PIU Student Directory</h3>
                                     <p className='text-sm leading-relaxed'>
                                         Use TalentHub PIU's powerful search to find specific Paragon International University students by name, major, or skills. Our TalentHub Paragon International University platform makes it easy to discover talented individuals and connect with the perfect candidate for your organization. Start your search today on the official TalentHub PIU platform.
                                     </p>
