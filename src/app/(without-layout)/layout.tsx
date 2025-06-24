@@ -81,16 +81,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://talenthub-liart.vercel.app",
-    title: "TalentHub PIU - Paragon International University Portfolio Platform",
+    url: "https://talenthub.paragoniu.app",
+    title: "TalentHub - Paragon International University Portfolio Platform",
     description: "Official TalentHub Paragon International University platform. Discover talented ICT students and connect with Paragon International University through TalentHub PIU.",
-    siteName: "TalentHub PIU",
-  },
-  verification: {
-    google: "NhFAJMnBkxDvWqZGbxMtdA95TW2DGV96hn9RaF5Wv0g",
+    siteName: "TalentHub",
   },
   alternates: {
-    canonical: "https://talenthub-liart.vercel.app",
+    canonical: "https://talenthub.paragoniu.app",
   },
   category: "education",
   classification: "Education Platform",
@@ -101,7 +98,7 @@ export const metadata: Metadata = {
   },
   // Additional metadata for better search visibility
   other: {
-    "brand": "TalentHub PIU",
+    "brand": "TalentHub",
     "institution": "Paragon International University", 
     "platform-type": "Student Portfolio Platform",
     "target-audience": "Recruiters, Employers, ICT Industry",
@@ -125,8 +122,8 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* Additional meta tags for better SEO */}
-        <meta name="application-name" content="TalentHub PIU" />
-        <meta name="apple-mobile-web-app-title" content="TalentHub PIU" />
+        <meta name="application-name" content="TalentHub" />
+        <meta name="apple-mobile-web-app-title" content="TalentHub" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
@@ -134,7 +131,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#2563eb" />
 
         {/* Enhanced brand and search meta tags */}
-        <meta name="brand" content="TalentHub PIU" />
+        <meta name="brand" content="TalentHub" />
         <meta name="institution" content="Paragon International University" />
         <meta name="platform-type" content="Student Portfolio Platform" />
         <meta name="target-audience" content="Recruiters, Employers, ICT Industry, Students" />

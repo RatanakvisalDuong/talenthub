@@ -29,7 +29,7 @@ export default function LandingPage() {
             "@type": "SearchAction",
             "target": {
                 "@type": "EntryPoint",
-                "urlTemplate": "https://talenthub-liart.vercel.app/search?q={search_term_string}"
+                "urlTemplate": "https://talenthub.paragoniu.app/search?q={search_term_string}"
             },
             "query-input": "required name=search_term_string"
         }
