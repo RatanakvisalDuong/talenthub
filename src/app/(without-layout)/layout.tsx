@@ -1,3 +1,4 @@
+// app/layout.tsx - Enhanced SEO Layout
 import { Ubuntu } from "next/font/google";
 import "../globals.css";
 import SessionProvider from "@/components/providers/SessionProvider";
@@ -9,42 +10,45 @@ const ubuntuFont = Ubuntu({
 });
 
 export const metadata: Metadata = {
+  // metadataBase: new URL('https://talenthub.paragoniu.app'),
+  metadataBase: new URL('https://talenthub-liart.vercel.app'),
   title: {
-    default: "TalentHub PIU - Paragon International University Portfolio | Official Student Platform",
-    template: "%s | TalentHub PIU - Paragon International University"
+    default: "TalentHub Paragon International University - Official PIU TalentHub Portfolio Platform",
+    template: "%s | TalentHub Portfolio - PIU TalentHub Paragon International University"
   },
-  description: "TalentHub PIU is the official Paragon International University portfolio platform. Search TalentHub Paragon International University students, discover talented ICT students, and connect with top tech talent from Cambodia's leading university.",
+  description: "TalentHub Paragon International University is the official PIU TalentHub portfolio platform. Discover TalentHub Portfolio showcasing talented ICT students from Cambodia's leading university. Search PIU TalentHub student directory and connect with top tech talent.",
   keywords: [
-    // Primary target keywords
-    "TalentHub PIU",
-    "TalentHub Paragon International University", 
-    "Paragon International University TalentHub",
-    "TalentHub Portfolio PIU",
-    // Secondary keywords
-    "Paragon International University Portfolio",
-    "Paragon International University Students",
+    // Primary SEO targets
+    "TalentHub Paragon International University",
     "TalentHub Portfolio",
-    "ParagonIU TalentHub",
     "PIU TalentHub",
+    "TalentHub PIU",
+    "Paragon International University TalentHub",
+    "TalentHub Platform PIU",
     "PIU Portfolio Platform",
-    // Supporting keywords
-    "ICT students Cambodia",
-    "student portfolios Cambodia",
-    "portfolio platform PIU",
-    "tech recruitment Cambodia",
-    "academic portfolios PIU",
-    "career portfolios Cambodia",
-    "university students Cambodia",
-    "Cambodia ICT students",
-    "tech talent Cambodia",
-    "Paragon University students",
-    "student search PIU",
-    "university portfolio platform Cambodia",
-    "Cambodia university student directory"
+    "Paragon University TalentHub",
+    // Secondary keywords
+    "TalentHub Paragon University",
+    "official PIU TalentHub",
+    "TalentHub Portfolio platform",
+    "Paragon International University Portfolio",
+    "PIU student directory",
+    "TalentHub student platform",
+    // Supporting long-tail keywords
+    "Cambodia ICT students TalentHub",
+    "Paragon International University student portfolios",
+    "official TalentHub Paragon International University platform",
+    "PIU TalentHub student search",
+    "TalentHub Portfolio Cambodia university",
+    "Paragon International University tech talent",
+    "Cambodia university portfolio platform",
+    "PIU academic portfolio showcase",
+    "TalentHub Paragon International University directory",
+    "official PIU student platform"
   ],
-  authors: [{ name: "Paragon International University" }],
-  creator: "Paragon International University",
-  publisher: "Paragon International University",
+  authors: [{ name: "Paragon International University - TalentHub Portfolio Team" }],
+  creator: "TalentHub Portfolio - Paragon International University",
+  publisher: "PIU TalentHub - Paragon International University",
   robots: {
     index: true,
     follow: true,
@@ -59,7 +63,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/talenthublogo-sm.png",
+        url: "/logo.png",
         sizes: "52x52",
         type: "image/png",
       },
@@ -68,10 +72,10 @@ export const metadata: Metadata = {
         sizes: "any",
       }
     ],
-    shortcut: "/talenthublogo-sm.png",
+    shortcut: "/logo.png",
     apple: [
       {
-        url: "/talenthublogo-sm.png",
+        url: "/logo.png",
         sizes: "52x52",
         type: "image/png",
       }
@@ -82,37 +86,69 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://talenthub.paragoniu.app",
-    title: "TalentHub - Paragon International University Portfolio Platform",
-    description: "Official TalentHub Paragon International University platform. Discover talented ICT students and connect with Paragon International University through TalentHub PIU.",
-    siteName: "TalentHub",
+    title: "TalentHub Portfolio - Official PIU TalentHub Paragon International University Platform",
+    description: "Discover TalentHub Paragon International University - the official PIU TalentHub platform. Browse TalentHub Portfolio showcasing talented ICT students from Cambodia's leading university.",
+    siteName: "TalentHub Portfolio - PIU TalentHub",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "TalentHub Portfolio - Official PIU TalentHub Paragon International University Platform",
+        type: "image/jpeg",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@ParagonIU",
+    title: "TalentHub Portfolio - PIU TalentHub Platform",
+    description: "Official TalentHub Paragon International University platform for student portfolios.",
+    images: ["/og-image.jpg"],
   },
   alternates: {
     canonical: "https://talenthub.paragoniu.app",
+    languages: {
+      'en-US': 'https://talenthub.paragoniu.app',
+      'en': 'https://talenthub.paragoniu.app',
+    },
   },
   category: "education",
-  classification: "Education Platform",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
+  classification: "University Portfolio Platform",
+  verification: {
+    google: "NhFAJMnBkxDvWqZGbxMtdA95TW2DGV96hn9RaF5Wv0g",
   },
-  // Additional metadata for better search visibility
+  // Enhanced metadata for better search visibility
   other: {
-    "brand": "TalentHub",
+    "brand": "TalentHub Portfolio",
     "institution": "Paragon International University", 
-    "platform-type": "Student Portfolio Platform",
-    "target-audience": "Recruiters, Employers, ICT Industry",
+    "platform-type": "Official University Student Portfolio Platform",
+    "target-audience": "Recruiters, Employers, ICT Industry, Students, HR Professionals",
     "geo.region": "KH",
-    "geo.placename": "Phnom Penh",
+    "geo.placename": "Phnom Penh, Cambodia",
     "geo.position": "11.5564;104.9282",
     "ICBM": "11.5564, 104.9282",
     "coverage": "Worldwide",
     "distribution": "Global",
     "rating": "General",
-    "language": "English"
+    "language": "English",
+    "DC.title": "TalentHub Portfolio - Official PIU TalentHub Platform",
+    "DC.creator": "Paragon International University",
+    "DC.subject": "Student Portfolio Platform, University Directory, ICT Talent",
+    "DC.description": "Official TalentHub Paragon International University platform",
+    "DC.publisher": "PIU TalentHub",
+    "DC.contributor": "Paragon International University Students",
+    "DC.date": "2025",
+    "DC.type": "Interactive Resource",
+    "DC.format": "text/html",
+    "DC.identifier": "https://talenthub.paragoniu.app",
+    "DC.source": "https://paragoniu.edu.kh",
+    "DC.language": "en-US",
+    "DC.relation": "https://paragoniu.edu.kh",
+    "DC.coverage": "Cambodia, Global",
+    "DC.rights": "© 2025 Paragon International University"
   }
 }
-
 export default function RootLayout({
   children,
 }: {
