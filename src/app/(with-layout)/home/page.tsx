@@ -14,7 +14,7 @@ async function HomeContent() {
   const response = await axios.get(`${process.env.API_URL}view_all_portfolio?page=${page}`);
 
   const portfolioData = response.data;
-
+console.log(portfolioData)
   let userData = {
     photo: null,
     phone_number: null,

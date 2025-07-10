@@ -496,7 +496,7 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
             {/* Image Dialog */}
             {imageDialogOpen && (
                 <div 
-                    className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+                    className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 "
                     onClick={closeImageDialog} // Close when clicking the backdrop
                 >
                     <div 
@@ -508,7 +508,7 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
                             <img
                                 src={selectedImage}
                                 alt="Project image"
-                                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                                className="max-w-full max-h-[600px] object-contain rounded-lg shadow-2xl"
                             />
                             
                             {/* Close button - positioned absolutely at top right */}

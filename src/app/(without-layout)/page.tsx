@@ -9,10 +9,10 @@ export default function LandingPage() {
         "@type": "WebSite",
         "name": "TalentHub - Paragon International University Portfolio Platform",
         "description": "TalentHub is the premier web platform for Paragon International University ICT students to create and explore academic and career portfolios. Connect with talented students and showcase your skills.",
-        "url": "https://talenthub-liart.vercel.app",
+        "url": "https://talenthub.paragoniu.app",
         "alternateName": [
-            "TalentHub Portfolio", 
-            "TalentHub Platform", 
+            "TalentHub Portfolio",
+            "TalentHub Platform",
             "Paragon University Portfolio",
             "Paragon International University TalentHub",
             "Paragon International University Portfolio",
@@ -29,7 +29,7 @@ export default function LandingPage() {
             "@type": "SearchAction",
             "target": {
                 "@type": "EntryPoint",
-                "urlTemplate": "https://talenthub-liart.vercel.app/search?q={search_term_string}"
+                "urlTemplate": "https://talenthub.paragoniu.app/search?q={search_term_string}"
             },
             "query-input": "required name=search_term_string"
         }
@@ -54,7 +54,7 @@ export default function LandingPage() {
         "@type": "WebApplication",
         "name": "TalentHub Portfolio Platform",
         "description": "Web platform for Paragon International University students to create academic and career portfolios",
-        "url": "https://talenthub-liart.vercel.app",
+        "url": "https://talenthub.paragoniu.app",
         "applicationCategory": "EducationalApplication",
         "operatingSystem": "Web Browser",
         "offers": {
@@ -78,7 +78,7 @@ export default function LandingPage() {
                 }
             },
             {
-                "@type": "Question", 
+                "@type": "Question",
                 "name": "How do I search for Paragon International University students on TalentHub?",
                 "acceptedAnswer": {
                     "@type": "Answer",
@@ -95,7 +95,7 @@ export default function LandingPage() {
             }
         ]
     };
-    
+
     return (
         <>
             <script
@@ -114,7 +114,7 @@ export default function LandingPage() {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
             />
-            <meta name="google-site-verification" content="NhFAJMnBkxDvWqZGbxMtdA95TW2DGV96hn9RaF5Wv0g" />
+            <meta name="google-site-verification" content="07Xjr-50lKVhLxq03j5Um0V37gCVT4-7pw9_mpHJ2W0" />
 
             {/* Mobile/Small Screen Warning (below 650px) */}
             <div className="block min-[650px]:hidden min-h-screen flex items-center justify-center p-4">
@@ -152,7 +152,7 @@ export default function LandingPage() {
 
                                 <div className='mt-3'>
                                     <p className='text-sm leading-relaxed'>
-                                        TalentHub PIU serves as the official bridge between Paragon International University's exceptional ICT education and industry needs. Our TalentHub Paragon International University platform showcases student achievements, technical skills, and professional projects. 
+                                        TalentHub PIU serves as the official bridge between Paragon International University's exceptional ICT education and industry needs. Our TalentHub Paragon International University platform showcases student achievements, technical skills, and professional projects.
                                     </p>
                                 </div>
 
@@ -174,7 +174,7 @@ export default function LandingPage() {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                         </svg>
                                     </button>
-                                    
+
                                     <button
                                         className='px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 cursor-pointer transition-colors duration-300 flex items-center justify-center group font-medium text-sm lg:text-base'
                                         onClick={() => window.location.href = '/home'}
@@ -220,10 +220,10 @@ export default function LandingPage() {
                 <section className="sr-only">
                     <h2>About TalentHub PIU</h2>
                     <p>TalentHub PIU is the official portfolio platform for Paragon International University students. Our TalentHub Paragon International University platform connects talented ICT students with career opportunities and showcases their academic achievements.</p>
-                    
+
                     <h3>Paragon International University Excellence</h3>
                     <p>Paragon International University is Cambodia's leading institution for ICT education. The official TalentHub PIU platform showcases the best of our students' academic and professional achievements.</p>
-                    
+
                     <h3>Student Search Directory</h3>
                     <p>Use TalentHub PIU to search for specific Paragon International University students by name. Our comprehensive student directory makes it easy to find and connect with talented individuals from Cambodia's premier ICT university.</p>
 
