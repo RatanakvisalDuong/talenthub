@@ -152,7 +152,7 @@ const ExperienceCard: React.FC<Props> = ({
 					<ApiDialog
 						isOpen={removeDialogOpen}
 						onClose={() => setRemoveDialogOpen(false)}
-						apiUrl="https://talenthub.newlinkmarketing.com/api/remove_endorsement"
+						apiUrl="https://api-talenthub.paragoniu.app/api/remove_endorsement"
 						requestData={{
 							"type": 2,
 							"id": experience.id

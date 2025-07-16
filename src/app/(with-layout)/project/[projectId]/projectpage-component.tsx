@@ -308,14 +308,17 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
 
                             <div className="w-full mt-4 flex justify-end">
                                 {projectData?.link && (
-                                    <Link
-                                        className="h-10 w-max bg-white rounded-xl flex items-center justify-center text-black px-4 shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group mr-4 border border-gray-200"
-                                        href={projectData.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <LinkIcon className="h-5 w-5 mr-1" /> Visit Project
-                                    </Link>
+                                    <button
+                                                                            className="h-10 w-max bg-white rounded-xl flex items-center justify-center text-black px-4 shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer group mr-4 border border-gray-200"
+                                                                            onClick={() => {
+                                                                                const url = projectData.link.startsWith("http://") || projectData.link.startsWith("https://")
+                                                                                    ? projectData.link
+                                                                                    : `https://${projectData.link}`;
+                                                                                window.open(url, "_blank", "noopener,noreferrer");
+                                                                            }}
+                                                                        >
+                                                                            <LinkIcon className="h-5 w-5 mr-1" /> Visit Project
+                                                                        </button>
                                 )}
 
                                 {projectData.file && (
@@ -572,7 +575,7 @@ export default function ProjectPageComponent({ projectData, onEndorserRemoved }:
 					<ApiDialog
 						isOpen={removeDialogOpen}
 						onClose={() => setRemoveDialogOpen(false)}
-						apiUrl="https://talenthub.newlinkmarketing.com/api/remove_endorsement"
+						apiUrl="https://api-talenthub.paragoniu.app/api/remove_endorsement"
 						requestData={{
 							"type": 4,
 							"id": projectData.project_id,

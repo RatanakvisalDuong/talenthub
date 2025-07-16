@@ -36,6 +36,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
     const [removingImageIds, setRemovingImageIds] = useState<number[]>([]);
     const [selectedImageToRemove, setSelectedImageToRemove] = useState<number | null>(null);
     const [isRemoved, setIsRemoved] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const filteredSuggestions = allLanguages.filter(
         (lang) =>
@@ -91,6 +92,7 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
                 router.push("/yourportfolio");
             }
         } catch (error) {
+
             setLoading(false);
         }
     };
@@ -222,26 +224,35 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
                     formData.append(`image[]`, image);
                 });
             }
+            try {
 
-            const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}update_project/${projectData.project_id}`,
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        Authorization: `Bearer ${session?.accessToken}`,
-                    },
+                const response = await axios.post(
+                    `${process.env.NEXT_PUBLIC_API_URL}update_project/${projectData.project_id}`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            Authorization: `Bearer ${session?.accessToken}`,
+                        },
+                    }
+                );
+
+                if (response.status === 200) {
+                    setSuccessMessage("Project updated successfully");
+                    setLoading(false);
+                    onClose();
+                    router.refresh();
                 }
-            );
-
-            if (response.status === 200) {
-                setSuccessMessage("Project updated successfully");
-                setLoading(false);
-                onClose();
-                router.refresh();
             }
+            catch (error) {
+                console.error("Project update failed", error);
+                setError("Failed to update project. Please try again.");
+                setLoading(false);
+            }
+
         } catch (error) {
             console.error("Project update failed", error);
+            setError("Failed to upload files. Please try again.");
             setLoading(false);
         }
     };
@@ -389,7 +400,20 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
                                 </>
                             )}
                         </div>
-
+                        <div className="flex items-start p-1 mt-1 mb-2 bg-yellow-50 rounded-lg border border-yellow-200">
+                            <svg className="w-3 h-3 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div className="text-xs text-yellow-500">
+                                <p>Upload a single project-related file (document, source code, etc.)</p>
+                                <p>Accepted formats: PDF, ZIP (Max 45MB)</p>
+                            </div>
+                        </div>
+                        {error && (
+                            <div className="text-red-500 text-sm ">
+                                {error}
+                            </div>
+                        )}
                     </form>
 
                     {/* Right side: Multiple Image Upload */}
@@ -402,6 +426,16 @@ const EditProjectDialog = ({ isOpen, onClose, onClick, projectData, setSuccessMe
                         >
                             Upload Images
                         </button>
+                        <div className="flex items-start p-1 mb-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                            <svg className="w-3 h-3 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div className="text-xs text-yellow-500">
+                                <p>Please upload professional images related to your project.</p>
+                                <p>Accepted formats: JPEG, PNG, JPG, GIF, SVG (Max 4MB each)</p>
+                                <p>You can select multiple images at once.</p>
+                            </div>
+                        </div>
 
                         <input
                             type="file"

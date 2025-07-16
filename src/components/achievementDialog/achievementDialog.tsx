@@ -214,11 +214,11 @@ const CertificateDialog: React.FC<Props> = ({ owner, onClose, achievement, onEdi
                 </div>
             </div>
             {removeDialogOpen && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-100 flex items-center justify-center">
                     <ApiDialog
                         isOpen={removeDialogOpen}
                         onClose={() => setRemoveDialogOpen(false)}
-                        apiUrl="https://talenthub.newlinkmarketing.com/api/remove_endorsement"
+                        apiUrl="https://api-talenthub.paragoniu.app/api/remove_endorsement"
                         requestData={{
                             "type": 3,
                             "id": achievement?.id

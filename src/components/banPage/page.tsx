@@ -1,7 +1,11 @@
+'use client'
+
 import Link from "next/link";
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { signOut, useSession } from "next-auth/react";
 
 export default function BanPage() {
+	const { data: session } = useSession();
     return (
         <div className="w-full h-full">
             <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
@@ -20,14 +24,20 @@ export default function BanPage() {
                         <div className="text-sm text-gray-600 mt-2">
                             <p>If you believe this is a mistake, please contact our support team.</p>
                         </div>
-                        <div className="mt-4">
-                            <Link
-                                href="/"
-                                className="text-sm text-blue-600 hover:text-blue-800"
-                            >
-                                Return to Homepage
-                            </Link>
-                        </div>
+                         <div className="mt-4">
+                                                    <Link
+                                                        href="/"
+                                                        className="text-sm text-blue-600 hover:text-blue-800"
+                                                        onClick={e => {
+                                                            if (session != null) {
+                                                                e.preventDefault();
+                                                                signOut({ callbackUrl: '/' });
+                                                            }
+                                                        }}
+                                                    >
+                                                        Return to Homepage
+                                                    </Link>
+                                                </div>
                     </div>
                 </div>
             </div>

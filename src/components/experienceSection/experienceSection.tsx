@@ -70,7 +70,7 @@ const ExperienceSection: React.FC<Props> = ({
                 <div className="mt-4 text-center">
                     <button
                         onClick={toggleExpandedExperience}
-                        className="text-blue-500 hover:underline font-medium"
+                        className="text-blue-500 hover:underline font-bold"
                     >
                         {expandedExperience ? 'See Less' : 'See More'}
                     </button>

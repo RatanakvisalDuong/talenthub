@@ -148,7 +148,7 @@ const SkillCard: React.FC<Props> = ({ skill, index, dropdownOpen, toggleDropdown
                     <ApiDialog
                         isOpen={removeDialogOpen}
                         onClose={() => setRemoveDialogOpen(false)}
-                        apiUrl="https://talenthub.newlinkmarketing.com/api/remove_endorsement"
+                        apiUrl="https://api-talenthub.paragoniu.app/api/remove_endorsement"
                         requestData={{
                             "type": 1,
                             "id": skill.id
