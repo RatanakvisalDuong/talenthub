@@ -105,12 +105,14 @@ export default function LandingPage() {
             "Paragon International University TalentHub",
             "Paragon International University Portfolio",
             "TalentHub Paragon International University",
-            "TalentHub PIU"
+            "TalentHub PIU",
+            "TalentHub ParagonIU",
+            "TalentHub ParagonU"
         ],
         "publisher": {
             "@type": "Organization",
             "name": "Paragon International University",
-            "alternateName": ["ParagonIU", "Paragon University", "PIU"],
+            "alternateName": ["ParagonIU", "Paragon University", "PIU", "ParagonU"],
             "url": "https://paragoniu.edu.kh"
         },
         "potentialAction": {
@@ -163,6 +165,14 @@ export default function LandingPage() {
                 "acceptedAnswer": {
                     "@type": "Answer",
                     "text": "TalentHub PIU is the official portfolio platform for Paragon International University students. It allows ICT students to showcase their academic achievements, projects, and skills to potential employers and recruiters."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is TalentHub ParagonU?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "TalentHub ParagonU is the official portfolio platform for Paragon International University students. It allows ICT students to showcase their academic achievements, projects, and skills to potential employers and recruiters."
                 }
             },
             {
@@ -255,7 +265,7 @@ export default function LandingPage() {
                             Desktop Required
                         </h2>
                         <p className="text-gray-600 mb-4">
-                            TalentHub PIU - Paragon International University Portfolio Platform requires a larger screen. Please use a desktop or tablet to access Paragon International University student portfolios.
+                            TalentHub ParagonU - Paragon International University Portfolio Platform requires a larger screen. Please use a desktop or tablet to access Paragon International University student portfolios.
                         </p>
                         <div className="text-sm text-gray-500">
                             Current screen size is too small
@@ -272,7 +282,7 @@ export default function LandingPage() {
                             {/* Content Section */}
                             <div className="flex-1 max-w-3xl">
                                 <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-800 leading-tight mb-6">
-                                    TalentHub PIU: {' '}
+                                    TalentHub: {' '}
                                     <span className="text-blue-600">Paragon International University</span>{' '}
                                     Portfolio Platform
                                 </h1>
@@ -280,19 +290,19 @@ export default function LandingPage() {
                                 <div className="space-y-6">
                                     <div>
                                         <h2 className="text-lg lg:text-xl font-semibold mb-3 text-gray-700">
-                                            Discover Paragon International University Students on TalentHub PIU
+                                            Discover Paragon International University Students on TalentHub ParagonU
                                         </h2>
                                         <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-                                            TalentHub PIU serves as the official bridge between Paragon International University's exceptional ICT education and industry needs. Our TalentHub Paragon International University platform showcases student achievements, technical skills, and professional projects.
+                                            TalentHub ParagonU serves as the official bridge between Paragon International University's exceptional ICT education and industry needs. Our TalentHub ParagonU platform showcases student achievements, technical skills, and professional projects.
                                         </p>
                                     </div>
 
                                     <div>
                                         <h3 className="text-base lg:text-lg text-gray-700 mb-2 font-semibold">
-                                            Search TalentHub PIU Student Directory
+                                            Search TalentHub ParagonU Student Directory
                                         </h3>
                                         <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-                                            Use TalentHub PIU's powerful search to find specific Paragon International University students by name, major, or skills. Our TalentHub Paragon International University platform makes it easy to discover talented individuals and connect with the perfect candidate for your organization. Start your search today on the official TalentHub PIU platform.
+                                            Use TalentHub ParagonU's find specific Paragon International University students. Our TalentHub platform makes it easy to discover talented individuals and connect with the perfect candidate for your organization. Start your search today on the official TalentHub ParagonU platform.
                                         </p>
                                     </div>
 
@@ -389,40 +399,40 @@ export default function LandingPage() {
 
                 {/* SEO Content - Hidden from users but visible to search engines */}
                 <div className="sr-only">
-                    <h2>TalentHub PIU - Paragon International University Portfolio Platform</h2>
+                    <h2>TalentHub - Paragon International University Portfolio Platform</h2>
                     <p>
-                        TalentHub PIU, TalentHub Paragon International University, Paragon International University Portfolio, Paragon International University TalentHub, Paragon International University Students, TalentHub Portfolio, ParagonIU, ICT students, student portfolios, portfolio platform, academic portfolios, career portfolios, university students, Cambodia tech talent, Paragon University, student directory, tech recruitment
+                        TalentHub, TalentHub Paragon International University, Paragon International University Portfolio, Paragon International University TalentHub, Paragon International University Students, TalentHub Portfolio, ParagonIU, ICT students, student portfolios, portfolio platform, academic portfolios, career portfolios, university students, Cambodia tech talent, Paragon University, student directory, tech recruitment
                     </p>
 
                     <h3>Search Keywords</h3>
                     <p>
-                        TalentHub PIU, TalentHub Paragon International University, Paragon University TalentHub, official Paragon International University portfolio, Paragon International University student search, TalentHub student directory, Cambodia university portfolios, ICT student platform
+                        TalentHub, TalentHub Paragon International University, Paragon University TalentHub, official Paragon International University portfolio, Paragon International University student search, TalentHub student directory, Cambodia university portfolios, ICT student platform
                     </p>
 
                     <h3>How to Find Students</h3>
                     <p>
-                        Search Paragon International University students on TalentHub PIU by visiting the search page and entering the student's name. Find specific students by name using the search function. Browse all Paragon International University portfolios on the official TalentHub PIU platform.
+                        Search Paragon International University students on TalentHub by visiting the search page and entering the student's name. Find specific students by name using the search function. Browse all Paragon International University portfolios on the official TalentHub platform.
                     </p>
                 </div>
 
                 {/* Additional SEO sections preserved from original */}
                 <section className="sr-only">
-                    <h2>About TalentHub PIU</h2>
-                    <p>TalentHub PIU is the official portfolio platform for Paragon International University students. Our TalentHub Paragon International University platform connects talented ICT students with career opportunities and showcases their academic achievements.</p>
+                    <h2>About TalentHub</h2>
+                    <p>TalentHub is the official portfolio platform for Paragon International University students. Our TalentHub Paragon International University platform connects talented ICT students with career opportunities and showcases their academic achievements.</p>
 
                     <h3>Paragon International University Excellence</h3>
-                    <p>Paragon International University is Cambodia's leading institution for ICT education. The official TalentHub PIU platform showcases the best of our students' academic and professional achievements.</p>
+                    <p>Paragon International University is Cambodia's leading institution for ICT education. The official TalentHub platform showcases the best of our students' academic and professional achievements.</p>
 
                     <h3>Student Search Directory</h3>
-                    <p>Use TalentHub PIU to search for specific Paragon International University students by name. Our comprehensive student directory makes it easy to find and connect with talented individuals from Cambodia's premier ICT university.</p>
+                    <p>Use TalentHub to search for specific Paragon International University students by name. Our comprehensive student directory makes it easy to find and connect with talented individuals from Cambodia's premier ICT university.</p>
 
                     <h3>Popular Searches</h3>
                     <ul>
-                        <li>TalentHub PIU - Find the official Paragon International University portfolio platform</li>
+                        <li>TalentHub - Find the official Paragon International University portfolio platform</li>
                         <li>TalentHub Paragon International University - Discover student portfolios and achievements</li>
                         <li>Paragon International University TalentHub - Access the official student directory</li>
                         <li>Paragon International University Students - Search and connect with talented individuals</li>
-                        <li>Student Name Search - Use TalentHub PIU search to find specific students</li>
+                        <li>Student Name Search - Use TalentHub search to find specific students</li>
                     </ul>
                 </section>
             </div>
