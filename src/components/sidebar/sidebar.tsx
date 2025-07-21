@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { getMajorName, majors } from "@/dummydata/major";
+// import { getMajorName, majors } from "@/dummydata/major";
 import { role } from "@/dummydata/role";
 import { useSession } from 'next-auth/react';
 import { workingStatus } from '@/dummydata/workingStatus';
@@ -60,6 +60,10 @@ export default function Sidebar({
     };
 
     useEffect(() => {
+        console.log("Selected Majors:", selectedMajors);
+        console.log("Selected Roles:", selectedRoles);
+        console.log("Selected Working Statuses:", selectedWorkingStatuses);
+        console.log("Major Name:", major);
         onMajorSelect(selectedMajors);
         onRoleSelect(selectedRoles);
         onWorkingStatusSelect(selectedWorkingStatuses);
@@ -112,8 +116,18 @@ export default function Sidebar({
                     <div className="bg-[#C0DDEC] w-full h-6 sm:h-8 justify-start items-center flex text-left mb-2 sm:mb-4">
                         <p className="text-md sm:text-md text-black ml-1 sm:ml-2">Majors:</p>
                     </div>
-
-                    {majors.map((major) => (
+                    {major && major.length > 0 && major.map((m: Majors) => (
+                        <label key={m.id} className="flex items-center text-black text-xs sm:text-sm mt-1">
+                            <input
+                                type="checkbox"
+                                className="mr-1 sm:mr-2 h-2.5 w-2.5 sm:h-3 sm:w-3"
+                                checked={selectedMajors.includes(m.id)}
+                                onChange={() => handleMajorSelect(m.id)}
+                            />
+                            {m.name}
+                        </label>
+                    ))}
+                    {/* {major.map((major: Majors) => (
                         <label key={major.id} className="flex items-center text-black text-xs sm:text-sm mt-1">
                             <input
                                 type="checkbox"
@@ -123,7 +137,7 @@ export default function Sidebar({
                             />
                             {major.name}
                         </label>
-                    ))}
+                    ))} */}
 
                     <div className="bg-[#C0DDEC] w-full h-6 sm:h-8 justify-start items-center flex text-left mb-2 sm:mb-4 mt-2 sm:mt-4">
                         <p className="text-md sm:text-md text-black ml-1 sm:ml-2">Role:</p>

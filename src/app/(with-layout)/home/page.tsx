@@ -17,6 +17,7 @@ async function HomeContent() {
 
   const portfolioData = response.data;
   const majorData: Majors[] = major.data;
+  console.log(majorData);
   let userData = {
     photo: null,
     phone_number: null,
