@@ -41,6 +41,7 @@ async function HomeContent() {
     <HomeComponent
       portfoliosData={portfolioData}
       photo={userData.photo}
+      yourMajor={userData.major}
       major={majorData}
       phoneNumber={userData.phone_number}
       apiUrl={process.env.API_URL || ''}

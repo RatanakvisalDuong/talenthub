@@ -38,12 +38,14 @@ export default function HomeComponent(
 		portfoliosData,
 		photo,
 		major,
+		yourMajor,
 		phoneNumber,
 		apiUrl
 	}: {
 		portfoliosData: PortfolioProfile[] | ApiResponse;
 		photo: string | null;
-		major: Majors[] | null;
+		major: Majors[];
+		yourMajor: number | null;
 		phoneNumber: string | null;
 		apiUrl: string;
 	}
@@ -179,7 +181,8 @@ export default function HomeComponent(
 					<Sidebar
 						photo={photo || 'https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*'}
 						// major={major ? major : []}
-						major={major ? major : null}
+						major={major}
+						yourMajor={yourMajor ? yourMajor : null}
 						phoneNumber={phoneNumber ? phoneNumber : ''}
 						onMajorSelect={handleMajorSelect}
 						onRoleSelect={handleRoleSelect}
