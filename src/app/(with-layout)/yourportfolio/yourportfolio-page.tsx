@@ -2,7 +2,6 @@
 
 "use client"
 
-import { getMajorName, majors } from "@/dummydata/major";
 import { useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import AddProjectDialog from "./addproject-dialog";
@@ -28,8 +27,9 @@ import ExperienceSection from "@/components/experienceSection/experienceSection"
 import ProfileSummarySection from "@/components/profileSection/profileSection";
 import ProjectsSection from "@/components/projectSection/projectSection";
 import AchievementsSection from "@/components/achievementSection/achievementSection";
+import { getMajorName } from '@/app/type/major';
 
-export default function YourPortfolioPageComponent({ portfolio }: { portfolio: Portfolio }) {
+export default function YourPortfolioPageComponent({ portfolio, yourMajor }: { portfolio: Portfolio, yourMajor: string }) {
 
     const [portfolioData, setPortfolioData] = useState<Portfolio>(portfolio);
     const [projectData, setProjectData] = useState(portfolio.projects);
@@ -259,7 +259,7 @@ export default function YourPortfolioPageComponent({ portfolio }: { portfolio: P
                         <ProfileSummarySection
                             owner={true}
                             portfolio={portfolioData}
-                            getMajorName={getMajorName(portfolioData.portfolio.major)}
+                            getMajorName={yourMajor}
                             convertPhoneNumberSpacing={convertPhoneNumberSpacing}
                             toggleSharePortfolio={toggleSharePortfolio}
                             toggleEditPortfolioDialog={toggleEditPortfolioDialog}

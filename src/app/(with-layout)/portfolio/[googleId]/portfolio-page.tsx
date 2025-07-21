@@ -4,7 +4,6 @@ import { Achievement } from "@/app/type/achievement";
 import { Portfolio } from "@/app/type/portfolio";
 import EducationCard from "@/components/educationCard/educationCard";
 import SkillCard from "@/components/skillCard/skillCard";
-import { getMajorName, majors } from "@/dummydata/major";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useState } from 'react';
 import CertificateDialog from "@/components/achievementDialog/achievementDialog";
@@ -17,7 +16,7 @@ import AchievementsSection from "@/components/achievementSection/achievementSect
 
 
 
-export default function PortfolioPageComponent({ portfolio }: { portfolio: Portfolio }) {
+export default function PortfolioPageComponent({ portfolio, yourMajor }: { portfolio: Portfolio, yourMajor: string }) {
     const [expandedExperience, setExpandedExperience] = useState(false);
     const [expandedSkill, setExpandedSkill] = useState(false);
     const [expandedEducation, setExpandedEducation] = useState(false);
@@ -97,7 +96,7 @@ export default function PortfolioPageComponent({ portfolio }: { portfolio: Portf
                         <ProfileSummarySection
                             owner={false}
                             portfolio={portfolio}
-                            getMajorName={getMajorName(portfolio.portfolio.major)}
+                            getMajorName={yourMajor}
                             convertPhoneNumberSpacing={convertPhoneNumberSpacing}
                             toggleSharePortfolio={toggleSharePortfolio}
                             toggleEditPortfolioDialog={() => { }}

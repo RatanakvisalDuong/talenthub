@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import LoadingScreen from "../../../../components/loadingScreen/loadingScreen";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getMajorName, Majors } from "@/app/type/major";
 
 // Fetch portfolio data (reusable function)
 async function fetchPortfolioData(googleId: string): Promise<Portfolio | null> {
@@ -48,10 +49,10 @@ export async function generateMetadata({
 
   // Extract skills for SEO (prioritize these)
   const skills = portfolioData.skills?.map(skill => skill.title).filter(Boolean) || [];
-  
+
   // Extract experience/work titles for SEO
   const experiences = portfolioData.experiences?.map(exp => exp.work_title).filter(Boolean) || [];
-  
+
   // Extract education info for SEO
   const education = portfolioData.education?.map(edu => edu.education_center).filter(Boolean) || [];
 
@@ -66,23 +67,23 @@ export async function generateMetadata({
   } else {
     title = `${userName} Portfolio | Paragon International University`;
   }
-  
+
   // Enhanced description with all metadata context
   let enhancedDescription: string;
   if (skills.length > 0) {
     const skillsList = skills.slice(0, 8).join(', ');
     enhancedDescription = `${userName} is a skilled ${skillsList} developer from Paragon International University. `;
-    
+
     if (about) {
       enhancedDescription += `${about} `;
     }
-    
+
     if (experiences.length > 0) {
       enhancedDescription += `Professional experience as ${experiences.slice(0, 2).join(' and ')}. `;
     }
-    
+
     enhancedDescription += `Specialized in ${skills.slice(0, 5).join(', ')} at ParagonU TalentHub. `;
-    
+
     // Add comprehensive profile metadata to description
     enhancedDescription += `${userName} is a ${skills.length > 0 ? `${skills[0]} Developer` : 'Student'} at Paragon International University majoring in ${majorName}. `;
     enhancedDescription += `Profile includes expertise in ${skills.join(', ')}, professional work experience, educational background, and project portfolio. `;
@@ -90,18 +91,18 @@ export async function generateMetadata({
     enhancedDescription += `Student Developer Portfolio for Recruiters, Employers, and Academic Community at Paragon International University TalentHub. `;
     enhancedDescription += `Available for remote work, project collaboration, and technical consulting in Cambodia and internationally.`;
   } else {
-    enhancedDescription = about || 
+    enhancedDescription = about ||
       `View ${userName}'s professional portfolio from Paragon International University. ${userName} is a ${majorName} at ParagonU.`;
-    
+
     if (experiences.length > 0) {
       enhancedDescription += ` Experience as ${experiences.slice(0, 3).join(', ')}.`;
     }
-    
+
     enhancedDescription += ` Connect with ${userName} and explore their work, skills, and academic achievements at Paragon University. `;
     enhancedDescription += `Professional portfolio featuring educational background, work experience, projects, and achievements. `;
     enhancedDescription += `Student profile at Paragon International University TalentHub for academic and professional opportunities.`;
   }
-  
+
   const url = `${process.env.NEXT_PUBLIC_SITE_URL}/portfolio/${googleId}`;
 
   // Enhanced keywords with skills prioritized
@@ -394,6 +395,10 @@ function generateStructuredData(portfolio: Portfolio, googleId: string) {
 async function PortfolioContent({ googleId }: { googleId: string }) {
   const portfolioData = await fetchPortfolioData(googleId);
 
+  const major = await axios.get(`${process.env.API_URL}view_all_majors`);
+
+    const majorData: Majors[] = major.data;
+
   if (!portfolioData) {
     notFound();
   }
@@ -602,7 +607,7 @@ async function PortfolioContent({ googleId }: { googleId: string }) {
             </div>
           </div>
 
-          <PortfolioPageComponent portfolio={portfolioData} />
+          <PortfolioPageComponent portfolio={portfolioData} yourMajor={getMajorName(portfolioData.portfolio.major, majorData)} />
         </article>
       </main>
     </>

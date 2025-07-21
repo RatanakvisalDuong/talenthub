@@ -3,8 +3,8 @@ import WorkingStatusBar from '../workingStatus/workingStatusBar';
 import '@fortawesome/fontawesome-free/css/all.css';
 import React from 'react';
 import Link from 'next/link';
-import { getMajorName } from '@/dummydata/major';
 import { useSession } from 'next-auth/react';
+import { getMajorName } from '@/app/type/major';
 
 interface Portfolio {
     user_id: number;
@@ -16,7 +16,7 @@ interface Portfolio {
     photo: string;
 }
 
-export default function Card({ portfolio }: { portfolio: Portfolio }) {
+export default function Card({ portfolio, yourMajor }: { portfolio: Portfolio, yourMajor: string }) {
     const { data: session } = useSession();
     const isLoggedIn = !!session;
 
@@ -63,7 +63,7 @@ export default function Card({ portfolio }: { portfolio: Portfolio }) {
                         {portfolio.role === 1 && (
                             <p className="gap-2">
                                 <i className="fas fa-graduation-cap text-blue-500 mr-2"></i>
-                                {getMajorName(portfolio.major ?? 0) || 'N/A'}
+                                {yourMajor}
                             </p>
                         )}
                     </div>

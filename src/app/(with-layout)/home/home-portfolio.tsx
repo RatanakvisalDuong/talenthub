@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Sidebar from "@/components/sidebar/sidebar";
 import SearchBar from "@/components/search/search_bar";
 import axios from "axios";
-import { Majors } from "@/app/type/major";
+import { getMajorName, Majors } from "@/app/type/major";
 
 export interface PortfolioProfile {
 	id: number;
@@ -223,7 +223,7 @@ export default function HomeComponent(
 											return matchesRole && matchesMajor && matchesStatus;
 										})
 										.map((portfolio) => (
-											<Card key={`${portfolio.user_id}-${portfolio.id}`} portfolio={portfolio} />
+											<Card key={`${portfolio.user_id}-${portfolio.id}`} portfolio={portfolio} yourMajor={getMajorName(portfolio.major, major)} />
 										))}
 								</div>
 

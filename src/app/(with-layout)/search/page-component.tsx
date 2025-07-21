@@ -6,6 +6,8 @@ import Card from "@/components/card/card";
 import SearchBar from "./search-bar";
 import axios from "axios";
 import { PortfolioProfile } from "../home/home-portfolio";
+import { getMajorName, Majors } from "@/app/type/major";
+import { get } from "http";
 
 interface SearchPageProps {
     apiUrl: string;
@@ -23,6 +25,7 @@ export default function SearchPage({ apiUrl }: SearchPageProps): JSX.Element {
     const [hasSearched, setHasSearched] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>(query);
     const [searchMethod, setSearchMethod] = useState<SearchMethod>('exact');
+    const [majorData, setMajorData] = useState<Majors[]>([]);
 
     // Enhanced search function that handles full names like "Ratanakvisal Duong"
     const searchPortfolios = useCallback(async (searchQuery: string): Promise<void> => {
@@ -176,8 +179,19 @@ export default function SearchPage({ apiUrl }: SearchPageProps): JSX.Element {
         }
     }, [apiUrl]);
 
+    const getMajors = async () => {
+        const response = await axios.get(`${process.env.API_URL}view_all_majors`);
+        setMajorData(response.data);
+    };
+
+//     const major = await axios.get(`${process.env.API_URL}view_all_majors`);
+
+//   const portfolioData = response.data;
+//   const majorData: Majors[] = major.data;
+
     // Search when component mounts with URL query
     useEffect(() => {
+        getMajors();
         if (query) {
             setSearchTerm(query);
             searchPortfolios(query);
@@ -274,7 +288,7 @@ export default function SearchPage({ apiUrl }: SearchPageProps): JSX.Element {
                         searchResults.length > 0 ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 z-10">
                                 {searchResults.map((portfolio) => (
-                                    <Card key={`${portfolio.user_id}-${portfolio.id}`} portfolio={portfolio} />
+                                    <Card key={`${portfolio.user_id}-${portfolio.id}`} portfolio={portfolio} yourMajor={getMajorName(portfolio.major, majorData)} />
                                 ))}
                             </div>
                         ) : (
