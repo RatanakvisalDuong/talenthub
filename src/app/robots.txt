@@ -1,0 +1,7 @@
+User-Agent: *
+Allow: /
+Allow: /home
+Allow: /portfolio/
+Allow: /project/
+
+Sitemap: https://talenthub.paragoniu.app/sitemap.xml

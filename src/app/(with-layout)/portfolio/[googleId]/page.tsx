@@ -24,7 +24,6 @@ async function fetchPortfolioData(googleId: string): Promise<Portfolio | null> {
   }
 }
 
-// Generate metadata for SEO with enhanced skills-based optimization
 export async function generateMetadata({
   params
 }: {
@@ -63,12 +62,12 @@ export async function generateMetadata({
   let title: string;
   if (skills.length > 0) {
     const primarySkills = skills.slice(0, 3).join(', ');
-    title = `${primarySkills} Developer - ${userName} | Paragon International University`;
+    title = `${userName} | Paragon International University`;
   } else {
-    title = `${userName} - ${majorName} Portfolio | Paragon International University`;
+    title = `${userName} Portfolio | Paragon International University`;
   }
   
-  // Enhanced description with skills prioritized
+  // Enhanced description with all metadata context
   let enhancedDescription: string;
   if (skills.length > 0) {
     const skillsList = skills.slice(0, 8).join(', ');
@@ -82,7 +81,14 @@ export async function generateMetadata({
       enhancedDescription += `Professional experience as ${experiences.slice(0, 2).join(' and ')}. `;
     }
     
-    enhancedDescription += `Specialized in ${skills.slice(0, 5).join(', ')} at ParagonU TalentHub. Connect with ${userName} for ${skillsList} development opportunities.`;
+    enhancedDescription += `Specialized in ${skills.slice(0, 5).join(', ')} at ParagonU TalentHub. `;
+    
+    // Add comprehensive profile metadata to description
+    enhancedDescription += `${userName} is a ${skills.length > 0 ? `${skills[0]} Developer` : 'Student'} at Paragon International University majoring in ${majorName}. `;
+    enhancedDescription += `Profile includes expertise in ${skills.join(', ')}, professional work experience, educational background, and project portfolio. `;
+    enhancedDescription += `Contact ${userName} for ${skillsList} development opportunities, freelance projects, consulting, or full-time positions. `;
+    enhancedDescription += `Student Developer Portfolio for Recruiters, Employers, and Academic Community at Paragon International University TalentHub. `;
+    enhancedDescription += `Available for remote work, project collaboration, and technical consulting in Cambodia and internationally.`;
   } else {
     enhancedDescription = about || 
       `View ${userName}'s professional portfolio from Paragon International University. ${userName} is a ${majorName} at ParagonU.`;
@@ -91,7 +97,9 @@ export async function generateMetadata({
       enhancedDescription += ` Experience as ${experiences.slice(0, 3).join(', ')}.`;
     }
     
-    enhancedDescription += ` Connect with ${userName} and explore their work, skills, and academic achievements at Paragon University.`;
+    enhancedDescription += ` Connect with ${userName} and explore their work, skills, and academic achievements at Paragon University. `;
+    enhancedDescription += `Professional portfolio featuring educational background, work experience, projects, and achievements. `;
+    enhancedDescription += `Student profile at Paragon International University TalentHub for academic and professional opportunities.`;
   }
   
   const url = `${process.env.NEXT_PUBLIC_SITE_URL}/portfolio/${googleId}`;
@@ -170,9 +178,13 @@ export async function generateMetadata({
       ] : [],
       siteName: 'Paragon International University TalentHub',
       locale: 'en_US',
+      // profile: {
+      //   firstName: userName.split(' ')[0],
+      //   lastName: userName.split(' ').slice(1).join(' '),
+      //   username: googleId,
+      // }
     },
 
-    // Twitter with skills emphasis
     twitter: {
       card: 'summary_large_image',
       title,
@@ -198,29 +210,17 @@ export async function generateMetadata({
       canonical: url,
     },
 
-    // Enhanced metadata with skills context
-    other: {
-      'profile:first_name': userName.split(' ')[0],
-      'profile:last_name': userName.split(' ').slice(1).join(' '),
-      'profile:username': googleId,
-      'article:author': userName,
-      'article:publisher': 'Paragon International University',
-      'og:site_name': 'Paragon International University TalentHub',
-      'application-name': 'TalentHub - Paragon International University',
-      'msapplication-TileColor': '#2B5797',
-      'theme-color': '#2B5797',
-      // Add skills as custom meta tags
-      'skills': skills.join(', '),
-      'primary-skill': skills[0] || '',
-      'developer-type': skills.length > 0 ? `${skills[0]} Developer` : majorName,
-    },
+    applicationName: 'TalentHub - Paragon International University',
+    themeColor: '#2B5797',
+    // category: skills.length > 0 ? `${skills[0]} Development` : majorName,
+    classification: 'Student Portfolio',
   };
 }
 
 function generateStructuredData(portfolio: Portfolio, googleId: string) {
   // Extract skills with enhanced detail
   const skills = portfolio.skills?.map(skill => skill.title).filter(Boolean) || [];
-  
+
   // Extract work experiences
   const workExperiences = portfolio.experiences?.map(exp => ({
     '@type': 'WorkExperience',
@@ -256,8 +256,8 @@ function generateStructuredData(portfolio: Portfolio, googleId: string) {
   })).filter(project => project.name) || [];
 
   // Enhanced job title with skills
-  const jobTitle = skills.length > 0 ? 
-    `${skills.slice(0, 3).join(', ')} Developer` : 
+  const jobTitle = skills.length > 0 ?
+    `${skills.slice(0, 3).join(', ')} Developer` :
     (portfolio.portfolio.role_id === 1 ? portfolio.portfolio.major || 'Student' : 'Endorser');
 
   const structuredData = {
@@ -427,7 +427,7 @@ async function PortfolioContent({ googleId }: { googleId: string }) {
           {/* Enhanced SEO content with skills prioritized */}
           <div className="sr-only">
             <h1 itemProp="name">
-              {skills.length > 0 ? 
+              {skills.length > 0 ?
                 `${skills.slice(0, 3).join(', ')} Developer - ${portfolioData.portfolio.user_name} | Paragon International University` :
                 `${portfolioData.portfolio.user_name} - Paragon International University`
               }
@@ -436,26 +436,26 @@ async function PortfolioContent({ googleId }: { googleId: string }) {
             <span itemProp="email">{portfolioData.portfolio.email}</span>
             <span itemProp="telephone">{portfolioData.portfolio.phone_number}</span>
             <span itemProp="jobTitle">
-              {skills.length > 0 ? 
+              {skills.length > 0 ?
                 `${skills.slice(0, 3).join(', ')} Developer` :
                 (portfolioData.portfolio.role_id === 1 ?
                   portfolioData.portfolio.major || 'Student' : 'Endorser')
               }
             </span>
-            
+
             {/* Enhanced Skills Section with more SEO content */}
             {portfolioData.skills && portfolioData.skills.length > 0 && (
               <div>
                 <h2>Professional Skills and Expertise</h2>
                 <p>
-                  {portfolioData.portfolio.user_name} is a skilled developer specializing in {skills.join(', ')} 
+                  {portfolioData.portfolio.user_name} is a skilled developer specializing in {skills.join(', ')}
                   at Paragon International University. Available for freelance projects and full-time opportunities.
                 </p>
                 {portfolioData.skills.map((skill, index) => (
                   <div key={index}>
                     <h3 itemProp="knowsAbout">{skill.title} Developer</h3>
                     <p>
-                      Expert in {skill.title} programming and development. 
+                      Expert in {skill.title} programming and development.
                       {skill.description && <span> {skill.description}</span>}
                       Available for {skill.title} projects in Cambodia and internationally.
                     </p>
@@ -565,7 +565,7 @@ async function PortfolioContent({ googleId }: { googleId: string }) {
                 style={{ display: 'none' }}
               />
             )}
-            
+
             {/* Additional university context */}
             <div itemScope itemType="https://schema.org/University">
               <h2 itemProp="name">Paragon International University</h2>
@@ -585,7 +585,7 @@ async function PortfolioContent({ googleId }: { googleId: string }) {
             <div style={{ display: 'none' }}>
               <h2>Hire {portfolioData.portfolio.user_name}</h2>
               <p>
-                Looking for a skilled {skills.length > 0 ? skills.slice(0, 3).join(', ') : ''} developer? 
+                Looking for a skilled {skills.length > 0 ? skills.slice(0, 3).join(', ') : ''} developer?
                 {portfolioData.portfolio.user_name} from Paragon International University is available for:
               </p>
               <ul>
@@ -596,7 +596,7 @@ async function PortfolioContent({ googleId }: { googleId: string }) {
                 <li>Project-based collaboration</li>
               </ul>
               <p>
-                Contact {portfolioData.portfolio.user_name} at {portfolioData.portfolio.email} or 
+                Contact {portfolioData.portfolio.user_name} at {portfolioData.portfolio.email} or
                 {portfolioData.portfolio.phone_number} for professional {skills.length > 0 ? skills.slice(0, 3).join(', ') : ''} development services.
               </p>
             </div>
