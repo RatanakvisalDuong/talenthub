@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { workingStatus } from '@/dummydata/workingStatus';
 import Link from 'next/link';
 import { convertPhoneNumberSpacing } from '@/utils';
+import { Majors } from '@/app/type/major';
 
 export default function Sidebar({
     photo,
@@ -16,7 +17,7 @@ export default function Sidebar({
     onWorkingStatusSelect }: {
         photo: string | null;
         phoneNumber: string | null;
-        major: number | null;
+        major: Majors[] | null;
         onMajorSelect: (selectedMajors: number[]) => void;
         onRoleSelect: (selectedRoles: number[]) => void;
         onWorkingStatusSelect: (selectedWorkingStatus: number[]) => void;
@@ -97,7 +98,7 @@ export default function Sidebar({
                             <span className='font-bold'>Major: </span>
                             <span className="ml-1">
                                 {
-                                    getMajorName(major ?? 0) || 'N/A'
+                                    // getMajorName(major ?? 0) || 'N/A'
                                 }
                             </span>
                         </p>)

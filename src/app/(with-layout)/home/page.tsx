@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/option";
 import { Suspense } from "react";
 import LoadingScreen from "../../../components/loadingScreen/loadingScreen";
+import { Majors } from "@/app/type/major";
 
 // Async component that fetches data
 async function HomeContent() {
@@ -12,9 +13,10 @@ async function HomeContent() {
 
   const page = 1;
   const response = await axios.get(`${process.env.API_URL}view_all_portfolio?page=${page}`);
+  const major = await axios.get(`${process.env.API_URL}view_all_majors`);
 
   const portfolioData = response.data;
-console.log(portfolioData)
+  const majorData: Majors[] = major.data;
   let userData = {
     photo: null,
     phone_number: null,
@@ -38,7 +40,7 @@ console.log(portfolioData)
     <HomeComponent
       portfoliosData={portfolioData}
       photo={userData.photo}
-      major={userData.major}
+      major={majorData}
       phoneNumber={userData.phone_number}
       apiUrl={process.env.API_URL || ''}
     />

@@ -8,6 +8,13 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
+export interface Majors {
+    id: number;
+    name: string;
+    created_at: string;
+    updated_at: string;
+}
+
 const EditPortfolioDialog = ({
     isOpen,
     onClose,
@@ -40,6 +47,8 @@ const EditPortfolioDialog = ({
     const [about, setAbout] = useState<string | null>(aboutMe || null);
     const [photoString, setPhotoString] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [majors, setMajors] = useState<Majors[]>([]);
+    const [loadingMajors, setLoadingMajors] = useState(false);
 
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -49,6 +58,34 @@ const EditPortfolioDialog = ({
     const imagePreviews = useMemo(() => {
         return imageFiles.map((file) => URL.createObjectURL(file));
     }, [imageFiles]);
+
+    // Fetch majors from API
+    const fetchMajors = async () => {
+        setLoadingMajors(true);
+        try {
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_API_URL}view_all_majors`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${session?.accessToken}`,
+                    },
+                }
+            );
+            if (response.status === 200) {
+                setMajors(response.data);
+            }
+        } catch (error) {
+            console.error("Error fetching majors:", error);
+        } finally {
+            setLoadingMajors(false);
+        }
+    };
+
+    useEffect(() => {
+        if (isOpen && session?.accessToken) {
+            fetchMajors();
+        }
+    }, [isOpen, session?.accessToken]);
 
     if (!isOpen) return null;
 
@@ -201,12 +238,20 @@ const EditPortfolioDialog = ({
                                     required
                                     value={selectedMajor || ""}
                                     onChange={(e) => setSelectedMajor(Number(e.target.value) || null)}
+                                    disabled={loadingMajors}
                                 >
-                                    <option value="" disabled>Select Major</option>
-                                    <option value="1">Computer Science</option>
-                                    <option value="2">Management of Information Systems</option>
-                                    <option value="3">Digital Art and Designs</option>
+                                    <option value="" disabled>
+                                        {loadingMajors ? "Loading majors..." : "Select Major"}
+                                    </option>
+                                    {majors.map((major) => (
+                                        <option key={major.id} value={major.id}>
+                                            {major.name}
+                                        </option>
+                                    ))}
                                 </select>
+                                {loadingMajors && (
+                                    <div className="text-xs text-gray-500 mt-1">Loading available majors...</div>
+                                )}
                             </div>
                         )
                             :
@@ -296,7 +341,7 @@ const EditPortfolioDialog = ({
                                             className="absolute top-0 right-0 text-red-500 p-1 rounded-full"
                                         >
                                             <i className="fas fa-times"></i>
-                                        </div>
+                        </div>
                                     </div>
                                 ))}
                             </div>

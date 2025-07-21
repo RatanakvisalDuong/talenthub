@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Sidebar from "@/components/sidebar/sidebar";
 import SearchBar from "@/components/search/search_bar";
 import axios from "axios";
+import { Majors } from "@/app/type/major";
 
 export interface PortfolioProfile {
 	id: number;
@@ -42,7 +43,7 @@ export default function HomeComponent(
 	}: {
 		portfoliosData: PortfolioProfile[] | ApiResponse;
 		photo: string | null;
-		major: number | null;
+		major: Majors[] | null;
 		phoneNumber: string | null;
 		apiUrl: string;
 	}
@@ -177,7 +178,7 @@ export default function HomeComponent(
 				<div className="w-[30%] sm:w-[25%] lg:w-[23%] xl:w-[20%] h-[87vh] overflow-y-auto flex-shrink-0">
 					<Sidebar
 						photo={photo || 'https://hips.hearstapps.com/hmg-prod/images/british-actor-henry-cavill-poses-on-the-red-carpet-as-he-news-photo-1581433962.jpg?crop=0.66667xw:1xh;center,top&resize=1200:*'}
-						major={major ? major : 4}
+						major={major ? major : null}
 						phoneNumber={phoneNumber ? phoneNumber : ''}
 						onMajorSelect={handleMajorSelect}
 						onRoleSelect={handleRoleSelect}
